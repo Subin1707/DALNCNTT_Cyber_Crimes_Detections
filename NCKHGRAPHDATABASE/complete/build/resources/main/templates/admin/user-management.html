@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Tài khoản</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <div>
+            <h1>Quản lý Tài khoản</h1>
+
+            <p th:if="${user != null}">
+                Chào <strong th:text="${user.email}"></strong>
+                (Role: <span th:text="${user.role}"></span>)
+            </p>
+
+            <p th:if="${user == null}" class="warning">
+                ⚠ Chưa đăng nhập
+            </p>
+        </div>
+
+        <a th:href="@{/admin/logout}" class="logout-btn">Logout</a>
+    </header>
+
+    <!-- NAVIGATION BUTTONS (FIX ROUTE) -->
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button onclick="window.location.href='/admin/admin-email'">Quản lý Email</button>
+        <button onclick="window.location.href='/admin/admin-ip'">Quản lý IP Address</button>
+        <button onclick="window.location.href='/admin/admin-url'">Quản lý URL</button>
+        <button onclick="window.location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button onclick="window.location.href='/admin/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+
+    <!-- USER LIST -->
+    <section class="card">
+        <h2>Danh sách Tài khoản</h2>
+
+        <div class="table-wrapper">
+            <table id="userTable">
+                <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${users == null || #lists.isEmpty(users)}">
+                    <td colspan="3" style="text-align:center; padding:14px;">
+                        Không có tài khoản nào.
+                    </td>
+                </tr>
+
+                <tr th:each="u : ${users}">
+                    <td th:text="${u.email}"></td>
+                    <td th:text="${u.role}"></td>
+                    <td>
+                        <button
+                                th:if="${#strings.toUpperCase(u.role) != 'ADMIN'}"
+                                th:attr="data-email=${u.email}"
+                                onclick="deleteUser(this.getAttribute('data-email'))">
+                            Xóa
+                        </button>
+
+                        <button
+                                th:if="${#strings.toUpperCase(u.role) != 'ADMIN'}"
+                                th:attr="data-email=${u.email}, data-role=${u.role}"
+                                onclick="editUser(this.getAttribute('data-email'), this.getAttribute('data-role'))"
+                                style="margin-left:8px;">
+                            Sửa
+                        </button>
+
+                        <span th:if="${#strings.toUpperCase(u.role) == 'ADMIN'}"
+                              style="font-size:13px; opacity:0.7;">
+                            (Không thể xóa)
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div id="userMsg" class="analyze-result" style="margin-top:12px;"></div>
+    </section>
+
+</main>
+
+<script>
+    async function deleteUser(email) {
+        if (!email) return;
+
+        const ok = confirm(`Bạn chắc chắn muốn xóa user: ${email} ?`);
+        if (!ok) return;
+
+        const msg = document.getElementById("userMsg");
+        msg.textContent = "Đang xóa...";
+
+        try {
+            const res = await fetch("/admin/user/" + encodeURIComponent(email), {
+                method: "DELETE"
+            });
+
+            if (res.ok) {
+                msg.textContent = "✅ Đã xóa user thành công!";
+                setTimeout(() => location.reload(), 500);
+                return;
+            }
+
+            let text = "";
+            try { text = await res.text(); } catch (e) {}
+
+            msg.textContent = "❌ Xóa thất bại: " + (text || ("HTTP " + res.status));
+        } catch (err) {
+            msg.textContent = "❌ Lỗi kết nối server!";
+        }
+    }
+
+    // Modal-based edit: open modal, submit form
+    function editUser(email, currentRole) {
+        if (!email) return;
+        const modal = document.getElementById('editUserModal');
+        const inEmail = document.getElementById('editEmail');
+        const inRole = document.getElementById('editRole');
+        const inStatus = document.getElementById('editStatus');
+        const inPassword = document.getElementById('editPassword');
+
+        inEmail.value = email;
+        inRole.value = (currentRole || 'CUSTOMER').toUpperCase();
+        inStatus.value = 'ACTIVE';
+        inPassword.value = '';
+
+        modal.style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        const modal = document.getElementById('editUserModal');
+        modal.style.display = 'none';
+    }
+
+    async function submitEditForm(evt) {
+        evt.preventDefault();
+        const email = document.getElementById('editEmail').value;
+        const role = document.getElementById('editRole').value;
+        const status = document.getElementById('editStatus').value;
+        const password = document.getElementById('editPassword').value;
+
+        const msg = document.getElementById('userMsg');
+        msg.textContent = 'Đang cập nhật...';
+
+        try {
+            const body = { role, status };
+            if (password && password.trim().length > 0) body.password = password;
+
+            const res = await fetch(`/admin/users/${encodeURIComponent(email)}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            const j = await res.json().catch(() => ({}));
+            if (!res.ok || j.success === false) throw new Error(j.message || `HTTP ${res.status}`);
+
+            msg.textContent = '✅ Cập nhật thành công';
+            closeEditModal();
+            setTimeout(() => location.reload(), 600);
+
+        } catch (e) {
+            msg.textContent = '❌ Cập nhật thất bại: ' + (e.message || e);
+        }
+    }
+</script>
+
+<!-- Edit User Modal -->
+<div id="editUserModal" style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; background:rgba(0,0,0,0.35); z-index:60;">
+    <div style="width:420px; background:white; border-radius:14px; padding:18px 20px; box-shadow:0 20px 50px rgba(0,0,0,0.25);">
+        <h3 style="margin-bottom:12px;">Chỉnh sửa User</h3>
+        <form id="editUserForm" onsubmit="submitEditForm(event)">
+            <div style="margin-bottom:8px;">
+                <label style="display:block;font-size:12px;color:#555;margin-bottom:6px;">Email</label>
+                <input id="editEmail" readonly style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;" />
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:8px;">
+                <div style="flex:1;">
+                    <label style="display:block;font-size:12px;color:#555;margin-bottom:6px;">Role</label>
+                    <select id="editRole" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;">
+                        <option>ADMIN</option>
+                        <option>STAFF</option>
+                        <option>CUSTOMER</option>
+                    </select>
+                </div>
+                <div style="flex:1;">
+                    <label style="display:block;font-size:12px;color:#555;margin-bottom:6px;">Status</label>
+                    <select id="editStatus" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;">
+                        <option>ACTIVE</option>
+                        <option>DISABLED</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="display:block;font-size:12px;color:#555;margin-bottom:6px;">Mật khẩu mới (để trống nếu không đổi)</label>
+                <input id="editPassword" type="password" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;" />
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;">
+                <button type="button" onclick="closeEditModal()" style="background:#f3f4f6;color:#111;padding:8px 12px;border-radius:10px;border:1px solid #e5e7eb;">Huỷ</button>
+                <button type="submit" style="background:linear-gradient(135deg,#10b981,#059669); color:white; padding:8px 12px; border-radius:10px; border:none;">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

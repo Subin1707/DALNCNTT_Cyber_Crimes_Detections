@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+<div class="login-wrapper">
+    <div class="login-container">
+
+        <div class="logo">
+            <i class="fas fa-user-circle fa-4x"></i>
+        </div>
+
+        <h2>Welcome Back</h2>
+
+        <!-- ✅ FIX: chỉ hiển thị khi có message -->
+        <p class="error-msg" th:if="${error != null}" th:text="${error}"></p>
+        <p class="success-msg" th:if="${success != null}" th:text="${success}"></p>
+
+        <form th:action="@{/login}" method="post" id="loginForm" autocomplete="off">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email"
+                       name="email"
+                       placeholder="Email"
+                       required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password"
+                       name="password"
+                       placeholder="Password"
+                       required
+                       minlength="6">
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="register-link">
+            <span>Don't have an account? </span>
+            <a th:href="@{/register}">Register here</a>
+        </div>
+
+    </div>
+</div>
+
+<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

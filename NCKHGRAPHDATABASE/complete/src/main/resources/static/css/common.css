@@ -1,0 +1,232 @@
+/* =========================================
+   ELITE AI DASHBOARD UI – NEXT LEVEL
+   Still same structure – Only upgraded
+   ========================================= */
+
+:root{
+    --bg-gradient: radial-gradient(circle at 20% 20%, #dbeafe 0%, transparent 40%),
+                   radial-gradient(circle at 80% 80%, #e0e7ff 0%, transparent 40%),
+                   linear-gradient(135deg,#eef2ff,#f8fafc,#f1f5ff);
+
+    --surface: rgba(255,255,255,0.70);
+    --surface-strong: rgba(255,255,255,0.95);
+    --border-weak: rgba(15,23,42,0.06);
+
+    --primary:#2563eb;
+    --accent:#4f46e5;
+    --safe:#16a34a;
+    --warn:#f59e0b;
+    --danger:#dc2626;
+
+    --primary-glow:rgba(37,99,235,0.45);
+    --safe-glow:rgba(22,163,74,0.35);
+    --warn-glow:rgba(245,158,11,0.35);
+    --danger-glow:rgba(220,38,38,0.40);
+
+    --text:#0f172a;
+    --muted:#64748b;
+
+    --radius-lg:24px;
+    --radius-md:16px;
+    --radius-sm:12px;
+}
+
+/* ================= RESET ================= */
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+    height:100%;
+    font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:var(--bg-gradient);
+    background-size:200% 200%;
+    animation:bgMove 20s ease infinite;
+    overflow-x:hidden;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+/* ================= LAYOUT ================= */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:40px;
+    animation:fadeUp .9s ease forwards;
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(40px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* ================= CARD ================= */
+
+.card{
+    background:var(--surface);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:var(--radius-lg);
+    padding:24px;
+    position:relative;
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow:0 15px 60px rgba(0,0,0,0.08);
+    transition:all .4s cubic-bezier(.4,0,.2,1);
+    overflow:hidden;
+}
+
+/* Gradient border glow */
+.card::after{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius:inherit;
+    background:linear-gradient(135deg,var(--primary),var(--accent),#38bdf8);
+    z-index:-1;
+    filter:blur(20px);
+    opacity:0;
+    transition:opacity .4s ease;
+}
+
+.card:hover{
+    transform:translateY(-8px) scale(1.02);
+}
+
+.card:hover::after{
+    opacity:.6;
+}
+
+/* ================= BUTTON ================= */
+
+button{
+    font-weight:800;
+    border-radius:var(--radius-md);
+    padding:14px 24px;
+    border:none;
+    cursor:pointer;
+    color:#fff;
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+    box-shadow:0 10px 30px var(--primary-glow);
+    transition:all .3s ease;
+    position:relative;
+    overflow:hidden;
+}
+
+/* moving shine */
+button::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:60%;
+    height:100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
+    transform:skewX(-20deg);
+    transition:.6s;
+}
+
+button:hover::before{
+    left:140%;
+}
+
+button:hover{
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 20px 50px var(--primary-glow);
+}
+
+/* ================= TABLE ================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+    background:var(--surface-strong);
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    box-shadow:0 12px 40px rgba(0,0,0,0.05);
+}
+
+thead th{
+    font-weight:800;
+    color:var(--primary);
+    padding:16px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    background:linear-gradient(to right,rgba(37,99,235,.05),rgba(79,70,229,.05));
+}
+
+tbody td{
+    padding:16px;
+    border-bottom:1px solid rgba(0,0,0,0.04);
+    transition:all .25s ease;
+}
+
+tbody tr{
+    transition:all .25s ease;
+}
+
+tbody tr:hover{
+    background:linear-gradient(to right,rgba(37,99,235,.05),rgba(79,70,229,.05));
+    transform:scale(1.015);
+}
+
+/* ================= BADGE ================= */
+
+.badge{
+    display:inline-block;
+    padding:6px 14px;
+    border-radius:999px;
+    font-weight:800;
+    font-size:12px;
+    backdrop-filter:blur(8px);
+    transition:.3s;
+}
+
+/* default */
+.badge{
+    background:rgba(37,99,235,.15);
+    color:var(--primary);
+}
+
+/* variants */
+.badge.safe{
+    background:rgba(22,163,74,.15);
+    color:var(--safe);
+    box-shadow:0 6px 20px var(--safe-glow);
+}
+
+.badge.warn{
+    background:rgba(245,158,11,.15);
+    color:var(--warn);
+    box-shadow:0 6px 20px var(--warn-glow);
+}
+
+.badge.danger{
+    background:rgba(220,38,38,.15);
+    color:var(--danger);
+    box-shadow:0 6px 20px var(--danger-glow);
+}
+
+.badge:hover{
+    transform:translateY(-3px) scale(1.05);
+}
+
+/* ================= TEXT ================= */
+
+.muted{
+    color:var(--muted);
+    font-weight:500;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+    .container{padding:20px}
+    .card{padding:18px}
+    table{font-size:13px}
+}

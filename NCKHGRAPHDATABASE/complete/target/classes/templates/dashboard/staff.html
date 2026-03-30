@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Dashboard</title>
+
+    <!-- FIX: đúng css staff -->
+    <link rel="stylesheet" th:href="@{/css/staff.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <div>
+            <h1>Staff Dashboard</h1>
+
+            <p th:if="${user != null}">
+                Chào <strong th:text="${user.email}"></strong>
+                (Role: <span th:text="${user.role}"></span>)
+            </p>
+
+            <p th:if="${user == null}" class="warning">
+                ⚠ Chưa đăng nhập
+            </p>
+        </div>
+
+        <a th:href="@{/staff/logout}" class="logout-btn">Logout</a>
+    </header>
+
+    <!-- NAVIGATION BUTTONS -->
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
+        <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
+        <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
+        <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
+        <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+
+    <section class="card">
+        <h2>Phân tích gian lận</h2>
+
+        <form class="form-inline" onsubmit="return false;" title="Nhập ít nhất 1 trong Email / IP / URL và nhấn Phân tích">
+            <input type="email" id="analyzeEmail" placeholder="Nhập Email để phân tích..." autocomplete="off">
+            <input type="text" id="analyzeIP" placeholder="Nhập IP để phân tích..." autocomplete="off">
+            <input type="text" id="analyzeURL" placeholder="Nhập URL để phân tích..." autocomplete="off">
+            <button type="button" id="analyzeBtn">Phân tích</button>
+        </form>
+
+        <div id="analyzeResult" class="analyze-result"></div>
+    </section>
+
+    <!-- EXCEL UPLOAD -->
+    <section class="card">
+        <h2>Nhập file Excel</h2>
+
+        <p class="note">
+            File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
+        </p>
+
+        <div class="form-inline">
+            <input type="file" id="excelFile" accept=".xlsx,.xls">
+            <button type="button" id="uploadExcelBtn">Tải lên</button>
+        </div>
+
+        <div id="uploadResult" class="analyze-result"></div>
+    </section>
+
+    <!-- GRAPH -->
+    <section class="card">
+        <h2>Đồ thị liên kết gian lận</h2>
+
+        <p class="note">
+            Biểu diễn mối quan hệ Email – URL – IP trong hệ thống
+        </p>
+
+        <div class="graph-controls" style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <label for="sessionSelect"><b>Phiên:</b></label>
+            <select id="sessionSelect" style="min-width:300px;padding:6px"></select>
+            <button id="reloadGraphBtn" type="button">Tải lại</button>
+            <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
+        </div>
+
+        <div id="selectedSessionArea" style="margin-bottom:8px;">
+            <b>Phiên:</b> <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
+        </div>
+
+        <div class="graph-wrapper">
+            <svg id="graphSVG"></svg>
+        </div>
+
+        <!-- LEGEND -->
+        <div class="graph-legend" style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px; font-size:13px; align-items:center;">
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:16px;border-radius:50%;background:#1c8ef9;"></div>
+                <span>SUBMITTED_FOR_ANALYSIS</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:16px;border-radius:50%;background:#ffdd57;"></div>
+                <span>CONTAINS_URL</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:16px;border-radius:50%;background:#d62728;"></div>
+                <span>SENT_FROM_IP / High Risk</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:16px;border-radius:50%;background:#2ca02c;"></div>
+                <span>HOSTED_ON</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:16px;border-radius:50%;background:#8e44ad;"></div>
+                <span>CONNECTED_TO</span>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:4px;margin-left:20px;">
+                <div style="width:16px;height:4px;background:#1c8ef9;"></div>
+                <span>SUBMITTED_FOR_ANALYSIS link</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:4px;background:#ffdd57;"></div>
+                <span>CONTAINS_URL link</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:4px;background:#d62728;"></div>
+                <span>SENT_FROM_IP link</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:4px;background:#2ca02c;"></div>
+                <span>HOSTED_ON link</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;">
+                <div style="width:16px;height:4px;background:#8e44ad;"></div>
+                <span>CONNECTED_TO link</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- NODE INFO POPUP -->
+    <div id="nodeInfo"></div>
+
+    <!-- NODE TABLE -->
+    <section class="card">
+        <h2>Bảng thông tin Node</h2>
+
+        <div class="table-search">
+            <input type="text" id="searchNode" placeholder="Tìm theo ID hoặc Value..." autocomplete="off">
+            <button type="button" id="searchNodeBtn">Tìm kiếm</button>
+            <button type="button" id="resetNodeBtn">Reset</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="nodeTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th>Risk Level</th>
+                    <th>Risk Score</th>
+                    <th>Verdict</th>
+                    <th>Indicators</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<!-- FIX: session load trước để chặn sai role -->
+<script th:src="@{/js/staff-session.js}"></script>
+
+<script th:src="@{/js/staff-main.js}"></script>
+<script th:src="@{/js/staff-analyze.js}"></script>
+<script th:src="@{/js/staff-excel-upload.js}"></script>
+
+<script>
+// Initial graph load is handled by staff-session.js (select latest session by default)
+
+document.getElementById("searchNode")?.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+        document.getElementById("searchNodeBtn")?.click();
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+<main class="container">
+
+    <!-- ================= HEADER ================= -->
+    <header class="dashboard-header">
+        <div>
+            <h1>Admin Dashboard</h1>
+
+            <p th:if="${user != null}">
+                Chào <strong th:text="${user.email}"></strong>
+                (Role: <span th:text="${user.role}"></span>)
+            </p>
+
+            <p th:if="${user == null}" class="warning">
+                ⚠ Chưa đăng nhập
+            </p>
+        </div>
+
+<form th:action="@{/admin/logout}" method="post" class="logout-form">
+    <button type="submit" class="logout-btn">
+        Logout
+    </button>
+</form> 
+</header>
+
+    <!-- ================= NAV ================= -->
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/admin/admin-email'">Quản lý Email</button>
+        <button onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
+        <button onclick="location.href='/admin/admin-url'">Quản lý URL</button>
+        <button onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/admin/about'">Giới thiệu</button>
+    </div>
+
+    <!-- ================= CREATE STAFF ================= -->
+    <section class="card">
+        <h2>Tạo tài khoản Staff</h2>
+
+        <form th:action="@{/admin/create-staff}" method="post" class="form-inline">
+            <input type="email" name="email" placeholder="Staff Email" required autocomplete="off">
+            <input type="password" name="password" placeholder="Staff Password" required autocomplete="off">
+            <button type="submit">Tạo Staff</button>
+        </form>
+
+        <p class="message" th:if="${session.message != null}" th:text="${session.message}"></p>
+    </section>
+
+    <!-- ================= ANALYZE ================= -->
+    <section class="card">
+        <h2>Phân tích gian lận</h2>
+
+        <p class="note">
+            <b>Rủi ro Trực tiếp</b> là kết quả đánh giá từ dữ liệu bạn nhập vào tại thời điểm hiện tại,
+            chưa bao gồm ảnh hưởng lan truyền từ các node khác trong hệ thống.
+        </p>
+
+        <form class="form-inline" onsubmit="return false;">
+            <input type="email" id="analyzeEmail" placeholder="Email…" autocomplete="off">
+            <input type="text" id="analyzeIP" placeholder="IP…" autocomplete="off">
+            <input type="text" id="analyzeURL" placeholder="URL…" autocomplete="off">
+            <button type="button" id="analyzeBtn">Phân tích</button>
+        </form>
+
+        <div id="analyzeResult" class="analyze-result"></div>
+    </section>
+
+    <!-- ================= EXCEL ================= -->
+    <section class="card">
+        <h2>Nhập file Excel</h2>
+
+        <p class="note">
+            File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
+        </p>
+
+        <div class="form-inline">
+            <input type="file" id="excelFileInput" accept=".xlsx,.xls">
+            <button type="button" id="uploadExcelBtn">Tải lên</button>
+        </div>
+
+        <div id="excelResult" class="analyze-result"></div>
+    </section>
+
+    <!-- ================= GRAPH ================= -->
+    <section class="card">
+        <h2>Đồ thị gian lận</h2>
+
+        <div style="display:flex;gap:10px;align-items:center;margin:10px 0;">
+            <label for="sessionSelect"><b>Phiên:</b></label>
+            <select id="sessionSelect" style="min-width:380px;padding:8px">
+                <option value="">ALL SESSIONS</option>
+            </select>
+
+            <button type="button" id="reloadGraphBtn">Tải lại</button>
+        </div>
+
+        <p class="note">
+            <b>Rủi ro Mạng</b> thể hiện mức độ nguy hiểm sau khi tính toán sự lan truyền
+            giữa các node trong toàn bộ đồ thị.
+        </p>
+
+        <div class="graph-wrapper">
+            <svg id="graphSVG" width="1000" height="600"></svg>
+        </div>
+    </section>
+
+    <!-- ================= NODE INFO ================= -->
+    <div id="nodeInfo"></div>
+
+    <!-- ================= FINAL SESSION TABLE ================= -->
+    <section class="card">
+        <h2>Kết quả phân tích theo Phiên</h2>
+
+        <p class="note">
+            ⚠ <b>Mức rủi ro (Mạng)</b> được tính dựa trên phân tích toàn bộ đồ thị.
+            <br>
+            <b>Điểm rủi ro (Tổng hợp)</b> là điểm cuối cùng sau khi hệ thống xử lý dữ liệu và lan truyền rủi ro.
+        </p>
+
+        <div class="table-wrapper">
+            <table id="finalTable">
+                <thead>
+                <tr>
+                    <th>Phiên</th>
+                    <th>Email</th>
+                    <th>IP</th>
+                    <th>URL</th>
+                    <th>Mức rủi ro (Mạng)</th>
+                    <th>Điểm rủi ro (Tổng hợp)</th>
+                    <th>Kết luận (Graph)</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<!-- ================= JS ================= -->
+<script th:src="@{/js/admin-main.js}"></script>
+<script th:src="@{/js/admin-analyze.js}"></script>
+<script th:src="@{/js/admin-excel-upload.js}"></script>
+<script th:src="@{/js/admin-session.js}"></script>
+
+<script>
+/* ================= SAFE UI BINDINGS ================= */
+
+window.addEventListener("load", () => {
+    window.fetchGraph?.();
+});
+
+document.getElementById("reloadGraphBtn")?.addEventListener("click", () => {
+    const sessionId = document.getElementById("sessionSelect")?.value || null;
+    window.fetchGraph?.(sessionId);
+});
+
+document.getElementById("sessionSelect")?.addEventListener("change", e => {
+    window.fetchGraph?.(e.target.value || null);
+});
+</script>
+
+</body>
+</html>

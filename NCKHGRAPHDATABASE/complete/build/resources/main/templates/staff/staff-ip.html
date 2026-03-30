@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>IP Management</title>
+
+    <link rel="stylesheet" th:href="@{/css/staff.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="dashboard-header">
+        <div>
+            <h1>IP Address Management</h1>
+            <p th:if="${user != null}">
+                Chào <strong th:text="${user.email}"></strong>
+                (Role: <span th:text="${user.role}"></span>)
+            </p>
+            <p th:if="${user == null}" class="warning">
+                ⚠ Chưa đăng nhập
+            </p>
+        </div>
+
+        <a th:href="@{/staff/logout}" class="logout-btn">Logout</a>
+    </header>
+
+    <div class="nav-buttons">
+        <button type="button" onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button type="button" onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
+        <button type="button" onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
+        <button type="button" onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
+        <button type="button" onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+
+    <section class="card">
+        <h2>Phân tích IP</h2>
+
+        <form class="form-inline" onsubmit="return false;" autocomplete="off">
+            <input
+                type="text"
+                id="analyzeIP"
+                placeholder="IP Address"
+                required
+                autocomplete="off"
+                spellcheck="false"
+            >
+            <button type="button" id="analyzeBtn">Phân tích</button>
+        </form>
+
+        <div id="analyzeResult"></div>
+    </section>
+
+    <section class="card">
+        <h2>Đồ thị IP liên quan</h2>
+
+        <div class="graph-controls">
+            <select id="sessionSelect"></select>
+            <button id="reloadGraphBtn">Tải lại</button>
+            <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
+        </div>
+
+        <div id="selectedSessionArea" style="margin-top:8px;">
+            <b>Phiên:</b>
+            <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
+        </div>
+
+        <div class="graph-wrapper">
+            <svg id="graphSVG"></svg>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Bảng IP Node</h2>
+
+        <div class="table-search">
+            <input
+                type="text"
+                id="searchNode"
+                placeholder="Tìm IP..."
+                autocomplete="off"
+                spellcheck="false"
+            >
+            <button type="button" id="searchNodeBtn">Tìm</button>
+            <button type="button" id="resetNodeBtn">Reset</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="nodeTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th>Risk Level</th>
+                    <th>Risk Score</th>
+                    <th>Verdict</th>
+                    <th>Indicators</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // staff-main.js sẽ dùng biến này để biết trang thuộc loại gì
+    window.STAFF_VIEW_TYPE = "IPAddress";
+</script>
+
+<script th:src="@{/js/staff-main.js}"></script>
+<script th:src="@{/js/staff-session.js}"></script>
+<script th:src="@{/js/staff-ip-analyze.js}"></script>
+
+<section class="card">
+    <h2>Bảng Sessions</h2>
+    <div class="table-wrapper">
+        <table id="finalTable">
+            <thead>
+            <tr>
+                <th>SessionId</th>
+                <th>Emails</th>
+                <th>IPs</th>
+                <th>URLs</th>
+                <th>Max Risk</th>
+                <th>Max Score</th>
+                <th>Verdict</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</section>
+
+</body>
+</html>

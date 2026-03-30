@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý IP</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<main class="container">
+
+    <header class="dashboard-header">
+        <div>
+            <h1>Quản lý IP Address</h1>
+
+            <p th:if="${user != null}">
+                Chào <strong th:text="${user.email}"></strong>
+                (Role: <span th:text="${user.role}"></span>)
+            </p>
+
+            <p th:if="${user == null}" class="warning">
+                ⚠ Chưa đăng nhập
+            </p>
+        </div>
+
+        <a th:href="@{/admin/logout}" class="logout-btn">Logout</a>
+    </header>
+
+    <!-- NAV -->
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button onclick="window.location.href='/admin/admin-email'">Quản lý Email</button>
+        <button onclick="window.location.href='/admin/admin-ip'">Quản lý IP Address</button>
+        <button onclick="window.location.href='/admin/admin-url'">Quản lý URL</button>
+        <button onclick="window.location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button onclick="window.location.href='/admin/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+
+    <!-- FRAUD ANALYSIS -->
+    <section class="card">
+        <h2>Phân tích IP Address</h2>
+
+        <form class="form-inline" onsubmit="return false;">
+            <input type="text" id="analyzeIP"
+                   placeholder="Nhập IP hợp lệ, ví dụ 192.168.0.1"
+                   title="Nhập IP hợp lệ, ví dụ 192.168.0.1"
+                   autocomplete="off">
+
+            <button type="button" id="analyzeIPBtn" title="Nhấn để phân tích IP">
+                Phân tích
+            </button>
+        </form>
+
+        <div id="analyzeResult" class="analyze-result"></div>
+    </section>
+
+    <!-- GRAPH -->
+    <section class="card">
+        <h2>Đồ thị IP</h2>
+
+        <div class="graph-controls">
+            <select id="sessionSelect"></select>
+            <button id="reloadGraphBtn">Tải lại</button>
+            <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
+        </div>
+
+        <div class="graph-wrapper">
+            <svg id="graphSVG" width="1000" height="600"></svg>
+        </div>
+    </section>
+
+    <!-- NODE INFO & TABLE -->
+    <div id="nodeInfo"></div>
+
+    <section class="card">
+        <h2>Bảng IP</h2>
+
+        <div class="table-search">
+            <input type="text" id="searchNode"
+                   placeholder="Tìm theo ID hoặc Value..."
+                   autocomplete="off">
+
+            <button type="button" id="searchNodeBtn">Tìm kiếm</button>
+            <button type="button" id="resetNodeBtn">Reset</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="nodeTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th>Risk Level</th>
+                    <th>Risk Score</th>
+                    <th>Verdict</th>
+                    <th>Indicators</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Bảng Sessions</h2>
+        <div class="table-wrapper">
+            <table id="finalTable">
+                <thead>
+                <tr>
+                    <th>SessionId</th>
+                    <th>Emails</th>
+                    <th>IPs</th>
+                    <th>URLs</th>
+                    <th>Max Risk</th>
+                    <th>Max Score</th>
+                    <th>Verdict</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    window.ADMIN_VIEW_TYPE = "IPAddress";
+</script>
+
+<!-- ✅ LOAD ORDER FIX -->
+<script th:src="@{/js/admin-main.js}"></script>
+<script th:src="@{/js/admin-session.js}"></script>
+<script th:src="@{/js/admin-ip-analyze.js}"></script>
+
+<!-- ✅ Enter để search -->
+<script>
+    document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            document.getElementById("searchNodeBtn")?.click();
+        }
+    });
+</script>
+
+</body>
+</html>

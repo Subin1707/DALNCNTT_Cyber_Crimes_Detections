@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Email</title>
+
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+<main class="container">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <div>
+            <h1>Quản lý Email</h1>
+
+            <!-- ✅ FIX: hiển thị user nếu có -->
+            <p th:if="${user != null}">
+                Chào <strong th:text="${user.email}"></strong>
+                (Role: <span th:text="${user.role}"></span>)
+            </p>
+
+            <p th:if="${user == null}" class="warning">
+                ⚠ Chưa đăng nhập
+            </p>
+        </div>
+
+        <a th:href="@{/admin/logout}" class="logout-btn" title="Đăng xuất">Logout</a>
+    </header>
+
+    <!-- NAV -->
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'" title="Trang chính">Dashboard</button>
+        <button onclick="window.location.href='/admin/admin-email'" title="Quản lý Email">Quản lý Email</button>
+        <button onclick="window.location.href='/admin/admin-ip'" title="Quản lý IP">Quản lý IP Address</button>
+        <button onclick="window.location.href='/admin/admin-url'" title="Quản lý URL">Quản lý URL</button>
+        <button onclick="window.location.href='/admin/user-management'" title="Quản lý Tài khoản">Quản lý Tài khoản</button>
+        <button onclick="window.location.href='/admin/about'" title="Thông tin nhà phát triển">Giới thiệu Nhà phát triển</button>
+    </div>
+
+    <!-- FRAUD ANALYSIS -->
+    <section class="card">
+        <h2>Phân tích Email</h2>
+
+        <!-- ✅ FIX: onsubmit return false OK -->
+        <form class="form-inline" onsubmit="return false;">
+            <input type="email" id="analyzeEmail"
+                   placeholder="Nhập Email cần phân tích"
+                   title="Nhập Email hợp lệ, ví dụ: test@example.com"
+                   autocomplete="off">
+
+            <button type="button" id="analyzeEmailBtn" title="Click để phân tích Email">
+                Phân tích
+            </button>
+        </form>
+
+        <!-- ✅ FIX: class cho đẹp + đồng bộ -->
+        <div id="analyzeResult" class="analyze-result"></div>
+    </section>
+
+    <!-- GRAPH -->
+    <section class="card">
+        <h2>Đồ thị Email</h2>
+
+        <div class="graph-controls">
+            <select id="sessionSelect"></select>
+            <button id="reloadGraphBtn">Tải lại</button>
+            <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
+        </div>
+
+        <!-- ✅ FIX: bọc wrapper tránh bị tràn -->
+        <div class="graph-wrapper">
+            <svg id="graphSVG" width="1000" height="600"></svg>
+        </div>
+    </section>
+
+    <!-- NODE INFO & TABLE -->
+    <div id="nodeInfo"></div>
+
+    <section class="card">
+        <h2>Bảng Email</h2>
+
+        <div class="table-search">
+            <input type="text" id="searchNode"
+                   placeholder="Tìm theo ID hoặc Value..."
+                   autocomplete="off">
+
+            <button type="button" id="searchNodeBtn">Tìm kiếm</button>
+            <button type="button" id="resetNodeBtn">Reset</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="nodeTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th>Risk Level</th>
+                    <th>Risk Score</th>
+                    <th>Verdict</th>
+                    <th>Indicators</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Bảng Sessions</h2>
+        <div class="table-wrapper">
+            <table id="finalTable">
+                <thead>
+                <tr>
+                    <th>SessionId</th>
+                    <th>Emails</th>
+                    <th>IPs</th>
+                    <th>URLs</th>
+                    <th>Max Risk</th>
+                    <th>Max Score</th>
+                    <th>Verdict</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<!-- ✅ FIX: gắn view type để admin-main.js lọc node đúng -->
+<script>
+    window.ADMIN_VIEW_TYPE = "Email";
+</script>
+
+<!-- ✅ FIX: LOAD ORDER CHUẨN -->
+<script th:src="@{/js/admin-main.js}"></script>
+<script th:src="@{/js/admin-session.js}"></script>
+<script th:src="@{/js/admin-email-analyze.js}"></script>
+
+<!-- ✅ FIX: Enter để search -->
+<script>
+    document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            document.getElementById("searchNodeBtn")?.click();
+        }
+    });
+</script>
+
+</body>
+</html>

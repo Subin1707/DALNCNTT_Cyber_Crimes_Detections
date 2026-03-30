@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff - Quản lý Email</title>
+
+    <link rel="stylesheet" th:href="@{/css/staff.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+<main class="container">
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <h1>Staff - Quản lý Email</h1>
+        <a th:href="@{/staff/logout}" class="logout-btn" title="Đăng xuất">Logout</a>
+    </header>
+
+    <!-- NAV -->
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
+        <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
+        <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
+        <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
+        <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+
+    <!-- ANALYZE EMAIL -->
+    <section class="card">
+        <h2>Phân tích Email</h2>
+
+        <form class="form-inline" onsubmit="return false;">
+            <input type="email" id="analyzeEmail"
+                   placeholder="Nhập Email cần phân tích"
+                   autocomplete="off">
+            <button type="button" id="analyzeBtn">Phân tích</button>
+        </form>
+
+        <div id="analyzeResult" class="analyze-result"></div>
+    </section>
+
+    <!-- GRAPH -->
+    <section class="card">
+        <h2>Đồ thị Email</h2>
+        <div class="graph-controls">
+            <select id="sessionSelect"></select>
+            <button id="reloadGraphBtn">Tải lại</button>
+            <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
+        </div>
+
+        <div id="selectedSessionArea" style="margin-top:8px;">
+            <b>Phiên:</b>
+            <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
+        </div>
+
+        <div class="graph-wrapper">
+            <svg id="graphSVG"></svg>
+        </div>
+    </section>
+
+    <!-- NODE INFO -->
+    <div id="nodeInfo"></div>
+
+    <!-- TABLE -->
+    <section class="card">
+        <h2>Bảng Email</h2>
+
+        <div class="table-search">
+            <input type="text" id="searchNode"
+                   placeholder="Tìm theo ID hoặc Value..."
+                   autocomplete="off">
+            <button type="button" id="searchNodeBtn">Tìm kiếm</button>
+            <button type="button" id="resetNodeBtn">Reset</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="nodeTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th>Risk Level</th>
+                    <th>Risk Score</th>
+                    <th>Verdict</th>
+                    <th>Indicators</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // ✅ staff-main.js sẽ đọc biến này để filter đúng loại node
+    window.STAFF_VIEW_TYPE = "Email";
+</script>
+
+<!-- ✅ JS load order đúng -->
+<script th:src="@{/js/staff-main.js}"></script>
+<script th:src="@{/js/staff-session.js}"></script>
+<script th:src="@{/js/staff-email-analyze.js}"></script>
+
+<section class="card">
+    <h2>Bảng Sessions</h2>
+    <div class="table-wrapper">
+        <table id="finalTable">
+            <thead>
+            <tr>
+                <th>SessionId</th>
+                <th>Emails</th>
+                <th>IPs</th>
+                <th>URLs</th>
+                <th>Max Risk</th>
+                <th>Max Score</th>
+                <th>Verdict</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    // Enter để search
+    document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            document.getElementById("searchNodeBtn")?.click();
+        }
+    });
+
+    // Initial graph load is handled by staff-session.js (select latest session by default)
+</script>
+
+</body>
+</html>
