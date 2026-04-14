@@ -15,6 +15,7 @@ public class AnalysisSessionService {
     private final Neo4jClient neo4j;
     private final FraudAnalysisService fraudAnalysisService;
     private final GraphRiskService graphRiskService;
+    private final HybridRiskScoringService hybridRiskScoringService;
     private final AnalysisSessionRepository sessionRepository;
     private final GraphUpdateBroadcaster graphUpdateBroadcaster;
 
@@ -22,12 +23,14 @@ public class AnalysisSessionService {
             Neo4jClient neo4j,
             FraudAnalysisService fraudAnalysisService,
             GraphRiskService graphRiskService,
+            HybridRiskScoringService hybridRiskScoringService,
             AnalysisSessionRepository sessionRepository,
             GraphUpdateBroadcaster graphUpdateBroadcaster) {
 
         this.neo4j = neo4j;
         this.fraudAnalysisService = fraudAnalysisService;
         this.graphRiskService = graphRiskService;
+        this.hybridRiskScoringService = hybridRiskScoringService;
         this.sessionRepository = sessionRepository;
         this.graphUpdateBroadcaster = graphUpdateBroadcaster;
     }
@@ -60,19 +63,26 @@ public class AnalysisSessionService {
         GraphRiskService.GraphRiskResult graphRisk =
                 graphRiskService.calculateGraphRisk(sessionId);
 
-        updateSessionRisk(sessionId, graphRisk);
+        HybridRiskScoreDTO hybridRisk =
+                hybridRiskScoringService.scoreSession(sessionId, graphRisk);
+
+        updateSessionRisk(sessionId, graphRisk, hybridRisk);
 
         AnalysisResultDTO sessionResult =
                 new AnalysisResultDTO(
                         sessionId,
                         "SESSION",
                         "AnalysisSession",
-                        graphRisk.score,
-                        graphRisk.riskLevel,
-                        graphRisk.verdict,
-                        graphRisk.indicators == null
+                        hybridRisk.getFinalScore(),
+                        hybridRisk.getRiskLevel(),
+                        hybridRisk.getVerdict(),
+                        hybridRisk.getIndicators() == null
                                 ? List.of()
-                                : graphRisk.indicators
+                                : hybridRisk.getIndicators(),
+                        hybridRisk.getRuleScore(),
+                        hybridRisk.getKnnScore(),
+                        hybridRisk.getProbabilityScore(),
+                        hybridRisk.getFeatures()
                 );
 
         if (graphUpdateBroadcaster != null) {
@@ -353,22 +363,58 @@ public class AnalysisSessionService {
 
     private void updateSessionRisk(
             String sessionId,
-            GraphRiskService.GraphRiskResult graphRisk) {
+            GraphRiskService.GraphRiskResult graphRisk,
+            HybridRiskScoreDTO hybridRisk) {
 
         neo4j.query("""
             MATCH (s:AnalysisSession {id:$sid})
-            SET s.riskScore  = $score,
-                s.riskLevel  = $level,
-                s.verdict    = $verdict,
-                s.indicators = $indicators,
+            SET s.ruleScore = $ruleScore,
+                s.knnScore = $knnScore,
+                s.probabilityScore = $probabilityScore,
+                s.hybridFinalScore = $hybridScore,
+                s.hybridRiskLevel = $hybridLevel,
+                s.hybridVerdict = $hybridVerdict,
+                s.riskScore  = $hybridScore,
+                s.riskLevel  = $hybridLevel,
+                s.verdict    = $hybridVerdict,
+                s.indicators = $hybridIndicators,
+                s.featureNumEmails = $featureNumEmails,
+                s.featureNumIps = $featureNumIps,
+                s.featureNumUrls = $featureNumUrls,
+                s.featureNumDomains = $featureNumDomains,
+                s.featureNumSharedIps = $featureNumSharedIps,
+                s.featureNumRepeatedUrls = $featureNumRepeatedUrls,
+                s.featureNumHighRiskNodes = $featureNumHighRiskNodes,
+                s.featureNumMediumRiskNodes = $featureNumMediumRiskNodes,
+                s.featureNumIndicators = $featureNumIndicators,
+                s.graphRuleScore = $graphRuleScore,
+                s.graphRuleRiskLevel = $graphRuleRiskLevel,
+                s.graphRuleVerdict = $graphRuleVerdict,
+                s.graphRuleIndicators = $graphRuleIndicators,
                 s.status     = 'DONE',
                 s.updatedAt  = datetime()
         """)
                 .bind(sessionId).to("sid")
-                .bind(graphRisk.score).to("score")
-                .bind(graphRisk.riskLevel).to("level")
-                .bind(graphRisk.verdict).to("verdict")
-                .bind(graphRisk.indicators).to("indicators")
+                .bind(hybridRisk.getRuleScore()).to("ruleScore")
+                .bind(hybridRisk.getKnnScore()).to("knnScore")
+                .bind(hybridRisk.getProbabilityScore()).to("probabilityScore")
+                .bind(hybridRisk.getFinalScore()).to("hybridScore")
+                .bind(hybridRisk.getRiskLevel()).to("hybridLevel")
+                .bind(hybridRisk.getVerdict()).to("hybridVerdict")
+                .bind(hybridRisk.getIndicators()).to("hybridIndicators")
+                .bind(hybridRisk.getFeatures().getNumEmails()).to("featureNumEmails")
+                .bind(hybridRisk.getFeatures().getNumIps()).to("featureNumIps")
+                .bind(hybridRisk.getFeatures().getNumUrls()).to("featureNumUrls")
+                .bind(hybridRisk.getFeatures().getNumDomains()).to("featureNumDomains")
+                .bind(hybridRisk.getFeatures().getNumSharedIps()).to("featureNumSharedIps")
+                .bind(hybridRisk.getFeatures().getNumRepeatedUrls()).to("featureNumRepeatedUrls")
+                .bind(hybridRisk.getFeatures().getNumHighRiskNodes()).to("featureNumHighRiskNodes")
+                .bind(hybridRisk.getFeatures().getNumMediumRiskNodes()).to("featureNumMediumRiskNodes")
+                .bind(hybridRisk.getFeatures().getNumIndicators()).to("featureNumIndicators")
+                .bind(graphRisk.score).to("graphRuleScore")
+                .bind(graphRisk.riskLevel).to("graphRuleRiskLevel")
+                .bind(graphRisk.verdict).to("graphRuleVerdict")
+                .bind(graphRisk.indicators).to("graphRuleIndicators")
                 .run();
     }
 

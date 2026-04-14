@@ -4,6 +4,24 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ================= GLOBAL VIEW MODE ================= */
+
+    // === REALTIME UPDATE WITH SSE ===
+    try {
+        const evt = new EventSource('/staff/stream/graph');
+        evt.onmessage = function (event) {
+            // Khi có sự kiện mới từ backend, tự động reload graph
+            if (typeof window.fetchGraph === 'function') {
+                const sessionSelect = document.getElementById('sessionSelect');
+                const sessionId = sessionSelect ? sessionSelect.value : '';
+                window.fetchGraph(sessionId);
+            }
+        };
+        evt.onerror = function (e) {
+            console.warn('SSE connection error:', e);
+        };
+    } catch (e) {
+        console.warn('SSE not supported:', e);
+    }
     window.STAFF_VIEW_TYPE = window.STAFF_VIEW_TYPE || "ALL";
     // ALL | Email | IPAddress | URL
 

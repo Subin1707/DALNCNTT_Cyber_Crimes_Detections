@@ -79,15 +79,17 @@ html, body {
 
 /* ================= NAV BUTTONS ================= */
 .nav-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin: 18px 0 22px;
 }
 
 .nav-buttons button {
-    padding: 10px 16px;
-    border-radius: 12px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 999px;
     border: none;
     cursor: pointer;
     font-weight: 700;
@@ -100,11 +102,29 @@ html, body {
     -webkit-backdrop-filter: blur(8px);
 
     transition: all 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.nav-buttons button::before{display:none}
 
 .nav-buttons button:hover {
     background: rgba(255,255,255,0.35);
     transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+    .nav-buttons { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+    .nav-buttons { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+    .nav-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nav-buttons button { font-size: 12px; }
 }
 
 /* ================= CARD ================= */

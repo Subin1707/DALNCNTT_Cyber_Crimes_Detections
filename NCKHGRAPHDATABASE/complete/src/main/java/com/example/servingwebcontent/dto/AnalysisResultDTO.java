@@ -15,6 +15,10 @@ public class AnalysisResultDTO {
     private String verdict;
 
     private List<String> indicators;
+    private Double ruleScore;
+    private Double knnScore;
+    private Double probabilityScore;
+    private SessionFeatureVectorDTO features;
 
     // Constructor rỗng (bắt buộc cho Jackson)
     public AnalysisResultDTO() {}
@@ -29,6 +33,34 @@ public class AnalysisResultDTO {
             String verdict,
             List<String> indicators) {
 
+        this(
+                sessionId,
+                target,
+                targetType,
+                riskScore,
+                riskLevel,
+                verdict,
+                indicators,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    public AnalysisResultDTO(
+            String sessionId,
+            String target,
+            String targetType,
+            double riskScore,
+            String riskLevel,
+            String verdict,
+            List<String> indicators,
+            Double ruleScore,
+            Double knnScore,
+            Double probabilityScore,
+            SessionFeatureVectorDTO features) {
+
         this.sessionId = sessionId;
         this.target = target;
         this.targetType = targetType;
@@ -36,6 +68,10 @@ public class AnalysisResultDTO {
         this.riskLevel = riskLevel;
         this.verdict = verdict;
         this.indicators = indicators;
+        this.ruleScore = ruleScore;
+        this.knnScore = knnScore;
+        this.probabilityScore = probabilityScore;
+        this.features = features;
     }
 
     public String getSessionId() {
@@ -64,5 +100,21 @@ public class AnalysisResultDTO {
 
     public List<String> getIndicators() {
         return indicators;
+    }
+
+    public Double getRuleScore() {
+        return ruleScore;
+    }
+
+    public Double getKnnScore() {
+        return knnScore;
+    }
+
+    public Double getProbabilityScore() {
+        return probabilityScore;
+    }
+
+    public SessionFeatureVectorDTO getFeatures() {
+        return features;
     }
 }

@@ -2,6 +2,24 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ================= CONFIG ================= */
+
+    // === REALTIME UPDATE WITH SSE ===
+    try {
+        const evt = new EventSource('/customer/stream/graph');
+        evt.onmessage = function (event) {
+            // Khi có sự kiện mới từ backend, tự động reload graph
+            if (typeof window.fetchGraph === 'function') {
+                const sessionSelect = document.getElementById('sessionSelect');
+                const sessionId = sessionSelect ? sessionSelect.value : '';
+                window.fetchGraph(sessionId);
+            }
+        };
+        evt.onerror = function (e) {
+            console.warn('SSE connection error:', e);
+        };
+    } catch (e) {
+        console.warn('SSE not supported:', e);
+    }
     const nodeRadius = 20;
 
     const svgEl = document.getElementById("graphSVG");
@@ -18,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let allNodes = [];
     let allLinks = [];
     let simulation = null;
+    let selectedNodeId = null;
+    let showLinkLabelsAlways = false;
 
     /* ================= UTIL ================= */
     function filterLinks(nodes, links) {
@@ -37,6 +57,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function normalizeSearch(s) {
         return safeStr(s).trim().toLowerCase();
+    }
+
+    const linkTypeLabel = (t) => ({
+        HAS_EMAIL: "phiên → email",
+        HAS_IP: "phiên → IP",
+        HAS_URL: "phiên → URL",
+        HAS_DOMAIN: "phiên → domain",
+        HAS_FILE: "phiên → file",
+        HAS_FILEHASH: "phiên → hash",
+        HAS_VICTIM: "phiên → victim",
+        SENT_FROM_IP: "gửi từ IP",
+        CONTAINS_URL: "chứa URL",
+        HOSTED_ON: "hosted on",
+        HOSTED_ON_DOMAIN: "URL thuộc domain",
+        RESOLVES_TO: "phân giải",
+        DOWNLOADS: "tải về",
+        HAS_HASH: "có hash",
+        RECEIVED: "nhận",
+        CONNECTS_TO: "kết nối"
+    }[String(t || "").toUpperCase()] || String(t || ""));
+
+    function ensureLinkLabelToggle() {
+        const host = document.querySelector(".graph-controls") || document.querySelector(".toolbar");
+        if (!host) return;
+        if (document.getElementById("toggleLinkLabels")) return;
+
+        const wrap = document.createElement("label");
+        wrap.style.cssText = "display:flex;align-items:center;gap:8px;margin-left:auto;font-weight:800;color:#0f172a;";
+        wrap.innerHTML = `
+            <input id="toggleLinkLabels" type="checkbox" style="width:16px;height:16px" />
+            <span>Chú thích liên kết</span>
+        `;
+        host.appendChild(wrap);
+
+        const cb = document.getElementById("toggleLinkLabels");
+        cb.checked = !!showLinkLabelsAlways;
+        cb.addEventListener("change", () => {
+            showLinkLabelsAlways = cb.checked;
+        });
     }
 
 
@@ -118,7 +177,10 @@ function showNodeInfo(d) {
 
     const btn = document.createElement("button");
     btn.textContent = "Đóng";
-    btn.onclick = () => box.style.display = "none";
+    btn.onclick = () => {
+        box.style.display = "none";
+        selectedNodeId = null;
+    };
 
     card.appendChild(btn);
     box.appendChild(card);
@@ -136,6 +198,21 @@ function showNodeInfo(d) {
         const height = svgEl.clientHeight || 600;
 
         const container = svg.append("g").attr("class", "graph-container");
+
+        ensureLinkLabelToggle();
+
+        // Seed initial positions to avoid overlap when nodes come without x/y (fresh fetch)
+        const hasAnyPos = (nodes || []).some(n => Number.isFinite(n?.x) && Number.isFinite(n?.y));
+        if (!hasAnyPos) {
+            const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+            const spacing = nodeRadius * 5.5;
+            (nodes || []).forEach((n, i) => {
+                const r = Math.sqrt(i) * spacing;
+                const a = i * goldenAngle;
+                n.x = width / 2 + r * Math.cos(a);
+                n.y = height / 2 + r * Math.sin(a);
+            });
+        }
 
 const zoom = d3.zoom()
     .scaleExtent([0.2, 4])
@@ -159,6 +236,14 @@ const zoom = d3.zoom()
             .attr("stroke", d => linkColor(d.type))
             .attr("stroke-width", 2);
 
+        const linkLabel = container.append("g")
+            .attr("class", "link-labels")
+            .selectAll("text")
+            .data(links)
+            .enter().append("text")
+            .style("display", showLinkLabelsAlways ? null : "none")
+            .text(d => linkTypeLabel(d.type));
+
         const node = container.append("g")
             .selectAll("circle")
             .data(nodes, d => d.id)
@@ -174,6 +259,8 @@ const zoom = d3.zoom()
             )         
             .on("click", function(event, d) {
                 event.stopPropagation();   // ngăn zoom bắt click
+                selectedNodeId = d?.id || null;
+                applyHighlight();
                 showNodeInfo(d);
             });
             node.on("mousedown.zoom", null);
@@ -192,7 +279,7 @@ const zoom = d3.zoom()
             .force("link", d3.forceLink(links).id(d => d.id).distance(120))
             .force("charge", d3.forceManyBody().strength(-500))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collision", d3.forceCollide().radius(nodeRadius + 5))
+            .force("collision", d3.forceCollide().radius(nodeRadius + 10).iterations(2))
             .on("tick", () => {
                 // Không ép tọa độ vào khung chữ nhật cố định — cho phép layout đặt node tự nhiên
                 node
@@ -208,7 +295,59 @@ const zoom = d3.zoom()
                     .attr("y1", d => d.source.y)
                     .attr("x2", d => d.target.x)
                     .attr("y2", d => d.target.y);
+
+                linkLabel
+                    .attr("x", d => (d.source.x + d.target.x) / 2)
+                    .attr("y", d => (d.source.y + d.target.y) / 2);
             });
+
+        function applyHighlight() {
+            const id = selectedNodeId;
+            if (!id) {
+                node.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
+                link.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
+                linkLabel.style("display", showLinkLabelsAlways ? null : "none").classed("dim", false);
+                return;
+            }
+
+            const connectedKeys = new Set();
+            const neighborIds = new Set([id]);
+            const key = l => `${(l.source?.id || l.source)}->${(l.target?.id || l.target)}::${l.type || ""}`;
+
+            links.forEach(l => {
+                const s = l.source?.id || l.source;
+                const t = l.target?.id || l.target;
+                if (s === id || t === id) {
+                    connectedKeys.add(key(l));
+                    if (s) neighborIds.add(s);
+                    if (t) neighborIds.add(t);
+                }
+            });
+
+            node
+                .classed("dim", d => !neighborIds.has(d.id))
+                .classed("pulse", d => d.id === id)
+                .classed("rel-highlight", d => neighborIds.has(d.id) && d.id !== id);
+
+            link
+                .classed("dim", d => !connectedKeys.has(key(d)))
+                .classed("pulse", d => connectedKeys.has(key(d)))
+                .classed("rel-highlight", d => connectedKeys.has(key(d)));
+
+            linkLabel
+                .classed("dim", d => !connectedKeys.has(key(d)))
+                .style("display", d => {
+                    if (showLinkLabelsAlways) return null;
+                    return connectedKeys.has(key(d)) ? null : "none";
+                });
+        }
+
+        svg.on("click", () => {
+            selectedNodeId = null;
+            applyHighlight();
+        });
+
+        applyHighlight();
 
         renderTable(nodes);
         // zoom-to-fit

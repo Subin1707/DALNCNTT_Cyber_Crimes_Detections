@@ -69,6 +69,56 @@ html,body{
     animation:fadeUp .9s ease forwards;
 }
 
+/* Navigation (dashboard page buttons) */
+.nav-buttons{
+    display:grid;
+    /* Desktop: make rows balanced (e.g. 10 buttons -> 2 rows of 5) */
+    grid-template-columns:repeat(5, minmax(0, 1fr));
+    gap:12px;
+    margin:18px 0 22px;
+    align-items:stretch;
+}
+
+.nav-buttons button{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    min-height:44px;
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid rgba(15,23,42,0.10);
+    background:rgba(255,255,255,0.55);
+    color:var(--text);
+    box-shadow:0 10px 25px rgba(2,6,23,0.06);
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.2px;
+    line-height:1.2;
+    text-align:center;
+    justify-content:center;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:transform .2s ease, background .2s ease, box-shadow .2s ease, border-color .2s ease;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* Disable global "shine" effect on nav buttons */
+.nav-buttons button::before{display:none}
+
+.nav-buttons button:hover{
+    background:rgba(255,255,255,0.75);
+    border-color:rgba(37,99,235,0.25);
+    transform:translateY(-2px);
+    box-shadow:0 16px 40px rgba(2,6,23,0.10);
+}
+
+.nav-buttons button:active{
+    transform:translateY(-1px);
+}
+
 /* Shared helpers */
 .note{
     color:var(--muted);
@@ -122,6 +172,22 @@ input[type="password"]:focus{
     background:var(--surface-strong);
     border:1px solid rgba(15,23,42,0.06);
     box-shadow:var(--shadow-sm);
+}
+
+/* Graph highlighting + relationship annotations */
+svg .dim{opacity:0.15}
+svg line.rel-highlight{stroke-width:4 !important; opacity:1}
+svg circle.rel-highlight{opacity:1}
+svg .link-labels text{
+    font-size:10px;
+    font-weight:800;
+    fill:#334155;
+    paint-order:stroke;
+    stroke:rgba(255,255,255,0.95);
+    stroke-width:3px;
+    stroke-linejoin:round;
+    pointer-events:none;
+    user-select:none;
 }
 
 .table-wrapper{
@@ -312,4 +378,14 @@ tbody tr:hover{
     .container{padding:20px}
     .card{padding:18px}
     table{font-size:13px}
+    .nav-buttons{grid-template-columns:repeat(4, minmax(0, 1fr))}
+}
+
+@media(max-width:720px){
+    .nav-buttons{grid-template-columns:repeat(3, minmax(0, 1fr))}
+}
+
+@media(max-width:520px){
+    .nav-buttons{grid-template-columns:repeat(2, minmax(0, 1fr))}
+    .nav-buttons button{font-size:12px}
 }

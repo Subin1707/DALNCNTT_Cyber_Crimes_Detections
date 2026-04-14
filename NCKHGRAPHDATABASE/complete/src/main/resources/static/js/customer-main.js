@@ -2,6 +2,24 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* ================= CONFIG ================= */
+
+    // === REALTIME UPDATE WITH SSE ===
+    try {
+        const evt = new EventSource('/customer/stream/graph');
+        evt.onmessage = function (event) {
+            // Khi có sự kiện mới từ backend, tự động reload graph
+            if (typeof window.fetchGraph === 'function') {
+                const sessionSelect = document.getElementById('sessionSelect');
+                const sessionId = sessionSelect ? sessionSelect.value : '';
+                window.fetchGraph(sessionId);
+            }
+        };
+        evt.onerror = function (e) {
+            console.warn('SSE connection error:', e);
+        };
+    } catch (e) {
+        console.warn('SSE not supported:', e);
+    }
     const nodeRadius = 20;
 
     const svgEl = document.getElementById("graphSVG");

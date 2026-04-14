@@ -191,7 +191,11 @@ public class CustomerController {
                 "verdict", sessionResult.getVerdict(),
                 "riskScore", sessionResult.getRiskScore(),
                 "scamType", sessionResult.getRiskLevel(),
-                "indicators", sessionResult.getIndicators()
+                "indicators", sessionResult.getIndicators(),
+                "ruleScore", sessionResult.getRuleScore(),
+                "knnScore", sessionResult.getKnnScore(),
+                "probabilityScore", sessionResult.getProbabilityScore(),
+                "features", sessionResult.getFeatures()
             ));
 
         } catch (Exception e) {

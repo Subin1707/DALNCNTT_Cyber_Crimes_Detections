@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let graphInitialized = false;
     let container = null;
     let linkSel = null;
+    let linkLabelSel = null;
     let nodeSel = null;
     let labelSel = null;
     let zoom = null;
@@ -36,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastRenderedSessionId = null;
     let isFetchingGraph = false;
     let autoRefreshTick = 0;
+    let selectedNodeId = null;
+    let showLinkLabelsAlways = false;
 
     /* ================= UTIL ================= */
 
@@ -66,6 +69,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const riskRank = r =>
         ({ low: 1, medium: 2, high: 3 }[String(r).toLowerCase()] || 0);
+
+    const linkTypeLabel = (t) => ({
+        HAS_EMAIL: "phiên → email",
+        HAS_IP: "phiên → IP",
+        HAS_URL: "phiên → URL",
+        HAS_DOMAIN: "phiên → domain",
+        HAS_FILE: "phiên → file",
+        HAS_FILEHASH: "phiên → hash",
+        HAS_VICTIM: "phiên → victim",
+        SENT_FROM_IP: "gửi từ IP",
+        CONTAINS_URL: "chứa URL",
+        HOSTED_ON: "hosted on",
+        HOSTED_ON_DOMAIN: "URL thuộc domain",
+        RESOLVES_TO: "phân giải",
+        DOWNLOADS: "tải về",
+        HAS_HASH: "có hash",
+        RECEIVED: "nhận",
+        CONNECTS_TO: "kết nối"
+    }[String(t || "").toUpperCase()] || String(t || ""));
+
+    const safeTextHtml = (s) =>
+        String(s ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;");
+
+    function ensureLinkLabelToggle() {
+        const host = document.querySelector(".graph-controls") || document.querySelector(".toolbar");
+        if (!host) return;
+        if (document.getElementById("toggleLinkLabels")) return;
+
+        const wrap = document.createElement("label");
+        wrap.style.cssText = "display:flex;align-items:center;gap:8px;margin-left:auto;font-weight:800;color:#0f172a;";
+        wrap.innerHTML = `
+            <input id="toggleLinkLabels" type="checkbox" style="width:16px;height:16px" />
+            <span>Chú thích liên kết</span>
+        `;
+        host.appendChild(wrap);
+
+        const cb = document.getElementById("toggleLinkLabels");
+        cb.checked = !!showLinkLabelsAlways;
+        cb.addEventListener("change", () => {
+            showLinkLabelsAlways = cb.checked;
+            applyRelationHighlight(selectedNodeId);
+        });
+    }
 
     const debounce = (fn, delay = 200) => {
         let t;
@@ -293,6 +342,8 @@ window.fetchGraph = fetchGraph;
 
     function renderGraph(nodes, links) {
 
+        ensureLinkLabelToggle();
+
         if (!graphInitialized) {
             // container group for zoom/pan
             container = svg.append("g").attr("class", "graph-container");
@@ -313,6 +364,7 @@ window.fetchGraph = fetchGraph;
                 .force("collision", d3.forceCollide().radius(nodeRadius + 10).iterations(2));
 
             linkSel = container.append("g").selectAll("line");
+            linkLabelSel = container.append("g").attr("class", "link-labels").selectAll("text");
             nodeSel = container.append("g").selectAll("circle");
             labelSel = container.append("g").selectAll("text");
 
@@ -327,6 +379,10 @@ window.fetchGraph = fetchGraph;
                     .attr("y1", d => d.source.y)
                     .attr("x2", d => d.target.x)
                     .attr("y2", d => d.target.y);
+
+                linkLabelSel
+                    .attr("x", d => (d.source.x + d.target.x) / 2)
+                    .attr("y", d => (d.source.y + d.target.y) / 2);
             });
 
             svg.on("dblclick", () => {
@@ -347,6 +403,7 @@ window.fetchGraph = fetchGraph;
         const reusedCount = nodes.reduce((c, n) => c + (prevPos.has(n.id) ? 1 : 0), 0);
         const reusedRatio = reusedCount / Math.max(1, nodes.length);
         const isFreshGraph = prevPos.size === 0 || reusedRatio < 0.25;
+        const isAdditive = !isFreshGraph && nodes.some(n => !prevPos.has(n.id));
 
         let cx = width / 2;
         let cy = height / 2;
@@ -372,6 +429,7 @@ window.fetchGraph = fetchGraph;
             });
         } else {
             const jitter = 80;
+            const newOnes = [];
             nodes.forEach(n => {
                 const p = prevPos.get(n.id);
                 if (p) {
@@ -384,8 +442,19 @@ window.fetchGraph = fetchGraph;
                 } else {
                     n.x = cx + (Math.random() - 0.5) * jitter;
                     n.y = cy + (Math.random() - 0.5) * jitter;
+                    newOnes.push(n);
                 }
             });
+
+            // Khi chỉ thêm vài node mới (vd: dữ liệu tshark/ingest) -> đặt theo vòng tròn quanh tâm để tránh đè lên nhau
+            if (newOnes.length > 1) {
+                const r = nodeRadius * 6.5;
+                newOnes.forEach((n, i) => {
+                    const a = (i / newOnes.length) * Math.PI * 2;
+                    n.x = cx + r * Math.cos(a);
+                    n.y = cy + r * Math.sin(a);
+                });
+            }
         }
 
         const linkKey = l => `${safeId(l.source)}->${safeId(l.target)}::${l.type || ""}`;
@@ -407,11 +476,24 @@ window.fetchGraph = fetchGraph;
                 CONNECTS_TO: "#00838f"
             }[d.type] || "#aaa"));
 
+        linkLabelSel = linkLabelSel.data(links, linkKey);
+        linkLabelSel.exit().remove();
+        const linkLabelEnter = linkLabelSel.enter().append("text")
+            .style("display", "none")
+            .text(d => linkTypeLabel(d.type));
+        linkLabelSel = linkLabelEnter.merge(linkLabelSel)
+            .text(d => linkTypeLabel(d.type));
+
         nodeSel = nodeSel.data(nodes, d => d.id);
         nodeSel.exit().remove();
         const nodeEnter = nodeSel.enter().append("circle")
             .attr("r", nodeRadius)
-            .on("click", (_, d) => showNodeInfo(d))
+            .on("click", (event, d) => {
+                event?.stopPropagation?.();
+                selectedNodeId = d?.id || null;
+                applyRelationHighlight(selectedNodeId);
+                showNodeInfo(d);
+            })
             .call(d3.drag()
                 .on("start", e => {
                     if (!e.active)
@@ -455,7 +537,7 @@ window.fetchGraph = fetchGraph;
 
         simulation.nodes(nodes);
         simulation.force("link").links(links);
-        simulation.alpha(isFreshGraph ? 1 : 0.25).restart();
+        simulation.alpha(isFreshGraph ? 1 : (isAdditive ? 0.6 : 0.25)).restart();
 
         // Auto-lock sau khi layout dá»«ng Ä‘á»§ lĂ¢u (trĂ¡nh lock quĂ¡ sớm lĂ m node chĂ´ng lĂªn nhau)
         if (autoLockInterval) {
@@ -464,7 +546,7 @@ window.fetchGraph = fetchGraph;
         }
 
         const lockStart = Date.now();
-        const maxWaitMs = isFreshGraph ? 3500 : 1200;
+        const maxWaitMs = isFreshGraph ? 3500 : (isAdditive ? 2200 : 1200);
         autoLockInterval = setInterval(() => {
             if (!simulation) {
                 clearInterval(autoLockInterval);
@@ -534,6 +616,9 @@ window.fetchGraph = fetchGraph;
             setTimeout(zoomToFit, 600);
             didInitialFit = true;
         }
+
+        // re-apply highlighting after re-render
+        applyRelationHighlight(selectedNodeId);
     }
 
     /* ================= SESSION TABLE ================= */
@@ -647,6 +732,22 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             ? d.indicators.map(ind => `<span class="node-popup-badge">${ind}</span>`).join("")
             : '<span class="node-popup-badge-empty">✓ No Issues</span>';
 
+        // Relationship summary (within current graph view)
+        const nodeMap = new Map((allNodes || []).map(n => [n.id, n]));
+        const rels = (allLinks || [])
+            .filter(l => safeId(l.source) === d.id || safeId(l.target) === d.id)
+            .slice(0, 14)
+            .map(l => {
+                const s = safeId(l.source);
+                const t = safeId(l.target);
+                const otherId = s === d.id ? t : s;
+                const other = nodeMap.get(otherId);
+                const otherLabel = other ? `${other.type || ""}: ${other.value || otherId}` : otherId;
+                const dir = s === d.id ? "→" : "←";
+                return `<span class="node-popup-badge">${safeTextHtml(linkTypeLabel(l.type))} ${dir} ${safeTextHtml(otherLabel)}</span>`;
+            })
+            .join("");
+
         box.innerHTML = `
             <div class="node-popup-premium ${riskClass}">
                 <!-- Header -->
@@ -707,6 +808,14 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                     </div>
                 </div>
 
+                <!-- Relations -->
+                <div class="node-popup-indicators">
+                    <div class="node-popup-label">Liên kết (highlight trên đồ thị)</div>
+                    <div class="node-popup-indicators-list">
+                        ${rels || '<span class="node-popup-badge-empty">— Không có liên kết</span>'}
+                    </div>
+                </div>
+
                 <!-- Actions -->
                 <div class="node-popup-footer">
                     ${(String(d.type || "").toLowerCase() !== "analysissession")
@@ -721,6 +830,8 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
         if (closeBtn) {
             closeBtn.onclick = () => {
                 box.style.display = "none";
+                selectedNodeId = null;
+                applyRelationHighlight(null);
             };
         }
 
@@ -781,6 +892,50 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                     await fetchGraph(currentSessionId === "ALL" ? null : currentSessionId, { force: true });
                 }
             };
+        }
+    }
+
+    function applyRelationHighlight(nodeId) {
+        if (!nodeSel || !linkSel) return;
+
+        if (!nodeId) {
+            nodeSel.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
+            linkSel.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
+            if (linkLabelSel) linkLabelSel.style("display", showLinkLabelsAlways ? null : "none").classed("dim", false);
+            return;
+        }
+
+        const connectedKeys = new Set();
+        const neighborIds = new Set([nodeId]);
+
+        const linkKey = l => `${safeId(l.source)}->${safeId(l.target)}::${l.type || ""}`;
+        (simulation?.force?.("link")?.links?.() || []).forEach(l => {
+            const s = safeId(l.source);
+            const t = safeId(l.target);
+            if (s === nodeId || t === nodeId) {
+                connectedKeys.add(linkKey(l));
+                if (s) neighborIds.add(s);
+                if (t) neighborIds.add(t);
+            }
+        });
+
+        nodeSel
+            .classed("dim", d => !neighborIds.has(d.id))
+            .classed("pulse", d => d.id === nodeId)
+            .classed("rel-highlight", d => neighborIds.has(d.id) && d.id !== nodeId);
+
+        linkSel
+            .classed("dim", d => !connectedKeys.has(linkKey(d)))
+            .classed("pulse", d => connectedKeys.has(linkKey(d)))
+            .classed("rel-highlight", d => connectedKeys.has(linkKey(d)));
+
+        if (linkLabelSel) {
+            linkLabelSel
+                .classed("dim", d => !connectedKeys.has(linkKey(d)))
+                .style("display", d => {
+                    if (showLinkLabelsAlways) return null;
+                    return connectedKeys.has(linkKey(d)) ? null : "none";
+                });
         }
     }
 

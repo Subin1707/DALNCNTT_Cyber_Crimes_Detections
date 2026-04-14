@@ -3,10 +3,12 @@ E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\m
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\model\User.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\repository\FileNodeRepository.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\controller\StaffController.java
+E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\SessionFeatureService.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\repository\DomainRepository.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\RowResultDTO.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\model\Email.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\OutputDTO.java
+E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\HybridRiskScoreDTO.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\controller\CustomerController.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\ServingWebContentApplication.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\model\URL.java
@@ -15,6 +17,7 @@ E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\s
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\UserService.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\AnalysisResultDTO.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\repository\FileHashRepository.java
+E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\SessionFeatureVectorDTO.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\FraudInputDTO.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\util\HashGen.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\GraphNodeDTO.java
@@ -35,6 +38,7 @@ E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\c
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\repository\IPAddressRepository.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\util\VerdictUtil.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\SessionProcessResult.java
+E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\HybridRiskScoringService.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\model\IPAddress.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\model\VictimAccount.java
 E:\DALN\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\GraphLinkDTO.java

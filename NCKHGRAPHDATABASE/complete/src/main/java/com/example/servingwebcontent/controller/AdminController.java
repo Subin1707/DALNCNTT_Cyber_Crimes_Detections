@@ -87,14 +87,14 @@ public class AdminController {
 
             String sessionId = UUID.randomUUID().toString();
 
-            AnalysisSession s = new AnalysisSession(
+                AnalysisSession s = new AnalysisSession(
                     sessionId,
                     "MANUAL_INPUT",
                     System.currentTimeMillis(),
-                    "admin@test.com",
+                    "admin@system.local",
                     1,
                     "PROCESSING"
-            );
+                );
 
             sessionRepository.save(s);
 
@@ -111,7 +111,11 @@ public class AdminController {
                     "verdict", sessionResult.getVerdict(),
                     "riskScore", sessionResult.getRiskScore(),
                     "scamType", sessionResult.getRiskLevel(),
-                    "indicators", sessionResult.getIndicators()
+                    "indicators", sessionResult.getIndicators(),
+                    "ruleScore", sessionResult.getRuleScore(),
+                    "knnScore", sessionResult.getKnnScore(),
+                    "probabilityScore", sessionResult.getProbabilityScore(),
+                    "features", sessionResult.getFeatures()
             ));
 
         } catch (Exception e) {
