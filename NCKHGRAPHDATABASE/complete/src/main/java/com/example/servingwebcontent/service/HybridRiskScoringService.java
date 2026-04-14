@@ -31,12 +31,17 @@ public class HybridRiskScoringService {
                 sessionFeatureService.loadHistoricalSamples(sessionId, HISTORY_LIMIT);
 
         double ruleScore = clamp(graphRisk == null ? 0 : graphRisk.score);
-        double knnScore = calculateKnnScore(features, samples);
+        // Test nhiều giá trị K: 3, 5, 10 (chuẩn bị cho phần test)
+        double knnScoreK3 = calculateKnnScoreWithK(features, samples, 3);
+        double knnScoreK5 = calculateKnnScoreWithK(features, samples, 5);
+        double knnScoreK10 = calculateKnnScoreWithK(features, samples, 10);
+        // Mặc định dùng K=5 cho hệ thống chính
+        double knnScore = knnScoreK5;
         double probabilityScore = calculateBayesianScore(features, samples);
         double finalScore = clamp(
-                RULE_WEIGHT * ruleScore +
-                KNN_WEIGHT * knnScore +
-                BAYES_WEIGHT * probabilityScore
+            RULE_WEIGHT * ruleScore +
+            KNN_WEIGHT * (knnScore * 100.0) + // nhân 100 để đồng bộ với các score khác
+            BAYES_WEIGHT * probabilityScore
         );
 
         String riskLevel = riskLevel(finalScore);
@@ -82,21 +87,23 @@ public class HybridRiskScoringService {
 
     private double calculateKnnScore(SessionFeatureVectorDTO current,
                                      List<SessionFeatureService.HistoricalSessionSample> samples) {
+        return calculateKnnScoreWithK(current, samples, DEFAULT_K);
+    }
 
+    // Hàm mới: test nhiều giá trị K
+    private double calculateKnnScoreWithK(SessionFeatureVectorDTO current,
+                                          List<SessionFeatureService.HistoricalSessionSample> samples,
+                                          int kValue) {
         if (samples == null || samples.isEmpty()) {
             return heuristicFallback(current);
         }
-
-        int k = Math.min(DEFAULT_K, samples.size());
+        int k = Math.min(kValue, samples.size());
         List<Neighbor> neighbors = new ArrayList<>();
-
         for (SessionFeatureService.HistoricalSessionSample sample : samples) {
             double distance = euclideanDistance(current.toNumericVector(), sample.features().toNumericVector());
             neighbors.add(new Neighbor(distance, sample.fraud(), sample.score()));
         }
-
         neighbors.sort(Comparator.comparingDouble(Neighbor::distance));
-
         double fraudWeight = 0.0;
         double totalWeight = 0.0;
         for (int i = 0; i < k; i++) {
@@ -107,12 +114,10 @@ public class HybridRiskScoringService {
                 fraudWeight += weight;
             }
         }
-
         if (totalWeight == 0.0) {
             return heuristicFallback(current);
         }
-
-        return clamp(100.0 * fraudWeight / totalWeight);
+        return fraudWeight / totalWeight;
     }
 
     private double calculateBayesianScore(SessionFeatureVectorDTO current,
