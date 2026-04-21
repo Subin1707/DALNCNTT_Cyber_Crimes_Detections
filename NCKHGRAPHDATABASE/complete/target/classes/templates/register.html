@@ -2,7 +2,12 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo tài khoản | Phát hiện gian lận mạng</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link th:href="@{/css/register.css}" rel="stylesheet">
     <link rel="stylesheet"
@@ -10,59 +15,97 @@
 </head>
 <body>
 
-<div class="register-wrapper">
-    <div class="register-container">
+<div class="auth-page auth-page--register">
+    <div class="auth-blob auth-blob--one"></div>
+    <div class="auth-blob auth-blob--two"></div>
 
-        <div class="logo">
-            <i class="fas fa-user-plus fa-4x"></i>
-        </div>
-
-        <h2>Create Account</h2>
-
-        <!-- ✅ FIX: chỉ hiển thị khi có message -->
-        <p class="error-msg" th:if="${error != null}" th:text="${error}"></p>
-        <p class="success-msg" th:if="${success != null}" th:text="${success}"></p>
-
-        <form th:action="@{/register}" method="post" id="registerForm" autocomplete="off">
-
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input name="username"
-                       placeholder="Username"
-                       required
-                       minlength="2"
-                       maxlength="50">
+    <main class="auth-shell auth-shell--reverse">
+        <section class="auth-brand">
+            <div class="brand-badge">
+                <span class="brand-dot"></span>
+                Tham gia hệ thống
             </div>
 
-            <div class="input-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email"
-                       name="email"
-                       placeholder="Email"
-                       required>
+            <h1>Tạo không gian làm việc cho khách hàng chỉ trong vài giây.</h1>
+            <p>
+                Tạo tài khoản để gửi mẫu nghi vấn, xem kết quả và theo dõi các phiên phân tích của riêng bạn.
+            </p>
+
+            <div class="brand-stats">
+                <div>
+                    <strong>Thiết lập nhanh</strong>
+                    <span>đăng ký đơn giản</span>
+                </div>
+                <div>
+                    <strong>Khách hàng</strong>
+                    <span>vai trò mặc định</span>
+                </div>
+                <div>
+                    <strong>Bảo mật</strong>
+                    <span>mật khẩu đã băm</span>
+                </div>
             </div>
 
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password"
-                       name="password"
-                       placeholder="Password"
-                       required
-                       minlength="6">
+            <ul class="brand-points">
+                <li><i class="fas fa-circle-check"></i> Truy cập các phiên phân tích của riêng bạn</li>
+                <li><i class="fas fa-chart-line"></i> Xem lại đồ thị và lịch sử kết quả</li>
+                <li><i class="fas fa-lock"></i> Bảo vệ tài khoản bằng cơ chế băm mạnh</li>
+            </ul>
+        </section>
+
+        <section class="auth-card">
+            <div class="card-topline card-topline--success">Tạo tài khoản</div>
+
+            <div class="logo">
+                <i class="fas fa-user-astronaut"></i>
             </div>
 
-            <!-- Customer đăng ký mặc định -->
-            <input type="hidden" name="role" value="customer">
+            <h2>Bắt đầu tài khoản của bạn</h2>
+            <p class="card-subtitle">Đăng ký một lần và sử dụng bảng điều khiển với vai trò KHÁCH HÀNG.</p>
 
-            <button type="submit">Register</button>
-        </form>
+            <p class="error-msg" th:if="${error != null}" th:text="${error}"></p>
+            <p class="success-msg" th:if="${success != null}" th:text="${success}"></p>
 
-        <div class="login-link">
-            <span>Already have an account? </span>
-            <a th:href="@{/login}">Login</a>
-        </div>
+            <form th:action="@{/register}" method="post" id="registerForm" autocomplete="off" class="auth-form">
+                <label class="field">
+                    <span>Email</span>
+                    <div class="field-shell">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email"
+                               name="email"
+                               placeholder="ten@example.com"
+                               autocomplete="email"
+                               required>
+                    </div>
+                </label>
 
-    </div>
+                <label class="field">
+                    <span>Mật khẩu</span>
+                    <div class="field-shell field-shell--password">
+                        <i class="fas fa-lock"></i>
+                        <input type="password"
+                               name="password"
+                               placeholder="Tạo mật khẩu mạnh"
+                               autocomplete="new-password"
+                               required
+                               minlength="6">
+                        <button type="button" class="password-toggle" data-toggle-password aria-label="Hiện mật khẩu">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </label>
+
+                <input type="hidden" name="role" value="customer">
+
+                <button type="submit" class="primary-action primary-action--success">Tạo tài khoản</button>
+            </form>
+
+            <div class="auth-footer">
+                <span>Bạn đã có tài khoản?</span>
+                <a th:href="@{/login}">Đăng nhập</a>
+            </div>
+        </section>
+    </main>
 </div>
 
 <script th:src="@{/js/register.js}"></script>

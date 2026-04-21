@@ -2,7 +2,12 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập | Phát hiện gian lận mạng</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link th:href="@{/css/login.css}" rel="stylesheet">
     <link rel="stylesheet"
@@ -10,46 +15,96 @@
 </head>
 
 <body>
-<div class="login-wrapper">
-    <div class="login-container">
+<div class="auth-page auth-page--login">
+    <div class="auth-blob auth-blob--one"></div>
+    <div class="auth-blob auth-blob--two"></div>
 
-        <div class="logo">
-            <i class="fas fa-user-circle fa-4x"></i>
-        </div>
-
-        <h2>Welcome Back</h2>
-
-        <!-- ✅ FIX: chỉ hiển thị khi có message -->
-        <p class="error-msg" th:if="${error != null}" th:text="${error}"></p>
-        <p class="success-msg" th:if="${success != null}" th:text="${success}"></p>
-
-        <form th:action="@{/login}" method="post" id="loginForm" autocomplete="off">
-            <div class="input-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email"
-                       name="email"
-                       placeholder="Email"
-                       required>
+    <main class="auth-shell">
+        <section class="auth-brand">
+            <div class="brand-badge">
+                <span class="brand-dot"></span>
+                Trí tuệ đồ thị
             </div>
 
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password"
-                       name="password"
-                       placeholder="Password"
-                       required
-                       minlength="6">
+            <h1>Phát hiện mẫu gian lận trước khi chúng lan rộng.</h1>
+            <p>
+                Đăng nhập để xem phiên, kiểm tra các liên kết đáng ngờ và làm việc với
+                biểu đồ Neo4j hỗ trợ quy trình phát hiện.
+            </p>
+
+            <div class="brand-stats">
+                <div>
+                    <strong>3 lớp</strong>
+                    <span>chấm điểm rủi ro</span>
+                </div>
+                <div>
+                    <strong>Neo4j</strong>
+                    <span>phân tích đồ thị</span>
+                </div>
+                <div>
+                    <strong>Thời gian thực</strong>
+                    <span>cập nhật thu thập</span>
+                </div>
             </div>
 
-            <button type="submit">Login</button>
-        </form>
+            <ul class="brand-points">
+                <li><i class="fas fa-shield-halved"></i> Xem xét gian lận theo từng phiên</li>
+                <li><i class="fas fa-network-wired"></i> Truy vết quan hệ dựa trên đồ thị</li>
+                <li><i class="fas fa-bolt"></i> Truy cập nhanh cho vai trò quản trị, nhân viên và khách hàng</li>
+            </ul>
+        </section>
 
-        <div class="register-link">
-            <span>Don't have an account? </span>
-            <a th:href="@{/register}">Register here</a>
-        </div>
+        <section class="auth-card">
+            <div class="card-topline">Truy cập an toàn</div>
 
-    </div>
+            <div class="logo">
+                <i class="fas fa-user-shield"></i>
+            </div>
+
+            <h2>Chào mừng trở lại</h2>
+            <p class="card-subtitle">Dùng tài khoản của bạn để tiếp tục vào bảng điều khiển.</p>
+
+            <p class="error-msg" th:if="${error != null}" th:text="${error}"></p>
+            <p class="success-msg" th:if="${success != null}" th:text="${success}"></p>
+
+            <form th:action="@{/login}" method="post" id="loginForm" autocomplete="off" class="auth-form">
+                <label class="field">
+                    <span>Email</span>
+                    <div class="field-shell">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email"
+                               name="email"
+                               placeholder="ten@congty.com"
+                               autocomplete="email"
+                               required>
+                    </div>
+                </label>
+
+                <label class="field">
+                    <span>Mật khẩu</span>
+                    <div class="field-shell field-shell--password">
+                        <i class="fas fa-lock"></i>
+                        <input type="password"
+                               name="password"
+                               placeholder="Nhập mật khẩu của bạn"
+                               autocomplete="current-password"
+                               required
+                               minlength="6">
+                        <button type="button" class="password-toggle" data-toggle-password aria-label="Hiện mật khẩu">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </label>
+
+                <button type="submit" class="primary-action">Đăng nhập</button>
+            </form>
+
+            <div class="auth-footer">
+                <span>Bạn chưa có tài khoản?</span>
+                <a th:href="@{/register}">Tạo ngay</a>
+            </div>
+        </section>
+    </main>
 </div>
 
 <script th:src="@{/js/login.js}"></script>
