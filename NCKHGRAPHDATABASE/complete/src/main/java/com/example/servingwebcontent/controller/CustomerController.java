@@ -359,8 +359,7 @@ public class CustomerController {
         try {
             User customer = getCustomer(session);
 
-            // Get indicators from analysis
-            List<String> indicators = new ArrayList<>();
+            List<String> indicators = resolveNodeIndicators(nodeId);
             
             ChatbotResponseDTO chatbotResponse = chatbotService.generateAnalysis(
                     nodeId, nodeType, nodeValue, riskLevel, riskScore, indicators
@@ -388,6 +387,23 @@ public class CustomerController {
                     "success", false,
                     "message", "Error analyzing node: " + e.getMessage()
             ));
+        }
+    }
+
+    private List<String> resolveNodeIndicators(String nodeId) {
+        try {
+            GraphResponseDTO graph = graphService.getGraph();
+            if (graph == null || graph.getNodes() == null) {
+                return new ArrayList<>();
+            }
+
+            return graph.getNodes().stream()
+                    .filter(node -> nodeId.equals(node.getId()))
+                    .findFirst()
+                    .map(node -> node.getIndicators() != null ? new ArrayList<>(node.getIndicators()) : new ArrayList<String>())
+                    .orElseGet(ArrayList::new);
+        } catch (Exception ignored) {
+            return new ArrayList<>();
         }
     }
 
