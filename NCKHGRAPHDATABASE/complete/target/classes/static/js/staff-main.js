@@ -48,6 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
             ids.has(l.target?.id || l.target)
         );
     }
+    function publishGraphContext(nodes, links) {
+        window.__graphContext = {
+            nodes: Array.isArray(nodes) ? nodes : [],
+            links: Array.isArray(links) ? links : [],
+            linkTypeLabel
+        };
+    }
 
     function normalizeValue(type, value) {
         if (!value) return value;
@@ -207,6 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ================= RENDER GRAPH ================= */
     function render(nodes, links) {
+        publishGraphContext(nodes, links);
 
         ensureLinkLabelToggle();
 

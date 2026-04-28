@@ -66,6 +66,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const ids = new Set(nodes.map(n => n.id));
         return links.filter(l => ids.has(l.source) && ids.has(l.target));
     };
+    const publishGraphContext = (nodes, links) => {
+        window.__graphContext = {
+            nodes: Array.isArray(nodes) ? nodes : [],
+            links: Array.isArray(links) ? links : [],
+            linkTypeLabel
+        };
+    };
 
     const riskRank = r =>
         ({ low: 1, medium: 2, high: 3 }[String(r).toLowerCase()] || 0);
@@ -341,6 +348,7 @@ window.fetchGraph = fetchGraph;
     /* ================= GRAPH ================= */
 
     function renderGraph(nodes, links) {
+        publishGraphContext(nodes, links);
 
         ensureLinkLabelToggle();
 

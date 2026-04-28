@@ -1,0 +1,488 @@
+[2026-04-29 01:34:47.269] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:15 (Domain) | Value: 4ac2584e.databases.neo4j.io | Risk: low | Analysis: Loại node: Domain
+Giá trị: 4ac2584e.databases.neo4j.io
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `4ac2584e.databases.neo4j.io` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `4ac2584e.databases.neo4j.io` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:35:21.112] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:56 (Domain) | Value: drivefrontend-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: drivefrontend-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `drivefrontend-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `drivefrontend-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:35:23.992] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:456 (Domain) | Value: crl3.digicert.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: crl3.digicert.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `crl3.digicert.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `crl3.digicert.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:35:32.676] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:39:45.982] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:458 (Domain) | Value: edge-chat.facebook.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: edge-chat.facebook.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `edge-chat.facebook.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `edge-chat.facebook.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:40:46.747] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:459 (Domain) | Value: outlook.office365.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: outlook.office365.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `outlook.office365.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `outlook.office365.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:41:10.163] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:423 (Domain) | Value: e2c75.gcp.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: e2c75.gcp.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `e2c75.gcp.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `e2c75.gcp.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:41:34.787] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:460 (Domain) | Value: mtalk.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: mtalk.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `mtalk.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `mtalk.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:42:20.103] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:444 (Domain) | Value: gemini.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: gemini.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `gemini.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `gemini.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:42:35.048] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:379 (IPAddress) | Value: 192.168.48.86 | Risk: medium | Analysis: Loại node: IPAddress
+Giá trị: 192.168.48.86
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 40/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `192.168.48.86` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP | Threats: Node IPAddress `192.168.48.86` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-04-29 01:43:33.176] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:423 (Domain) | Value: e2c75.gcp.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: e2c75.gcp.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `e2c75.gcp.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `e2c75.gcp.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:45:39.852] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:46:48.869] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:461 (Domain) | Value: scontent.fhan3-5.fna.fbcdn.net | Risk: low | Analysis: Loại node: Domain
+Giá trị: scontent.fhan3-5.fna.fbcdn.net
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `scontent.fhan3-5.fna.fbcdn.net` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `scontent.fhan3-5.fna.fbcdn.net` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:47:20.365] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:462 (Domain) | Value: crl.pki.goog | Risk: low | Analysis: Loại node: Domain
+Giá trị: crl.pki.goog
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `crl.pki.goog` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `crl.pki.goog` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:47:28.797] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:463 (URL) | Value: http://crl.pki.goog/gsr1/gsr1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl.pki.goog/gsr1/gsr1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl.pki.goog/gsr1/gsr1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://crl.pki.goog/gsr1/gsr1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:51:25.502] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:464 (Domain) | Value: peoplestackwebexperiments-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: peoplestackwebexperiments-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `peoplestackwebexperiments-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `peoplestackwebexperiments-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:53:35.895] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:66 (Domain) | Value: www.google-analytics.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.google-analytics.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.google-analytics.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.google-analytics.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:53:47.262] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:465 (Domain) | Value: update.kingsoftstore.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: update.kingsoftstore.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `update.kingsoftstore.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node Domain `update.kingsoftstore.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:53:59.049] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:466 (Domain) | Value: update.wps.cn | Risk: medium | Analysis: Loại node: Domain
+Giá trị: update.wps.cn
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 45/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `update.wps.cn` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * TLD đáng ngờ
+  * Keyword dang ngo: update | Threats: Node Domain `update.wps.cn` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-04-29 01:54:46.699] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:467 (Domain) | Value: m.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: m.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `m.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `m.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:55:09.461] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:468 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedRootG4.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedRootG4.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedRootG4.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedRootG4.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:55:12.628] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:469 (URL) | Value: http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:59:14.335] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:470 (Domain) | Value: inference.location.live.net | Risk: low | Analysis: Loại node: Domain
+Giá trị: inference.location.live.net
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `inference.location.live.net` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `inference.location.live.net` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 01:59:58.115] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:16 (Domain) | Value: trk-pcweb.api.zaloapp.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: trk-pcweb.api.zaloapp.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `trk-pcweb.api.zaloapp.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `trk-pcweb.api.zaloapp.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:00:08.628] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:466 (Domain) | Value: update.wps.cn | Risk: medium | Analysis: Loại node: Domain
+Giá trị: update.wps.cn
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 45/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `update.wps.cn` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * TLD đáng ngờ
+  * Keyword dang ngo: update | Threats: Node Domain `update.wps.cn` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-04-29 02:00:37.745] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:468 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedRootG4.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedRootG4.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedRootG4.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedRootG4.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:04:00.993] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:55 (Domain) | Value: update.code.visualstudio.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: update.code.visualstudio.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `update.code.visualstudio.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node Domain `update.code.visualstudio.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:04:18.027] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:471 (Domain) | Value: wpa.zalo.me | Risk: low | Analysis: Loại node: Domain
+Giá trị: wpa.zalo.me
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `wpa.zalo.me` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `wpa.zalo.me` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:04:50.998] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:472 (Domain) | Value: chromewebstore.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: chromewebstore.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `chromewebstore.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `chromewebstore.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:05:02.696] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:473 (Domain) | Value: safebrowsing.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: safebrowsing.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `safebrowsing.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `safebrowsing.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:05:18.727] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:05:50.318] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:474 (Domain) | Value: cloud.wpscdn.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: cloud.wpscdn.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `cloud.wpscdn.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `cloud.wpscdn.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:05:58.796] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:475 (Domain) | Value: wdl1.pcfg.cache.wpscdn.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: wdl1.pcfg.cache.wpscdn.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `wdl1.pcfg.cache.wpscdn.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `wdl1.pcfg.cache.wpscdn.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:06:13.740] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:476 (Domain) | Value: abtest-api.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: abtest-api.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `abtest-api.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `abtest-api.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:06:19.638] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:477 (Domain) | Value: params.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: params.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `params.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `params.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:06:35.843] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:478 (Domain) | Value: sg-plus.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: sg-plus.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `sg-plus.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `sg-plus.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:06:58.697] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:479 (Domain) | Value: ai-sg.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: ai-sg.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `ai-sg.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `ai-sg.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:07:06.771] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:480 (Domain) | Value: permits.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: permits.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `permits.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `permits.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:07:15.803] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:481 (Domain) | Value: sg-account.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: sg-account.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `sg-account.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: account | Threats: Node Domain `sg-account.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:07:20.074] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:482 (Domain) | Value: ovs-shopwindow-server.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: ovs-shopwindow-server.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `ovs-shopwindow-server.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `ovs-shopwindow-server.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:07:43.302] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:483 (Domain) | Value: aka.ms | Risk: low | Analysis: Loại node: Domain
+Giá trị: aka.ms
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `aka.ms` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `aka.ms` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:07:54.205] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:484 (Domain) | Value: download.microsoft.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: download.microsoft.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `download.microsoft.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `download.microsoft.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:08:22.147] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:485 (Domain) | Value: sg-drive.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: sg-drive.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `sg-drive.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `sg-drive.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:08:32.094] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:486 (Domain) | Value: avatar.qwps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: avatar.qwps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `avatar.qwps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `avatar.qwps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:09:39.758] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:487 (Domain) | Value: ovs-activity.wps.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: ovs-activity.wps.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `ovs-activity.wps.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `ovs-activity.wps.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:10:22.629] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:488 (Domain) | Value: ds.cache.wpscdn.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: ds.cache.wpscdn.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `ds.cache.wpscdn.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `ds.cache.wpscdn.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:10:55.750] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:489 (Domain) | Value: www.googletagmanager.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.googletagmanager.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.googletagmanager.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.googletagmanager.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:11:11.708] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:490 (Domain) | Value: firebase.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: firebase.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `firebase.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `firebase.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:11:19.883] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:491 (Domain) | Value: firebaseinstallations.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: firebaseinstallations.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `firebaseinstallations.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `firebaseinstallations.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:11:54.836] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:492 (Domain) | Value: analytics.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: analytics.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `analytics.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `analytics.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:12:18.711] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:493 (Domain) | Value: stats.g.doubleclick.net | Risk: low | Analysis: Loại node: Domain
+Giá trị: stats.g.doubleclick.net
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `stats.g.doubleclick.net` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `stats.g.doubleclick.net` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-04-29 02:12:25.559] 🎯 DETECTION | Node: 4:780c17d1-7f06-49dd-bb22-573b2c7a4be0:494 (Domain) | Value: www.google.com.vn | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.google.com.vn
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.google.com.vn` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.google.com.vn` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []

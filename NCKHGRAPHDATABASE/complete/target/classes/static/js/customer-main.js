@@ -47,6 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
             ids.has(l.target?.id || l.target)
         );
     }
+    function publishGraphContext(nodes, links) {
+        window.__graphContext = {
+            nodes: Array.isArray(nodes) ? nodes : [],
+            links: Array.isArray(links) ? links : [],
+            linkTypeLabel
+        };
+    }
 
     function safeStr(v) {
         return (v ?? "").toString();
@@ -192,6 +199,7 @@ function showNodeInfo(d) {
 
         nodes = nodes || [];
         links = links || [];
+        publishGraphContext(nodes, links);
 
         // compute actual drawing width/height from rendered SVG element
         const width = svgEl.clientWidth || 1000;
