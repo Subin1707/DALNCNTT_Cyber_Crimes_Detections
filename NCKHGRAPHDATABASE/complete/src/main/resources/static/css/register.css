@@ -361,11 +361,11 @@ body::after {
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.password-toggle:hover {
+/* .password-toggle:hover {
     background: rgba(255, 255, 255, 0.08);
     color: #ffffff;
     transform: translateY(-1px);
-}
+} */
 
 .primary-action {
     height: 48px;
@@ -437,11 +437,6 @@ body::after {
     color: #bfffe3;
     text-decoration: none;
     font-weight: 700;
-}
-
-.auth-footer a:hover {
-    text-decoration: none;
-    color: #ffffff;
 }
 
 @keyframes fadeInUp {

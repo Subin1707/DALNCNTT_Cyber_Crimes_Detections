@@ -423,11 +423,6 @@ body::after {
     font-weight: 700;
 }
 
-.auth-footer a:hover {
-    text-decoration: none;
-    color: #ffffff;
-}
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
