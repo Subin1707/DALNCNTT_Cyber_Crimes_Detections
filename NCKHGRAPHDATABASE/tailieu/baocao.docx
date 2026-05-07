@@ -1,0 +1,808 @@
+ BỘ GIÁO DỤC VÀ ĐÀO TẠO
+ ĐẠI HỌC PHENIKAA
+
+
+
+ 
+
+BÁO CÁO TỔNG KẾT
+
+TÊN ĐỀ TÀI: SỬ DỤNG CƠ SỞ DỮ LIỆU ĐỒ
+ HỌA (GRAPH DATABASE) ĐỂ PHÁT HIỆN
+ HOẠT ĐỘNG LỪA BỊP TRÊN KHÔNG GIAN
+ MẠNG (CYBER SPACE)
+
+  
+           
+Lĩnh vực:
+Chuyên ngành: Công nghệ thông tin
+
+
+
+                 Sinh viên thực hiện chính: Nguyễn Mạnh Quyền
+                 Nam/Nữ: Nam
+
+                 Giảng viên hướng dẫn: TS. Nguyễn Lệ Thu 
+
+
+
+
+
+
+Hà Nội, ngày 15 tháng 03 năm 2026
+
+ 
+BỘ GIÁO DỤC VÀ ĐÀO TẠO
+ ĐẠI HỌC PHENIKAA
+
+
+
+ 
+
+BÁO CÁO TỔNG KẾT
+
+TÊN ĐỀ TÀI: SỬ DỤNG CƠ SỞ DỮ LIỆU ĐỒ
+ HỌA (GRAPH DATABASE) ĐỂ PHÁT HIỆN
+ HOẠT ĐỘNG LỪA BỊP TRÊN KHÔNG GIAN
+ MẠNG (CYBER SPACE)
+
+
+
+Lĩnh vực: 
+Chuyên ngành: Công nghệ thông tin
+
+    Giảng viên hướng dẫn: TS. Nguyễn Lệ Thu 
+    Nhóm sinh viên thực hiện:
+Họ và tên	Mã số sinh viên	Lớp	Ngành	Khóa	Hệ
+Nguyễn Mạnh Quyền	23010198	K17-CNTT_2	Hệ thống thông tin	K17_2023-2027	Đại học chính quy
+Phạm Văn Hoàng	23010245	K17-CNTT_3	Hệ thống thông tin	K17_2023-2027	Đại học chính quy
+
+Hà Nội, ngày 15 tháng 03 năm 2026
+ 
+MỤC LỤC
+CHƯƠNG 1. MỞ ĐẦU	1
+1.1 Mở đầu	1
+1.2 Lý do lựa chọn đề tài	2
+CHƯƠNG 2. TỔNG QUAN TÌNH HÌNH NGHIÊN CỨU	5
+2.1 Các phương pháp phát hiện gian lận	5
+2.2 Các hệ thống phát hiện và phân tích lưu lượng mạng	7
+2.3 Ứng dụng cơ sở dữ liệu đồ thị trong phát hiện gian lận	9
+2.4 Nhận xét và khoảng trống nghiên cứu	10
+CHƯƠNG 3. MỤC TIÊU, PHƯƠNG PHÁP VÀ PHẠM VI NGHIÊN CỨU	12
+3.1 Mục tiêu nghiên cứu	12
+3.1.1 Mục tiêu tổng quát	12
+3.1.2 Mục tiêu cụ thể	12
+3.2 Quy trình nghiên cứu	13
+1. Xác định vấn đề nghiên cứu	14
+2. Tổng quan tài liệu	14
+3. Xây dựng đề cương và thiết kế nghiên cứu	15
+4. Thu thập dữ liệu	15
+5. Xử lý và phân tích dữ liệu	15
+6. Kết luận và kiến nghị	16
+7. Viết báo cáo và trình bày kết quả	16
+3.3 Phương pháp nghiên cứu	17
+1. Phương pháp nghiên cứu định lượng	17
+2. Phương pháp quan sát	17
+3. Phương pháp thực nghiệm	18
+3.4 Quy trình xử lý dữ liệu	18
+1. Thu thập dữ liệu mạng	18
+2. Phân tích gói tin mạng	19
+3. Trích xuất đặc trưng dữ liệu	19
+4. Chuyển đổi và lưu trữ dữ liệu	19
+5. Phân tích dữ liệu và phát hiện lừa bịp	20
+3.5 Kiến trúc hệ thống phát hiện lừa bịp	22
+1. Module thu thập dữ liệu mạng	23
+2. Module xử lý dữ liệu	23
+3. Module lưu trữ dữ liệu	23
+4. Module phân tích và phát hiện lừa bịp	24
+3.6 Mô hình dữ liệu đồ thị	24
+3.7 Các mẫu thiết lập Lừa bịp (Fraud Detection Patterns)	25
+3.7.1 Suspicious IP–Domain Pattern	26
+3.7.2 Mẫu chia sẻ cơ sở hạ tầng (Shared Infrastructure Pattern)	27
+3.7.3 Mẫu chiến dịch Phishing (Phishing Campaign Pattern)	27
+3.7.4 Mẫu lừa bịp nhiều tài khoản (Multi-Account Fraud Pattern)	28
+3.7.5 Ý nghĩa của Mẫu phát hiện lừa bịp (Fraud Detection Patterns)	29
+3.7.6 Nội dung triển khai bổ sung	30
+3.8 Đối tượng nghiên cứu	30
+3.9 Phạm vi nghiên cứu	31
+CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU VÀ THẢO LUẬN	34
+4.1 Thiết kế hệ thống thử nghiệm	34
+4.1.1 Thu thập dữ liệu	35
+4.1.2 Trích xuất dữ liệu	35
+4.1.3 Xử lý và chuẩn hóa dữ liệu	36
+4.1.4 Mô hình hóa dữ liệu đồ thị	36
+4.1.5 Phân tích và truy vấn dữ liệu	37
+4.2 Xây dựng mô hình dữ liệu đồ thị	37
+4.2.1 Các thực thể trong mô hình đồ thị	38
+4.2.2 Các quan hệ trong mô hình đồ thị	38
+4.2.3 Mô phỏng cấu trúc dữ liệu đồ thị	39
+4.2.4 Ý nghĩa của mô hình đồ thị trong phát hiện gian lận	39
+4.3 Kết quả phát hiện mẫu bất thường	40
+4.3.1 Trực quan hóa đồ thị dữ liệu	40
+4.3.2 Phát hiện các mẫu liên kết bất thường	42
+4.3.3 Phân tích chuỗi liên kết phức tạp	43
+4.3.4 Phân tích trạng thái và mức độ rủi ro của thực thể	43
+4.3.5 Nhận xét kết quả	45
+4.4 Đánh giá và thảo luận	45
+CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN	47
+5.1 Kết luận	47
+5.2 Hướng phát triển	48
+TÀI LIỆU THAM KHẢO	50
+PHỤ LỤC	53
+PHỤ LỤC A	53
+TÓM TẮT ĐIỀU HÀNH	53
+PHỤ LỤC B	54
+BẢNG SỐ LIỆU VÀ DỮ LIỆU NGHIÊN CỨU	54
+PHỤ LỤC C	55
+DANH SÁCH THUẬT NGỮ VÀ TỪ VIẾT TẮT	55
+PHỤ LỤC D: GIẢI THÍCH LỆNH MERGE TRONG CYPHER/NEO4J	57
+D.1. MERGE là gì?	57
+D.2. So sánh MERGE và CREATE	58
+D.3. Tại sao dự án sử dụng MERGE thay vì CREATE?	58
+
+
+ 
+DANH SÁCH HÌNH ẢNH VÀ BIỂU ĐỒ
+Hình 1 UML Activity Diagram của quy trình xử lý dữ liệu	21
+Hình 2 System Architecture Diagram của hệ thống phát hiện lừa bịp	22
+Hình 3 Graph Data Model của hệ thống	30
+Hình 4 Quy trình xử lý dữ liệu trong hệ thống thử nghiệm	33
+Hình 5 Trực quan hóa đồ thị gian lận trong hệ thống thử nghiệm	40
+Hình 6 Ví dụ khung hiển thị trạng thái và mức độ rủi ro của thực thể	43
+ 
+DANH SÁCH CÁC BẢNG
+Bảng 1 Các thực thể dữ liệu trong hệ thống	30
+Bảng 2 Các quan hệ trong mô hình đồ thị	30
+Bảng 3 Các ngưỡng phát hiện trong truy vấn phát hiện gian lận	53
+Bảng 4 Các trường dữ liệu được trích xuất từ gói tin mạng	54
+ 
+CHƯƠNG 1. MỞ ĐẦU
+1.1 Mở đầu
+Sự phát triển mạnh mẽ của Internet và các dịch vụ số trong những năm gần đây đã tạo ra những thay đổi sâu sắc trong các hoạt động kinh tế, xã hội và truyền thông. Các dịch vụ trực tuyến như thương mại điện tử, ngân hàng số, hệ thống thư điện tử, dịch vụ lưu trữ đám mây và các nền tảng Mạng xã hội đã trở thành một phần không thể thiếu trong đời sống hiện đại, được gọi “nền tảng số hóa” [58]. Tuy nhiên, cùng với sự phát triển này, khối lượng dữ liệu Mạng và lưu lượng truy cập trên Internet cũng gia tăng nhanh chóng, làm xuất hiện nhiều nguy cơ tiềm ẩn liên quan đến an toàn và an ninh thông tin [43][49].
+Song song với sự mở rộng của hạ tầng mạng, các hình thức tấn công Mạng và gian lận trên không gian Mạng cũng ngày càng gia tăng cả về số lượng lẫn mức độ tinh vi. Các đối tượng tấn công thường sử dụng nhiều kỹ thuật khác nhau như phishing, phát tán phần mềm độc hại, giả mạo tên miền, hoặc khai thác các lỗ hổng trong hệ thống để đánh cắp thông tin hoặc thực hiện các hành vi gian lận trực tuyến [15] [16] [40]. Trong nhiều trường hợp, các hoạt động tấn công không chỉ diễn ra đơn lẻ mà được tổ chức thành các chiến dịch phức tạp với sự tham gia của nhiều thực thể khác nhau như địa chỉ IP, tên miền, URL, tài khoản người dùng hoặc máy chủ trung gian [9][48].
+Trong bối cảnh đó, việc phát hiện sớm các hành vi bất thường trong lưu lượng Mạng trở thành một yêu cầu quan trọng trong lĩnh vực an toàn thông tin. Nhiều phương pháp đã được nghiên cứu nhằm phát hiện các hành vi gian lận hoặc tấn công Mạng dựa trên các kỹ thuật học máy và học sâu. Các nghiên cứu trước đây đã chỉ ra rằng các mô hình học máy có thể đạt hiệu quả cao trong việc phát hiện URL độc hại, website lừa đảo hoặc các hành vi tấn công trong hệ thống Mạng [2][6][11][17]. Tuy nhiên, các phương pháp này thường tập trung vào việc phân tích đặc trưng của từng đối tượng riêng lẻ, chẳng hạn như cấu trúc URL, nội dung trang web hoặc đặc điểm của lưu lượng mạng, mà không tập trung vào mối quan hệ đa chiều giữa các thực thể.
+Trong thực tế, các thực thể trong không gian Mạng thường có mối liên kết chặt chẽ với nhau. Ví dụ, một địa chỉ IP có thể liên quan đến nhiều tên miền khác nhau; một tên miền có thể chứa nhiều URL; hoặc một tài khoản người dùng có thể đăng nhập từ nhiều địa điểm Mạng khác nhau. Các mối quan hệ phức tạp này tạo thành một Mạng lưới tương tác rộng lớn giữa các thực thể (Mạng lưới Mạng nhện). Vì vậy, việc chỉ phân tích từng đối tượng riêng lẻ có thể không đủ để phát hiện các hành vi gian lận được tổ chức theo dạng Mạng lưới. Trong những trường hợp như vậy, các phương pháp phân tích dựa trên cấu trúc Mạng hoặc mô hình đồ thị được xem là một hướng tiếp cận hiệu quả hơn [12][13][18].
+Bên cạnh đó, việc thu thập và phân tích dữ liệu Mạng thường bắt đầu từ các công cụ phân tích lưu lượng Mạng trực tuyến như Wireshark hoặc Tshark [57]. Các công cụ này cho phép ghi lại và phân tích các gói tin mạng, từ đó trích xuất các thông tin quan trọng như địa chỉ IP, giao thức, thời gian truyền dữ liệu hoặc các trường dữ liệu trong gói tin. Dữ liệu thu thập được có thể được sử dụng để xây dựng các tập dữ liệu phục vụ cho việc nghiên cứu và phát hiện các hành vi bất thường trong hệ thống Mạng [52] [53].
+Trong những năm gần đây, các hệ quản trị cơ sở dữ liệu đồ thị (Graph Database) đã trở thành một công cụ hiệu quả trong việc lưu trữ và phân tích các dữ liệu có cấu trúc liên kết phức tạp. Khác với các cơ sở dữ liệu quan hệ truyền thống, cơ sở dữ liệu đồ thị cho phép biểu diễn trực tiếp các thực thể và mối quan hệ giữa chúng dưới dạng các nút (node) và các cạnh (relationship) trên không gian  truy vấn “cypher” [59]. Điều này giúp việc truy vấn và phân tích các mối liên kết giữa các thực thể trở nên trực quan và hiệu quả hơn. Một trong những hệ quản trị cơ sở dữ liệu đồ thị phổ biến hiện nay là Neo4j [32], được sử dụng rộng rãi trong nhiều lĩnh vực như phân tích Mạng xã hội, mô hình ngôn ngữ lớn trực tuyến, phát hiện gian lận tài chính và điều tra tội phạm Mạng [31] [32] [59].
+Từ những đặc điểm trên, việc kết hợp dữ liệu Mạng thu thập từ các công cụ phân tích lưu lượng trực tiếp với cơ sở dữ liệu đồ thị có thể giúp xây dựng một mô hình phân tích mới, trong đó các thực thể Mạng và mối quan hệ giữa chúng được biểu diễn dưới dạng đồ thị. Mô hình này cho phép phát hiện các mẫu liên kết bất thường, các cụm quan hệ đáng ngờ hoặc các chuỗi tương tác có dấu hiệu gian lận trong hệ thống mạng.
+1.2 Lý do lựa chọn đề tài
+Trong những năm gần đây, sự phát triển mạnh mẽ của Internet và các dịch vụ trực tuyến đã tạo ra nhiều cơ hội cho các hoạt động kinh tế, thương mại điện tử và trao đổi thông tin trên toàn cầu. Tuy nhiên, song song với sự phát triển này, các hình thức tấn công Mạng và gian lận trực tuyến cũng ngày càng gia tăng cả về quy mô lẫn mức độ tinh vi. Theo báo cáo Threat Landscape 2023 của European Union Agency for Cybersecurity (ENISA) [57], các cuộc tấn công phishing và các hình thức lừa đảo trực tuyến tiếp tục nằm trong nhóm các mối đe dọa an ninh Mạng phổ biến nhất hiện nay. Trong các cuộc tấn công này, kẻ tấn công thường sử dụng email giả mạo chứa các liên kết URL dẫn đến các website lừa đảo nhằm đánh cắp thông tin đăng nhập, thông tin tài chính hoặc dữ liệu cá nhân của người dùng [43].
+Các báo cáo an ninh Mạng từ các tổ chức công nghệ lớn như Microsoft, Cisco và Symantec, và nhà điều tra liên bang FBI, hay cảnh sát quốc tế [60] cho thấy rằng phần lớn các chiến dịch phishing và phát tán malware đều liên quan chặt chẽ đến các thực thể Mạng cơ bản như địa chỉ IP, tên miền (domain), URL và địa chỉ email [48] [50]. Trong nhiều trường hợp, các thực thể này không tồn tại độc lập mà có mối quan hệ liên kết với nhau trong cùng một chiến dịch tấn công. Ví dụ, một email phishing có thể chứa một URL dẫn đến website giả mạo; website này được lưu trữ trên một domain cụ thể và miền (domain) đó lại được ánh xạ tới một địa chỉ IP nhất định. Việc phân tích các mối quan hệ giữa những thực thể này có thể cung cấp nhiều thông tin quan trọng để nhận diện và phát hiện các hoạt động gian lận.
+Nhiều nghiên cứu trong lĩnh vực an ninh Mạng đã chỉ ra rằng việc phân tích các đặc trưng của URL, domain và hạ tầng Mạng có thể hỗ trợ hiệu quả trong việc phát hiện các website lừa đảo và các chiến dịch tấn công trực tuyến [2][15][25]. Bên cạnh đó, các nghiên cứu gần đây cũng cho thấy rằng các chiến dịch tấn công thường tạo ra những mẫu liên kết (patterns) đặc trưng trong dữ liệu mạng, chẳng hạn như nhiều URL khác nhau trỏ đến cùng một miền (domain), hoặc nhiều miền (domains) được lưu trữ trên cùng một địa chỉ IP [17][26]. Việc phát hiện các mẫu (Pattern) liên kết này có thể giúp nhận diện các Mạng lưới tấn công và các hoạt động gian lận có tổ chức.
+Trong bối cảnh đó, các phương pháp phân tích dữ liệu dựa trên đồ thị (graph-based analysis) đang ngày càng được quan tâm trong lĩnh vực phát hiện gian lận và an ninh mạng, khi mô tả được tính đa chiều trong mô hình Mạng nhện. Trong mô hình dữ liệu đồ thị, các thực thể Mạng như IP, domain, URL và email được biểu diễn dưới dạng các nút (node), trong khi các mối quan hệ giữa chúng được biểu diễn dưới dạng các cạnh (edge). Cách tiếp cận này cho phép mô hình hóa trực quan các mối liên kết giữa các thực thể và hỗ trợ phát hiện các cấu trúc liên kết bất thường hoặc các cụm hoạt động đáng ngờ trong hệ thống [12][18][27]. Một số nghiên cứu gần đây cũng cho thấy việc kết hợp phân tích đồ thị với các kỹ thuật khai phá dữ liệu hoặc học máy có thể cải thiện đáng kể hiệu quả phát hiện gian lận trong các hệ thống trực tuyến [23][31].
+Tuy nhiên, trong nhiều hệ thống phân tích dữ liệu truyền thống dựa trên cơ sở dữ liệu quan hệ, việc biểu diễn và phân tích các mối quan hệ phức tạp giữa nhiều thực thể Mạng còn gặp nhiều hạn chế, đặc biệt khi số lượng dữ liệu lớn và cấu trúc liên kết phức tạp. Do đó, việc nghiên cứu các phương pháp lưu trữ và phân tích dữ liệu dựa trên cơ sở dữ liệu đồ thị để khai thác các mối quan hệ giữa các thực thể Mạng vẫn là một hướng nghiên cứu mở và cần được tiếp tục phát triển.
+Xuất phát từ những vấn đề nêu trên, đề tài này tập trung nghiên cứu việc xây dựng một mô hình dữ liệu đồ thị để biểu diễn và phân tích các mối quan hệ giữa các thực thể Mạng như IP, email, domain và URL. Thông qua việc mô hình hóa dữ liệu Mạng dưới dạng đồ thị và phân tích các mẫu (Patterns) liên kết giữa các thực thể, hệ thống có thể hỗ trợ phát hiện các dấu hiệu bất thường và các hoạt động gian lận trong môi trường Internet. Kết quả nghiên cứu của đề tài góp phần minh họa khả năng ứng dụng của cơ sở dữ liệu đồ thị trong việc hỗ trợ phân tích và phát hiện gian lận trong các hệ thống Mạng hiện đại, và tiềm năng ứng dụng để ngăn chặn gian lận, lừa bịp trên hệ thống Mạng Quốc gia Việt nam. 
+ 
+CHƯƠNG 2. TỔNG QUAN TÌNH HÌNH NGHIÊN CỨU
+2.1 Các phương pháp phát hiện gian lận
+Trong những năm gần đây, sự gia tăng của các dịch vụ trực tuyến và nền tảng Internet đã kéo theo sự phát triển nhanh chóng của các hình thức gian lận và tấn công mạng. Các hoạt động này thường bao gồm phishing, phân bổ mã độc hại (malware distribution), và các hình thức lừa đảo trực tuyến nhằm đánh cắp thông tin cá nhân hoặc tài chính của người dùng. Theo nhiều nghiên cứu trong lĩnh vực an ninh mạng, các cuộc tấn công này thường liên quan đến nhiều thực thể kỹ thuật số khác nhau như địa chỉ email, địa chỉ IP, URL và tên miền (domain) xuất hiện trong các tương tác trực tuyến hoặc hệ thống web [1][5][14][60].
+Việc phân tích các thực thể này đóng vai trò quan trọng trong việc phát hiện các dấu hiệu bất thường hoặc các hành vi gian lận. Các hệ thống phát hiện gian lận hiện đại thường dựa trên việc thu thập, phân tích và liên kết nhiều loại dữ liệu khác nhau để phát hiện các mẫu hành vi đáng ngờ, và ngăn chặn trực tiếp (block) các hành vi này [61]. Trong bối cảnh đó, nhiều phương pháp nghiên cứu đã được đề xuất nhằm cải thiện khả năng phát hiện các hoạt động gian lận trên Internet.
+•	Phương pháp dựa trên luật (Rule-based detection):
+Bên cạnh các phương pháp học máy, các hệ thống phát hiện gian lận dựa trên luật (rule-based systems) cũng được sử dụng rộng rãi trong các hệ thống an ninh Mạng thực tế. Các hệ thống này sử dụng các tập luật được xây dựng dựa trên kiến thức chuyên gia để phát hiện các dấu hiệu bất thường trong dữ liệu, chẳng hạn như cấu trúc URL bất thường, domain đáng ngờ hoặc các mẫu giả mạo thương hiệu [6][10].
+Các phương pháp rule-based có ưu điểm là dễ triển khai, dễ giải thích và phù hợp với các môi trường cần tính minh bạch cao trong quá trình phân tích khi dựa trên các khuyến nghị quốc tế (Recommendations) đưa ra bởi tổ chức kỹ sư Mạng Internet thế giới [62]. Trong các hệ thống phân tích gian lận hiện đại, các cơ chế đánh giá rủi ro dựa trên luật thường được sử dụng để tạo ra các chỉ báo rủi ro có thể giải thích được, giúp các nhà phân tích hiểu rõ nguyên nhân dẫn đến kết quả phát hiện [1].
+Tuy nhiên, các hệ thống dựa trên luật thường phân tích từng chỉ báo riêng lẻ và có thể gặp khó khăn trong việc phát hiện các chiến dịch gian lận có tổ chức, nơi nhiều thực thể khác nhau có mối liên hệ phức tạp với nhau.
+•	Phương pháp  học máy (Machine learning):
+Một trong những hướng nghiên cứu phổ biến trong phát hiện gian lận là sử dụng các phương pháp học máy (Machine Learning). Các phương pháp này sử dụng các thuật toán học thống kê để phân tích dữ liệu lớn và phân loại các thực thể hoặc hoạt động thành các nhóm hợp lệ hoặc độc hại. Nhiều nghiên cứu đã chứng minh rằng các mô hình học máy có khả năng phát hiện các mẫu phức tạp trong dữ liệu Mạng và đạt được độ chính xác cao trong việc phát hiện URL độc hại hoặc website phishing [3][16][20][25].
+Các kỹ thuật học sâu (Deep Learning) như Convolutional Neural Networks (CNN) và Recurrent Neural Networks (RNN) cũng đã được áp dụng trong phát hiện phishing và phân tích URL độc hại. Những mô hình này có thể tự động trích xuất đặc trưng từ dữ liệu và phát hiện các mẫu tấn công phức tạp trong dữ liệu lớn [4][23]. Tuy nhiên, các phương pháp dựa trên học máy thường yêu cầu tập dữ liệu huấn luyện lớn và tài nguyên tính toán đáng kể, và bỏ qua các khuyến nghị quốc tế hoặc sinh AI (Generative AI) không có các mẫu không phải trong khuyến nghị [60]. Ngoài ra, các mô hình này thường hoạt động như một “hộp đen”, khiến cho việc giải thích kết quả phát hiện trở nên khó khăn trong các môi trường điều tra an ninh mạng.
+•	Phương pháp dựa trên phân tích đồ thị (Graph-based detection):
+Gần đây, các phương pháp phân tích dữ liệu dựa trên đồ thị (graph-based analysis) đã trở thành một hướng nghiên cứu quan trọng trong lĩnh vực phát hiện gian lận và an ninh mạng. Trong các mô hình này, các thực thể như email, địa chỉ IP, URL và domain được biểu diễn dưới dạng các nút (nodes) trong đồ thị, trong khi các mối quan hệ giữa chúng được biểu diễn dưới dạng các cạnh (edges) [11][17][26][30].
+Phân tích đồ thị cho phép phát hiện các mối quan hệ tiềm ẩn giữa các thực thể Mạng và giúp xác định các cụm hoạt động đáng ngờ hoặc các chiến dịch tấn công có tổ chức. Các nghiên cứu cho thấy rằng việc sử dụng các kỹ thuật khai phá và phân tích đồ thị (graph analytics) có thể giúp phát hiện các Mạng lưới gian lận phức tạp tuân thủ các khuyến nghị bắt buộc với các mẫu (patterns) của tổ chức kỹ sư Internet thế giới [62] (nút), cộng thêm mối quan hệ đa chiều của các quan hệ giữa các nút, cạnh và các quan hệ mà các phương pháp phân tích truyền thống khó có thể nhận ra [12].
+Ngoài ra, việc lưu trữ dữ liệu điều tra dưới dạng đồ thị trong các hệ quản trị cơ sở dữ liệu đồ thị (ví dụ như Neo4j) cho phép truy vấn các mối quan hệ giữa các thực thể một cách hiệu quả và hỗ trợ quá trình điều tra an ninh mạng. Một số hệ thống phát hiện gian lận hiện đại đã kết hợp cơ chế phân tích rủi ro dựa trên luật [62] với việc lưu trữ dữ liệu dưới dạng đồ thị [32-33] để hỗ trợ quá trình điều tra và phân tích các hoạt động gian lận trực tuyến [1].
+2.2 Các hệ thống phát hiện và phân tích lưu lượng mạng
+Các hệ thống phân tích lưu lượng Mạng đóng vai trò quan trọng trong việc giám sát, thu thập và phân tích dữ liệu truyền thông trong các hệ thống Mạng hiện đại. Thông qua việc ghi nhận và xử lý các gói tin Mạng trong quá trình truyền thông giữa các thiết bị, các hệ thống này có thể cung cấp thông tin cần thiết phục vụ nhiều mục đích khác nhau như quản lý mạng, phát hiện xâm nhập (Intrusion Detection) và phát hiện các hành vi gian lận trong môi trường Mạng [51-52].
+Trong quá trình phân tích Mạng, nguồn dữ liệu quan trọng nhất là các gói tin Mạng (network packets) được ghi lại (live) trong quá trình truyền thông giữa các thiết bị. Mỗi gói tin chứa nhiều trường thông tin quan trọng như địa chỉ IP nguồn, địa chỉ IP đích, cổng kết nối, giao thức truyền thông và dữ liệu ứng dụng. Việc phân tích các trường thông tin này cho phép các nhà nghiên cứu và quản trị hệ thống hiểu rõ hơn về các hoạt động diễn ra trong Mạng và phát hiện các hành vi bất thường [52-53].
+Để hỗ trợ quá trình thu thập và phân tích lưu lượng mạng, nhiều công cụ phân tích gói tin đã được phát triển. Một trong những công cụ phổ biến nhất là Wireshark, một trình phân tích giao thức Mạng (network protocol analyzer) mạnh mẽ với giao diện đồ họa trực quan [54]. Wireshark cho phép người dùng quan sát và phân tích lưu lượng Mạng theo thời gian thực, đồng thời hỗ trợ nhiều giao thức Mạng khác nhau. Công cụ này cũng cung cấp các bộ lọc mạnh mẽ giúp người dùng dễ dàng tìm kiếm các gói tin theo địa chỉ IP, cổng mạng, giao thức hoặc nội dung dữ liệu.
+Ngoài ra, Wireshark cho phép lưu trữ dữ liệu lưu lượng Mạng dưới dạng các tệp PCAP (Packet Capture). Các tệp này chứa toàn bộ thông tin của các gói tin được ghi lại và có thể được sử dụng cho các mục đích phân tích sau này hoặc phục vụ các nghiên cứu về an ninh Mạng [54-55].
+Bên cạnh Wireshark, TShark là phiên bản dòng lệnh của công cụ này và được sử dụng rộng rãi trong các hệ thống phân tích dữ liệu tự động. Khác với Wireshark sử dụng giao diện đồ họa, TShark hoạt động thông qua môi trường dòng lệnh và cho phép thực hiện các thao tác phân tích gói tin thông qua các lệnh hoặc script. Điều này giúp TShark dễ dàng tích hợp vào các hệ thống xử lý dữ liệu tự động hoặc các pipeline phân tích dữ liệu Mạng [55].
+TShark có khả năng đọc và phân tích các tệp PCAP được tạo ra từ quá trình ghi lại lưu lượng mạng. Thông qua các tùy chọn dòng lệnh, người dùng có thể trích xuất các trường dữ liệu quan trọng từ các gói tin Mạng như địa chỉ IP nguồn, địa chỉ IP đích, cổng kết nối, giao thức truyền thông và thời gian của gói tin. Các dữ liệu sau khi được trích xuất có thể được chuyển đổi thành các định dạng phổ biến như CSV hoặc JSON để phục vụ cho quá trình xử lý và phân tích dữ liệu trong các hệ thống khác [55-56].
+Về nguyên lý hoạt động, các công cụ phân tích lưu lượng Mạng thường bao gồm ba bước chính. Thứ nhất, là quá trình thu thập các gói tin Mạng từ môi trường Mạng thông qua các cơ chế ghi nhận lưu lượng. Thứ hai, là quá trình phân tích cấu trúc gói tin và giải mã các trường dữ liệu trong từng gói tin. Cuối cùng, dữ liệu được lưu trữ và xử lý nhằm phục vụ cho các bước phân tích sâu hơn như phát hiện bất thường hoặc phát hiện các hành vi gian lận [52] [56].
+Nhờ khả năng thu thập và phân tích chi tiết các gói tin mạng, các công cụ phân tích lưu lượng Mạng đóng vai trò quan trọng trong việc xây dựng các hệ thống phát hiện xâm nhập và phát hiện gian lận trên không gian Mạng [51-52].
+2.3 Ứng dụng cơ sở dữ liệu đồ thị trong phát hiện gian lận
+Cơ sở dữ liệu đồ thị (Graph Database) là một loại hệ quản trị cơ sở dữ liệu được thiết kế nhằm lưu trữ và xử lý dữ liệu có cấu trúc quan hệ phức tạp. Khác với các hệ quản trị cơ sở dữ liệu quan hệ truyền thống, cơ sở dữ liệu đồ thị tập trung vào việc biểu diễn và khai thác các mối quan hệ giữa các đối tượng dữ liệu. Trong mô hình này, dữ liệu được biểu diễn dưới dạng các nút (node) đại diện cho các thực thể và các quan hệ (relationship) thể hiện sự liên kết giữa các thực thể đó [32-33]. Mỗi nút (node) trong đồ thị có thể chứa các thuộc tính mô tả đặc điểm của thực thể, trong khi các mối quan hệ (relationship thể hiện cách các thực thể tương tác với nhau. Nhờ cấu trúc này, cơ sở dữ liệu đồ thị có khả năng biểu diễn các Mạng lưới quan hệ phức tạp một cách trực quan và hiệu quả. Điều này đặc biệt phù hợp với các bài toán yêu cầu phân tích mối quan hệ giữa nhiều đối tượng khác nhau, chẳng hạn như Mạng xã hội, hệ thống khuyến nghị và các hệ thống phát hiện gian lận [32][34].
+Trong lĩnh vực an ninh Mạng và phát hiện gian lận, dữ liệu thường bao gồm nhiều loại thực thể khác nhau như địa chỉ IP, tên miền, địa chỉ email hoặc tài khoản người dùng. Các thực thể này có thể liên kết với nhau thông qua nhiều loại quan hệ khác nhau, tạo thành một Mạng lưới dữ liệu phức tạp. Việc sử dụng cơ sở dữ liệu đồ thị cho phép hệ thống lưu trữ và phân tích các mối quan hệ này một cách hiệu quả hơn so với các phương pháp lưu trữ dữ liệu truyền thống [1][17][26].
+Một trong những lợi thế quan trọng của cơ sở dữ liệu đồ thị là khả năng thực hiện các truy vấn theo đường đi (path queries) hoặc theo mẫu liên kết (pattern matching). Thông qua các truy vấn này, hệ thống có thể phát hiện các cấu trúc liên kết bất thường trong dữ liệu, chẳng hạn như nhiều tài khoản cùng sử dụng một địa chỉ IP, nhiều tên miền được lưu trữ trên cùng một máy chủ hoặc một địa chỉ email liên kết với nhiều hoạt động đáng ngờ. Những mẫu liên kết này có thể là dấu hiệu của các hoạt động gian lận hoặc các chiến dịch tấn công có tổ chức [17][30][34][60-61].
+Ngoài ra, cơ sở dữ liệu đồ thị cũng hỗ trợ việc phát hiện các thực thể trung gian (intermediate nodes) đóng vai trò kết nối giữa nhiều thực thể khác nhau trong Mạng lưới dữ liệu. Những thực thể này có thể đóng vai trò quan trọng trong các Mạng lưới gian lận, chẳng hạn như một máy chủ trung gian được sử dụng để gửi nhiều email lừa đảo hoặc một địa chỉ IP được sử dụng bởi nhiều tài khoản khác nhau [26][30].
+Một trong những hệ quản trị cơ sở dữ liệu đồ thị phổ biến hiện nay là Neo4j, một hệ quản trị cơ sở dữ liệu đồ thị mã nguồn mở được sử dụng rộng rãi trong nhiều lĩnh vực phân tích dữ liệu [35]. Neo4j cho phép lưu trữ dữ liệu dưới dạng node và relationship, đồng thời hỗ trợ ngôn ngữ truy vấn Cypher, một ngôn ngữ truy vấn chuyên dụng cho việc thao tác với dữ liệu đồ thị.
+Ngôn ngữ Cypher cho phép người dùng dễ dàng mô tả và truy vấn các mẫu liên kết trong đồ thị. Ví dụ, người dùng có thể truy vấn để tìm tất cả các tài khoản sử dụng cùng một địa chỉ IP hoặc xác định các chuỗi liên kết giữa nhiều thực thể khác nhau. Ngoài ra, Neo4j còn cung cấp các công cụ trực quan hóa giúp hiển thị các nút và mối quan hệ (node và relationship) dưới dạng đồ thị, từ đó hỗ trợ người phân tích dễ dàng quan sát và khám phá các cấu trúc liên kết trong dữ liệu [35-36].
+Việc áp dụng Neo4j trong phân tích dữ liệu Mạng giúp nâng cao khả năng khai thác các mối quan hệ giữa các thực thể và hỗ trợ phát hiện các mẫu kết nối bất thường trong hệ thống. Nhờ khả năng truy vấn linh hoạt và trực quan hóa dữ liệu, cơ sở dữ liệu đồ thị trở thành một công cụ hiệu quả trong việc phát hiện các hành vi gian lận và các hoạt động bất thường trong môi trường Mạng [1] [26][30].
+2.4 Nhận xét và khoảng trống nghiên cứu
+Trong những năm gần đây, nhiều nghiên cứu đã được thực hiện nhằm phát hiện gian lận và các hành vi bất thường trong hệ thống thông tin. Phần lớn các nghiên cứu tập trung vào việc áp dụng các phương pháp học máy và phân tích dữ liệu để phát hiện các mẫu hành vi bất thường trong các lĩnh vực như giao dịch tài chính, thương mại điện tử và hệ thống thanh toán trực tuyến [3][16][20][25].
+Tuy nhiên, hầu hết các nghiên cứu hiện nay chủ yếu dựa trên dữ liệu giao dịch hoặc dữ liệu ứng dụng, trong đó các đặc trưng được trích xuất từ lịch sử giao dịch hoặc hoạt động của người dùng [16][20]. Mặc dù các nguồn dữ liệu này có giá trị trong việc phát hiện gian lận, nhưng chúng chưa phản ánh đầy đủ các mối quan hệ giữa các thực thể trong môi trường mạng.
+Trong khi đó, dữ liệu lưu lượng Mạng chứa nhiều thông tin quan trọng về hoạt động giao tiếp giữa các thiết bị, chẳng hạn như địa chỉ IP, cổng kết nối, giao thức truyền thông hoặc các tên miền được truy cập [51-52]. Các công cụ phân tích lưu lượng Mạng như Wireshark và TShark cho phép thu thập và trích xuất các dữ liệu này phục vụ cho quá trình phân tích.
+Bên cạnh đó, một số nghiên cứu gần đây đã bắt đầu áp dụng phương pháp phân tích đồ thị nhằm phát hiện các Mạng lưới gian lận thông qua việc phân tích các mối quan hệ giữa các thực thể [17][26][30]. Các hệ quản trị cơ sở dữ liệu đồ thị như Neo4j cho phép biểu diễn dữ liệu dưới dạng node và relationship, từ đó hỗ trợ truy vấn và phát hiện các cấu trúc liên kết bất thường trong hệ thống [35]. 
+CHƯƠNG 3. MỤC TIÊU, PHƯƠNG PHÁP VÀ PHẠM VI NGHIÊN CỨU
+3.1 Mục tiêu nghiên cứu
+3.1.1 Mục tiêu tổng quát
+Mục tiêu tổng quát của đề tài là xây dựng một hệ thống thử nghiệm nhằm phát hiện các hành vi lừa bịp trong môi trường Mạng thông qua việc phân tích dữ liệu lưu lượng Mạng và áp dụng mô hình cơ sở dữ liệu đồ thị để biểu diễn và khai thác các mối quan hệ giữa các thực thể trong hệ thống.
+Thông qua việc thu thập và xử lý dữ liệu lưu lượng Mạng, hệ thống có thể trích xuất các thông tin quan trọng liên quan đến hoạt động giao tiếp giữa các thiết bị và các người dùng đầu cuối trên Mạng. Những dữ liệu này sau đó được mô hình hóa dưới dạng đồ thị để thể hiện các mối liên kết giữa các thực thể như địa chỉ IP, tên miền, địa chỉ email hoặc tài khoản người dùng. Việc phân tích cấu trúc liên kết của dữ liệu đồ thị giúp hệ thống phát hiện các mẫu hành vi bất thường hoặc các mối quan hệ đáng ngờ có thể liên quan đến các hoạt động lừa bịp trong môi trường Mạng.
+3.1.2 Mục tiêu cụ thể
+Để đạt được mục tiêu tổng quát đã đề ra, đề tài tập trung thực hiện một số mục tiêu cụ thể sau:
+•	Thu thập dữ liệu lưu lượng Mạng từ môi trường thử nghiệm
+o	Hệ thống tiến hành thu thập các gói tin Mạng từ môi trường thử nghiệm bằng các công cụ phân tích lưu lượng Mạng như Wireshark hoặc TShark. Dữ liệu lưu lượng Mạng được lưu trữ dưới dạng các tệp tin PCAP để phục vụ cho quá trình phân tích sau này.
+•	Phân tích gói tin Mạng và trích xuất các trường dữ liệu quan trọng
+o	Các tệp tin lưu lượng Mạng sau khi được thu thập sẽ được xử lý để phân tích cấu trúc gói tin. Từ các gói tin này, hệ thống trích xuất các trường thông tin quan trọng như địa chỉ IP nguồn, địa chỉ IP đích, cổng kết nối, giao thức truyền thông, tên miền và các đường dẫn tài nguyên web.
+•	Xây dựng tập dữ liệu phục vụ cho quá trình phân tích
+o	Sau khi trích xuất thông tin từ các gói tin Mạng, dữ liệu sẽ được chuẩn hóa và tổ chức lại thành một tập dữ liệu có cấu trúc. Tập dữ liệu này đóng vai trò là nguồn dữ liệu đầu vào cho quá trình mô hình hóa và phân tích trong hệ thống.
+•	Mô hình hóa dữ liệu dưới dạng đồ thị
+o	Các thực thể được xác định từ dữ liệu Mạng như địa chỉ IP, domain, URL, email, FileNode, FileHash, VictimAccount và tài khoản người dùng sẽ được chuyển đổi thành các nút (node) trong mô hình dữ liệu đồ thị. Các mối quan hệ giữa các thực thể được biểu diễn thông qua các quan hệ (relationship) và được lưu trữ trong hệ quản trị cơ sở dữ liệu đồ thị Neo4j.
+•	Phân tích dữ liệu đồ thị để phát hiện các hành vi lừa bịp
+o	Sau khi dữ liệu được lưu trữ trong cơ sở dữ liệu đồ thị, hệ thống tiến hành thực hiện các truy vấn để phân tích các mối quan hệ giữa các thực thể. Thông qua việc tìm kiếm các mẫu liên kết bất thường, hệ thống có thể phát hiện các dấu hiệu tiềm ẩn của các hoạt động lừa bịp trong môi trường mạng.
+Thông qua việc thực hiện các mục tiêu trên, đề tài hướng tới việc xây dựng một mô hình thử nghiệm có khả năng khai thác hiệu quả dữ liệu lưu lượng Mạng và phân tích các mối quan hệ giữa các thực thể trong hệ thống nhằm hỗ trợ phát hiện các hành vi bất thường và lừa bịp trên không gian mạng.
+3.2 Quy trình nghiên cứu
+Quy trình nghiên cứu khoa học được xây dựng nhằm đảm bảo tính hệ thống, logic và khách quan trong toàn bộ quá trình thực hiện đề tài. Việc tuân thủ một quy trình nghiên cứu rõ ràng giúp tổ chức các bước thực hiện một cách khoa học, đồng thời nâng cao độ tin cậy và tính chính xác của kết quả nghiên cứu. Trong đề tài này, quy trình nghiên cứu được triển khai theo nhiều bước liên tiếp, từ việc xác định vấn đề nghiên cứu cho đến quá trình phân tích dữ liệu và trình bày kết quả.
+1. Xác định vấn đề nghiên cứu
+Bước đầu tiên của quá trình nghiên cứu là xác định rõ vấn đề nghiên cứu cần giải quyết không qua phân tích, tổng hợp và khảo sát các bài báo tài liệu xuất bản, tình hình tội phạm và điều tra của Thế Giới tính đến thời điểm hiện tại. Trong bối cảnh hiện nay, các hoạt động lừa bịp và gian lận trên môi trường Mạng ngày càng gia tăng và trở nên phức tạp. Những hành vi này thường được thực hiện thông qua các hình thức giao tiếp Mạng khác nhau, gây khó khăn cho việc phát hiện và phân tích bằng các phương pháp truyền thống.
+Trong giai đoạn này, đề tài tiến hành xác định mục tiêu nghiên cứu, đặt ra các câu hỏi nghiên cứu và xác định phạm vi thực hiện. Việc xác định rõ ràng vấn đề nghiên cứu giúp định hướng cho toàn bộ quá trình thực hiện đề tài, đồng thời đảm bảo rằng các phương pháp và công cụ được lựa chọn sẽ phù hợp với mục tiêu nghiên cứu.
+Tiếp đến, đề tài tập trung nghiên cứu việc sử dụng dữ liệu lưu lượng Mạng và mô hình hóa các mối quan hệ giữa các thực thể trong hệ thống nhằm phát hiện các hành vi lừa bịp. Các thực thể trong hệ thống có thể bao gồm địa chỉ IP, thiết bị Mạng hoặc các phiên kết nối giữa các hệ thống [12-13][27][31].
+2. Tổng quan tài liệu
+Sau khi xác định vấn đề nghiên cứu, bước tiếp theo là tiến hành tổng quan các tài liệu liên quan đến lĩnh vực nghiên cứu. Quá trình tổng quan tài liệu bao gồm việc thu thập, đọc và phân tích các công trình nghiên cứu trước đây liên quan đến các chủ đề như phát hiện gian lận, phân tích lưu lượng mạng, phân tích dữ liệu đồ thị và các phương pháp phát hiện hành vi bất thường trong hệ thống Mạng [52-54].
+Thông qua việc tổng hợp và phân tích các nghiên cứu trước đó, đề tài có thể xác định được các phương pháp đã được áp dụng trong các nghiên cứu tương tự, đồng thời nhận diện được những hạn chế hoặc khoảng trống nghiên cứu cần được tiếp tục khai thác. Ngoài ra, quá trình tổng quan tài liệu cũng giúp xác định các công cụ và công nghệ phù hợp để áp dụng trong nghiên cứu.
+Trong đề tài này, các công cụ phân tích Mạng như Wireshark và TShark được tham khảo và sử dụng trong quá trình thu thập và phân tích dữ liệu lưu lượng Mạng thực tế. Bên cạnh đó, hệ quản trị cơ sở dữ liệu đồ thị Neo4j được sử dụng để mô hình hóa và phân tích các mối quan hệ giữa các thực thể trong dữ liệu [32-33].
+3. Xây dựng đề cương và thiết kế nghiên cứu
+Dựa trên kết quả tổng quan tài liệu, đề tài tiến hành xây dựng đề cương nghiên cứu và thiết kế phương pháp thực hiện phù hợp. Giai đoạn này bao gồm việc lựa chọn phương pháp nghiên cứu, xác định các công cụ và kỹ thuật cần thiết cũng như xây dựng kế hoạch triển khai nghiên cứu [1][18][23].
+Trong nghiên cứu này, hệ thống phát hiện lừa bịp được thiết kế theo mô hình gồm nhiều thành phần, bao gồm mô-đun (module) thu thập dữ liệu Mạng, module xử lý dữ liệu, module lưu trữ dữ liệu và module phân tích dữ liệu. Các thành phần này hoạt động phối hợp với nhau nhằm thu thập và phân tích dữ liệu lưu lượng Mạng một cách hiệu quả.
+Ngoài ra, đề tài cũng thiết kế một môi trường thử nghiệm để mô phỏng các hoạt động Mạng nhằm phục vụ cho việc thu thập dữ liệu và đánh giá hiệu quả của hệ thống phát hiện lừa bịp.
+4. Thu thập dữ liệu
+Trong bước này, dữ liệu lưu lượng Mạng được thu thập từ môi trường thử nghiệm thông qua các công cụ phân tích gói tin. Các công cụ như Wireshark hoặc TShark được sử dụng để ghi lại các gói tin truyền qua Mạng [52-53].
+Các gói tin Mạng được lưu trữ dưới dạng các tệp tin PCAP, trong đó mỗi gói tin chứa nhiều thông tin quan trọng liên quan đến quá trình giao tiếp giữa các thiết bị trong mạng. Những thông tin này có thể bao gồm địa chỉ IP nguồn, địa chỉ IP đích, cổng kết nối, giao thức truyền thông và thời gian truyền dữ liệu.
+Dữ liệu thu thập được từ các tệp PCAP đóng vai trò là nguồn dữ liệu đầu vào cho quá trình xử lý và phân tích trong các bước tiếp theo của nghiên cứu.
+5. Xử lý và phân tích dữ liệu
+Sau khi dữ liệu được thu thập, các gói tin Mạng sẽ được phân tích để trích xuất các trường thông tin quan trọng. Quá trình này bao gồm việc đọc dữ liệu từ các tệp PCAP và trích xuất các trường dữ liệu cần thiết phục vụ cho việc phân tích.
+Các thông tin được trích xuất từ gói tin có thể bao gồm:
+•	Địa chỉ IP nguồn (Source IP)
+•	Địa chỉ IP đích (Destination IP)
+•	Cổng nguồn và cổng đích
+•	Giao thức truyền thông (TCP, UDP, HTTP, DNS,…)
+•	Thời gian truyền dữ liệu
+Sau khi các thông tin này được trích xuất, dữ liệu sẽ được chuyển đổi thành dạng dữ liệu có cấu trúc. Trong bước tiếp theo, dữ liệu được mô hình hóa dưới dạng đồ thị và lưu trữ trong hệ thống cơ sở dữ liệu đồ thị Neo4j [32].
+Trong mô hình dữ liệu đồ thị, các thực thể như địa chỉ IP hoặc thiết bị Mạng được biểu diễn dưới dạng các nút (nodes), trong khi các kết nối hoặc giao tiếp giữa các thực thể được biểu diễn dưới dạng các cạnh (relationships). Việc sử dụng mô hình dữ liệu đồ thị giúp dễ dàng phân tích các mối quan hệ phức tạp giữa các thực thể trong hệ thống.
+Thông qua việc phân tích các mối quan hệ trong đồ thị, hệ thống có thể phát hiện các mẫu hành vi bất thường hoặc các dấu hiệu liên quan đến hoạt động lừa bịp trong môi trường Mạng [12-13][18][27].
+6. Kết luận và kiến nghị
+Sau khi hoàn thành quá trình phân tích dữ liệu, đề tài tiến hành tổng hợp và đánh giá các kết quả đạt được. Các kết quả này được sử dụng để trả lời các câu hỏi nghiên cứu đã được đặt ra ở giai đoạn đầu của đề tài.
+Từ các kết quả phân tích, đề tài đưa ra các kết luận về hiệu quả của phương pháp phát hiện lừa bịp dựa trên phân tích dữ liệu đồ thị. Đồng thời, đề tài cũng đề xuất các hướng cải tiến hoặc nghiên cứu tiếp theo nhằm nâng cao khả năng phát hiện các hành vi bất thường trong hệ thống mạng.
+7. Viết báo cáo và trình bày kết quả
+Bước cuối cùng của quá trình nghiên cứu là tổng hợp toàn bộ nội dung và kết quả nghiên cứu để xây dựng báo cáo khoa học. Báo cáo được trình bày dưới dạng luận văn, bao gồm các phần như cơ sở lý thuyết, phương pháp nghiên cứu, thiết kế hệ thống, kết quả thực nghiệm và các kết luận của đề tài.
+Quá trình viết báo cáo giúp hệ thống hóa toàn bộ các kết quả nghiên cứu và trình bày chúng một cách rõ ràng, logic nhằm phục vụ cho việc đánh giá và công bố kết quả nghiên cứu.
+3.3 Phương pháp nghiên cứu
+Trong quá trình thực hiện đề tài, nhiều phương pháp nghiên cứu khoa học được áp dụng nhằm khảo sát, thu thập, xử lý và phân tích dữ liệu một cách hiệu quả. Việc kết hợp nhiều phương pháp nghiên cứu khác nhau giúp đảm bảo tính khách quan và độ tin cậy của kết quả nghiên cứu.
+1. Phương pháp nghiên cứu định lượng
+Phương pháp nghiên cứu định lượng được sử dụng để phân tích các dữ liệu thu thập được từ lưu lượng mạng. Trong phương pháp này, dữ liệu được biểu diễn dưới dạng các giá trị số và được xử lý thông qua các công cụ phân tích dữ liệu [52-53][55].
+Các thông tin như số lượng kết nối, tần suất giao tiếp giữa các địa chỉ IP hoặc số lượng gói tin truyền qua Mạng trong một khoảng thời gian nhất định được sử dụng để phân tích và phát hiện các mẫu hành vi bất thường trong hệ thống.
+Phương pháp định lượng giúp cung cấp các kết quả phân tích có thể đo lường và so sánh được, từ đó hỗ trợ quá trình đánh giá hiệu quả của hệ thống phát hiện lừa bịp.
+2. Phương pháp quan sát
+Phương pháp quan sát được áp dụng để theo dõi các hoạt động trong môi trường Mạng thông qua việc phân tích các gói tin được ghi lại. Bằng cách quan sát lưu lượng mạng, đề tài có thể nhận diện các hành vi giao tiếp giữa các thiết bị và phát hiện các hoạt động đáng ngờ.
+Các công cụ phân tích gói tin như Wireshark cho phép hiển thị chi tiết các thông tin trong từng gói tin, từ đó hỗ trợ việc quan sát và phân tích lưu lượng Mạng một cách trực quan [52].
+3. Phương pháp thực nghiệm
+Phương pháp thực nghiệm được sử dụng để xây dựng một môi trường thử nghiệm nhằm thu thập dữ liệu Mạng và đánh giá hiệu quả của hệ thống phát hiện lừa bịp. Trong môi trường này, các hoạt động Mạng được mô phỏng nhằm tạo ra dữ liệu lưu lượng Mạng phục vụ cho việc phân tích [53-54][56].
+Dữ liệu thu thập được từ môi trường thử nghiệm sẽ được xử lý và phân tích để kiểm tra khả năng phát hiện các mối quan hệ bất thường giữa các thực thể trong hệ thống. Thông qua các kết quả thực nghiệm, đề tài có thể đánh giá hiệu quả của phương pháp phát hiện lừa bịp được đề xuất.
+3.4 Quy trình xử lý dữ liệu
+Quy trình xử lý dữ liệu trong hệ thống phát hiện lừa bịp được thiết kế nhằm đảm bảo dữ liệu lưu lượng Mạng được thu thập, xử lý và phân tích một cách có hệ thống. Quy trình này bao gồm nhiều bước liên tiếp từ việc thu thập dữ liệu Mạng, xử lý gói tin, trích xuất thông tin quan trọng cho đến việc lưu trữ và phân tích dữ liệu nhằm phát hiện các hành vi bất thường [52-53].
+Trong hệ thống được đề xuất, dữ liệu đầu vào chủ yếu là các gói tin Mạng được ghi lại từ môi trường mạng. Các gói tin này chứa nhiều thông tin quan trọng phản ánh hoạt động giao tiếp giữa các thiết bị trong hệ thống. Thông qua quá trình phân tích và xử lý dữ liệu, các thông tin cần thiết sẽ được trích xuất và chuyển đổi thành dạng dữ liệu có cấu trúc để phục vụ cho quá trình phân tích [12-13][18].
+Quy trình xử lý dữ liệu của hệ thống bao gồm các bước chính sau:
+1. Thu thập dữ liệu mạng
+Bước đầu tiên trong quy trình xử lý dữ liệu là thu thập dữ liệu lưu lượng Mạng từ môi trường thử nghiệm. Trong nghiên cứu này, các công cụ phân tích Mạng như Wireshark và TShark được sử dụng để ghi lại các gói tin truyền qua mạng.
+Các công cụ này cho phép theo dõi và ghi lại toàn bộ các gói tin được truyền trong mạng, đồng thời lưu trữ dữ liệu dưới dạng các tệp PCAP. Các tệp PCAP này chứa thông tin chi tiết về từng gói tin, bao gồm địa chỉ IP nguồn, địa chỉ IP đích, cổng kết nối, giao thức truyền thông và thời gian truyền dữ liệu.
+Dữ liệu thu thập được từ các tệp PCAP đóng vai trò là nguồn dữ liệu đầu vào cho toàn bộ hệ thống phân tích.
+2. Phân tích gói tin mạng
+Sau khi dữ liệu Mạng được thu thập, bước tiếp theo là tiến hành phân tích các gói tin Mạng để trích xuất các thông tin quan trọng. Quá trình này bao gồm việc đọc dữ liệu từ các tệp PCAP và phân tích cấu trúc của từng gói tin.
+Thông qua việc phân tích gói tin, hệ thống có thể trích xuất các trường thông tin cần thiết như:
+•	Địa chỉ IP nguồn
+•	Địa chỉ IP đích
+•	Cổng nguồn và cổng đích
+•	Giao thức truyền thông (TCP, UDP, HTTP, DNS,…)
+•	Thời gian truyền dữ liệu
+Các thông tin này giúp phản ánh hoạt động giao tiếp giữa các thiết bị trong hệ thống mạng.
+3. Trích xuất đặc trưng dữ liệu
+Sau khi các thông tin cơ bản được trích xuất từ các gói tin mạng, bước tiếp theo là tiến hành trích xuất các đặc trưng dữ liệu phục vụ cho quá trình phân tích. Các đặc trưng này có thể bao gồm số lượng kết nối giữa các địa chỉ IP, tần suất giao tiếp giữa các thiết bị, hoặc các thông tin liên quan đến giao thức truyền thông.
+Việc trích xuất đặc trưng giúp chuyển đổi dữ liệu thô từ các gói tin Mạng thành dạng dữ liệu có ý nghĩa hơn và dễ dàng sử dụng trong quá trình phân tích.
+4. Chuyển đổi và lưu trữ dữ liệu
+Sau khi các đặc trưng dữ liệu được trích xuất, dữ liệu sẽ được chuyển đổi thành dạng dữ liệu có cấu trúc để phục vụ cho việc lưu trữ và phân tích. Trong nghiên cứu này, dữ liệu được mô hình hóa dưới dạng đồ thị và lưu trữ trong hệ quản trị cơ sở dữ liệu đồ thị Neo4j.
+Trong mô hình dữ liệu đồ thị, các thực thể như địa chỉ IP hoặc thiết bị Mạng được biểu diễn dưới dạng các nút (nodes), trong khi các kết nối hoặc giao tiếp giữa các thực thể được biểu diễn dưới dạng các cạnh (relationships). Cách biểu diễn này giúp thể hiện rõ ràng các mối quan hệ giữa các thực thể trong hệ thống.
+5. Phân tích dữ liệu và phát hiện lừa bịp
+Bước cuối cùng trong quy trình xử lý dữ liệu là phân tích các mối quan hệ giữa các thực thể nhằm phát hiện các mẫu hành vi bất thường. Bằng cách sử dụng các truy vấn và kỹ thuật phân tích dữ liệu đồ thị, hệ thống có thể phát hiện các kết nối đáng ngờ hoặc các hành vi bất thường trong mạng.
+Các dấu hiệu bất thường có thể bao gồm:
+•	Một địa chỉ IP có tần suất kết nối bất thường
+•	Một thiết bị kết nối với nhiều thiết bị khác trong thời gian ngắn
+•	Các mô hình giao tiếp không bình thường giữa các thực thể
+Thông qua quá trình phân tích này, hệ thống có thể hỗ trợ phát hiện các hành vi lừa bịp hoặc gian lận trong môi trường mạng.
+ 
+Hình 1 UML Activity Diagram của quy trình xử lý dữ liệu
+Quy trình xử lý dữ liệu trong hệ thống phát hiện lừa bịp được miêu tả trong Hình 1. Quy trình bắt đầu từ việc thu thập lưu lượng Mạng từ môi trường thử nghiệm. Các gói tin sau đó được bắt và lưu trữ dưới dạng file pcap. Dữ liệu tiếp tục được trích xuất các trường thông tin quan trọng như địa chỉ IP, domain, URL, email, file và file hash, sau đó được xử lý và chuẩn hóa để tạo thành tập dữ liệu (dataset). Các tập dữ liệu này được mô hình hóa dưới dạng đồ thị và lưu trữ trong cơ sở dữ liệu đồ thị để phục vụ quá trình phân tích và phát hiện các hành vi bất thường.
+3.5 Kiến trúc hệ thống phát hiện lừa bịp
+Kiến trúc hệ thống phát hiện lừa bịp được thiết kế nhằm đảm bảo quá trình thu thập, xử lý và phân tích dữ liệu Mạng được thực hiện một cách hiệu quả. Hệ thống được xây dựng theo mô hình nhiều thành phần, trong đó mỗi thành phần đảm nhiệm một chức năng cụ thể trong quá trình xử lý dữ liệu [1][27][31].
+Kiến trúc tổng thể của hệ thống bao gồm các thành phần chính như module thu thập dữ liệu mạng, module xử lý dữ liệu, module lưu trữ dữ liệu và module phân tích dữ liệu. Các thành phần này được kết nối với nhau để tạo thành một hệ thống hoàn chỉnh có khả năng phát hiện các hành vi lừa bịp trong môi trường mạng.
+ 
+Hình 2 System Architecture Diagram của hệ thống phát hiện lừa bịp
+Hình 2 mô tả kiến trúc tổng thể của hệ thống phát hiện lừa bịp. Hệ thống được chia thành bốn lớp chính gồm lớp thu thập dữ liệu mạng, lớp xử lý dữ liệu, lớp lưu trữ dữ liệu đồ thị và lớp phân tích phát hiện gian lận. Dữ liệu Mạng được thu thập bằng TShark, sau đó được xử lý để trích xuất các trường thông tin cần thiết và xây dựng tập dữ liệu (dataset). Dataset được lưu trữ trong cơ sở dữ liệu đồ thị Neo4j, từ đó các truy vấn quan hệ được thực hiện để phát hiện các mẫu liên kết bất thường.
+1. Module thu thập dữ liệu mạng
+Module thu thập dữ liệu Mạng có nhiệm vụ ghi lại các gói tin truyền qua Mạng từ môi trường hoạt động. Trong nghiên cứu này, các công cụ phân tích gói tin như Wireshark hoặc TShark được sử dụng để thu thập dữ liệu lưu lượng mạng.
+Các gói tin được ghi lại và lưu trữ dưới dạng các tệp PCAP, cung cấp nguồn dữ liệu đầu vào cho các bước xử lý tiếp theo.
+2. Module xử lý dữ liệu
+Sau khi dữ liệu Mạng được thu thập, module xử lý dữ liệu sẽ tiến hành phân tích các gói tin để trích xuất các thông tin cần thiết. Quá trình này bao gồm việc đọc dữ liệu từ các tệp PCAP, phân tích cấu trúc gói tin và trích xuất các trường thông tin quan trọng.
+Dữ liệu sau khi được xử lý sẽ được chuyển đổi thành dạng dữ liệu có cấu trúc để phục vụ cho quá trình lưu trữ và phân tích.
+3. Module lưu trữ dữ liệu
+Module lưu trữ dữ liệu có nhiệm vụ lưu trữ dữ liệu đã được xử lý trong hệ quản trị cơ sở dữ liệu. Trong nghiên cứu này, hệ quản trị cơ sở dữ liệu đồ thị Neo4j được sử dụng để lưu trữ và quản lý dữ liệu [32-33].
+Việc sử dụng cơ sở dữ liệu đồ thị giúp biểu diễn các thực thể và mối quan hệ giữa chúng một cách trực quan và hiệu quả. Các thực thể như địa chỉ IP hoặc thiết bị được biểu diễn dưới dạng các node, trong khi các kết nối giữa các thực thể được biểu diễn dưới dạng các quan hệ (relationship).
+4. Module phân tích và phát hiện lừa bịp
+Module phân tích dữ liệu có nhiệm vụ phân tích các mối quan hệ giữa các thực thể trong dữ liệu đồ thị nhằm phát hiện các hành vi bất thường. Bằng cách sử dụng các truy vấn và thuật toán phân tích đồ thị, hệ thống có thể xác định các mẫu hành vi đáng ngờ hoặc các dấu hiệu của hoạt động lừa bịp.
+Kết quả phân tích từ module này có thể hỗ trợ các nhà quản trị hệ thống trong việc phát hiện sớm các hoạt động gian lận và đưa ra các biện pháp xử lý kịp thời.
+3.6 Mô hình dữ liệu đồ thị
+Trong hệ thống đề xuất, dữ liệu Mạng sau khi được thu thập và xử lý sẽ được biểu diễn dưới dạng mô hình dữ liệu đồ thị nhằm khai thác hiệu quả các mối quan hệ giữa các thực thể trong hệ thống mạng. So với mô hình dữ liệu quan hệ truyền thống, mô hình đồ thị cho phép biểu diễn trực tiếp các liên kết giữa các thực thể, từ đó hỗ trợ phân tích các cấu trúc liên kết phức tạp trong dữ liệu mạng.
+Trong mô hình dữ liệu đồ thị, dữ liệu được biểu diễn dưới hai thành phần chính là nút (node) và quan hệ (relationship). Các nút đại diện cho các thực thể xuất hiện trong dữ liệu mạng, trong khi các quan hệ thể hiện các liên kết hoặc tương tác giữa các thực thể này.
+Trong nghiên cứu này, các thực thể chính được sử dụng để xây dựng mô hình dữ liệu bao gồm:
+•	IP Address: đại diện cho các địa chỉ IP tham gia vào quá trình giao tiếp mạng.
+•	Domain: đại diện cho các tên miền được truy cập trong quá trình truyền thông mạng.
+•	URL: đại diện cho các tài nguyên web cụ thể được truy cập.
+•	Email: đại diện cho các địa chỉ email xuất hiện trong dữ liệu Mạng hoặc trong các hoạt động liên quan.
+•	FileNode: đại diện cho các tệp hoặc tài nguyên tải xuống cần theo dõi.
+•	FileHash: đại diện cho dấu vân tay số của tệp (MD5/SHA).
+•	VictimAccount: đại diện cho tài khoản người dùng bị ảnh hưởng.
+•	AnalysisSession: đại diện cho một phiên phân tích dữ liệu.
+•	User Account: đại diện cho các tài khoản người dùng trong hệ thống.
+Các thực thể này được biểu diễn dưới dạng các nút (node) trong cơ sở dữ liệu đồ thị. Mỗi node có thể chứa nhiều thuộc tính (properties) nhằm mô tả chi tiết đặc điểm của thực thể, chẳng hạn như địa chỉ IP, tên miền, thời gian truy cập hoặc loại giao thức.
+Bên cạnh đó, các mối quan hệ (relationship) được sử dụng để biểu diễn các mối quan hệ giữa các thực thể trong hệ thống. Ví dụ:
+•	IP CONNECTS_TO Domain
+•	Domain HOSTS URL
+•	User USES IP
+•	Email ASSOCIATED_WITH Domain
+•	AnalysisSession HAS_EMAIL/HAS_IP/HAS_URL/HAS_DOMAIN/HAS_FILE/HAS_FILEHASH/HAS_VICTIM
+•	URL DOWNLOADS FileNode
+•	FileNode HAS_HASH FileHash
+Những mối quan hệ này cho phép hệ thống xây dựng một Mạng lưới liên kết giữa các thực thể, từ đó hỗ trợ phát hiện các cấu trúc bất thường hoặc các cụm thực thể có hành vi đáng ngờ.
+Để lưu trữ và quản lý dữ liệu đồ thị, nghiên cứu sử dụng hệ quản trị cơ sở dữ liệu đồ thị Neo4j. Neo4j cho phép lưu trữ dữ liệu dưới dạng đồ thị và hỗ trợ truy vấn các mối quan hệ thông qua ngôn ngữ truy vấn Cypher. Nhờ khả năng truy vấn các đường đi (paths) và các cấu trúc liên kết trong đồ thị, hệ thống có thể phát hiện các mẫu liên kết bất thường giữa các thực thể trong dữ liệu mạng.
+Việc áp dụng mô hình dữ liệu đồ thị giúp hệ thống không chỉ lưu trữ dữ liệu Mạng một cách linh hoạt mà còn hỗ trợ phân tích các quan hệ phức tạp giữa các thực thể. Điều này đặc biệt quan trọng trong các hệ thống phát hiện gian lận, nơi các hành vi lừa bịp thường được tổ chức dưới dạng các Mạng lưới liên kết giữa nhiều thực thể khác nhau.
+3.7 Các mẫu thiết lập Lừa bịp (Fraud Detection Patterns)
+Trong các hệ thống phát hiện gian lận hiện đại, việc phân tích các mối quan hệ giữa các thực thể đóng vai trò quan trọng trong việc phát hiện các hành vi bất thường. Không giống các phương pháp truyền thống chỉ phân tích từng sự kiện riêng lẻ, phương pháp phân tích đồ thị cho phép phát hiện các mẫu liên kết (patterns) giữa nhiều thực thể khác nhau trong hệ thống.
+Trong nghiên cứu này, dữ liệu Mạng được mô hình hóa dưới dạng đồ thị với các nút (node) như IP, Domain, URL, Email, FileNode, FileHash, VictimAccount, AnalysisSession và User Account. Trên cơ sở mô hình dữ liệu này, một số fraud detection patterns được xây dựng nhằm phát hiện các hành vi đáng ngờ dựa trên cấu trúc liên kết giữa các thực thể.
+Ngoài các luật nghiệp vụ, hệ thống còn áp dụng hybrid scoring để hỗ trợ xếp hạng rủi ro với ba lớp: rule-based, KNN và Bayesian. Điểm tổng hợp được tính theo công thức: FinalScore = 0.4*RuleScore + 0.3*KNNScore + 0.3*BayesianScore.
+Các mẫu phát hiện gian lận chính được sử dụng trong hệ thống bao gồm:
+3.7.1 Suspicious IP–Domain Pattern
+Một trong những dấu hiệu phổ biến của các hoạt động lừa bịp hoặc tấn công Mạng là việc một địa chỉ IP truy cập đến nhiều domain đáng ngờ trong khoảng thời gian ngắn. Điều này có thể xảy ra trong các chiến dịch phishing, botnet hoặc truyền thông mã độc (malware communication).
+Trong mô hình đồ thị, pattern này có thể được biểu diễn như sau:
+((IP) ---- CONNECTS_TO ---- (Domain1)
+(IP) ---- CONNECTS_TO ---- (Domain2)
+(IP) ---- CONNECTS_TO ---- (Domain3)
+Nếu một địa chỉ IP kết nối đến nhiều domain có dấu hiệu đáng ngờ, hệ thống có thể đánh dấu IP đó là một thực thể cần được theo dõi.
+Ví dụ truy vấn trong Cypher:
+MATCH (ip:IP)-[:CONNECTS_TO]->(d:Domain)
+WITH ip, count(d) AS domain_count
+WHERE domain_count > 10
+RETURN ip, domain_count
+Truy vấn này giúp phát hiện các địa chỉ IP kết nối tới số lượng domain lớn bất thường, có thể liên quan đến các hoạt động bot hoặc quét hệ thống
+3.7.2 Mẫu chia sẻ cơ sở hạ tầng (Shared Infrastructure Pattern)
+Trong nhiều chiến dịch lừa đảo hoặc tấn công mạng, các domain độc hại thường sử dụng chung hạ tầng máy chủ. Điều này có nghĩa là nhiều domain khác nhau có thể được lưu trữ trên cùng một địa chỉ IP.
+Pattern này có thể được biểu diễn như sau:
+(Domain1)
+     |
+HOSTED_ON
+     |
+     (IP)
+     |
+HOSTED_ON
+     |
+(Domain2)
+Nếu nhiều domain đáng ngờ cùng liên kết với một IP, điều này có thể cho thấy sự tồn tại của một hạ tầng tấn công chung.
+Ví dụ truy vấn:
+MATCH (d:Domain)-[:HOSTED_ON]->(ip:IP)
+WITH ip, collect(d) AS domains, count(d) AS domain_count
+WHERE domain_count > 5
+RETURN ip, domains
+Truy vấn này giúp xác định các máy chủ lưu trữ nhiều domain bất thường, có thể liên quan đến các hệ thống phát tán malware hoặc phishing.
+3.7.3 Mẫu chiến dịch Phishing (Phishing Campaign Pattern)
+Trong các chiến dịch phishing, kẻ tấn công thường sử dụng nhiều URL hoặc domain khác nhau nhưng lại liên kết với cùng một địa chỉ email hoặc cùng một hạ tầng máy chủ.
+Pattern này có thể được biểu diễn như sau:
+(Email)
+   |
+USES
+   |
+(Domain1) ---- HOSTS ---- (URL1)
+   |
+(Email)
+   |
+USES
+   |
+(Domain2) ---- HOSTS ---- (URL2)
+Việc phát hiện các mẫu (Patterns) như vậy giúp xác định các chiến dịch phishing có tổ chức, trong đó nhiều tài nguyên web được sử dụng để lừa người dùng.
+Ví dụ truy vấn:
+MATCH (e:Email)-[:ASSOCIATED_WITH]->(d:Domain)
+WITH e, count(d) AS domain_count
+WHERE domain_count > 3
+RETURN e, domain_count
+Truy vấn này giúp phát hiện các địa chỉ email liên quan đến nhiều domain khác nhau, có thể là dấu hiệu của một chiến dịch phishing.
+3.7.4 Mẫu lừa bịp nhiều tài khoản (Multi-Account Fraud Pattern)
+Trong một số hệ thống trực tuyến, các đối tượng gian lận có thể tạo nhiều tài khoản người dùng khác nhau nhưng sử dụng chung một địa chỉ IP. Điều này thường xảy ra trong các hoạt động gian lận như tạo tài khoản ảo, spam hoặc lạm dụng hệ thống.
+Pattern này có thể được biểu diễn như sau:
+(User1)
+   |
+USES
+   |
+(IP)
+
+(User2)
+   |
+USES
+   |
+(IP)
+
+(User3)
+   |
+USES
+   |
+(IP)
+Nếu một địa chỉ IP được sử dụng bởi nhiều tài khoản khác nhau trong thời gian ngắn, hệ thống có thể đánh dấu đây là hành vi đáng ngờ.
+Ví dụ truy vấn:
+MATCH (u:User)-[:USES]->(ip:IP)
+WITH ip, count(u) AS user_count
+WHERE user_count > 5
+RETURN ip, user_count
+Truy vấn này giúp phát hiện các địa chỉ IP liên quan đến nhiều tài khoản người dùng, từ đó hỗ trợ phát hiện các hoạt động gian lận
+3.7.5 Ý nghĩa của Mẫu phát hiện lừa bịp (Fraud Detection Patterns)
+Các Mẫu phát hiện lừa bịp đóng vai trò quan trọng trong việc khai thác cấu trúc liên kết của dữ liệu đồ thị nhằm phát hiện các hành vi gian lận hoặc tấn công Mạng. Thông qua việc sử dụng các truy vấn đồ thị và phân tích các mối quan hệ giữa các thực thể, hệ thống có thể phát hiện các mẫu liên kết bất thường mà các phương pháp phân tích dữ liệu truyền thống khó có thể nhận ra.
+Việc kết hợp giữa phân tích lưu lượng Mạng và phân tích đồ thị cho phép hệ thống phát hiện các Mạng lưới liên kết đáng ngờ giữa các thực thể như IP, domain, URL và tài khoản người dùng. Điều này góp phần nâng cao hiệu quả của các hệ thống phát hiện gian lận trong môi trường Mạng hiện đại.
+3.7.6 Nội dung triển khai bổ sung
+Nhằm mở rộng phạm vi nghiên cứu từ mô hình phân tích cơ bản sang mô hình phát hiện gian lận theo ngữ cảnh quan hệ, hệ thống đã được bổ sung thêm các nội dung triển khai quan trọng.
+
+Thứ nhất, mô hình dữ liệu đồ thị đã được mở rộng từ nhóm thực thể cơ bản (Email, IP, URL, Domain) sang nhóm thực thể phản ánh đầy đủ chuỗi tấn công gồm FileNode, FileHash, VictimAccount và AnalysisSession. Việc bổ sung này cho phép truy vết từ điểm phát sinh (email/url/ip) đến tạo tác kỹ thuật (file/hash) và đối tượng bị tác động (victim account), giúp tăng khả năng điều tra liên kết đa chiều.
+
+Thứ hai, hệ thống đã hoàn thiện kiến trúc hybrid scoring theo ba lớp: rule-based, KNN và Bayesian. Điểm rủi ro tổng hợp được tính theo công thức FinalScore = 0.4*RuleScore + 0.3*KNNScore + 0.3*BayesianScore. Cách tiếp cận này giúp cân bằng giữa khả năng giải thích theo luật nghiệp vụ và khả năng học theo dữ liệu lịch sử.
+
+Thứ ba, ngoài KNN đang dùng trong luồng chính, đề tài đã bổ sung phần khung so sánh cho Logistic Regression, Decision Tree và J48 để phục vụ các đợt thực nghiệm tiếp theo. Điều này tạo nền tảng để đánh giá hiệu năng, độ ổn định và khả năng tổng quát hóa giữa các thuật toán phân loại trên cùng bộ dữ liệu.
+
+Thứ tư, lớp bảo mật và kiểm soát truy cập được chuẩn hóa với xác thực theo phiên bằng Spring Security, phân quyền theo vai trò Admin/Staff/Customer, cùng định hướng triển khai các cơ chế bảo vệ API và truy vấn an toàn.
+
+Thứ năm, pipeline dữ liệu thực nghiệm được hoàn thiện theo chuỗi Wireshark/TShark (PCAP) -> trích xuất/chuẩn hóa dữ liệu -> nhập dữ liệu bảng bằng Apache POI -> đồng bộ vào Neo4j -> trực quan hóa bằng D3.js. Quy trình này bảo đảm tính tái lập của thí nghiệm và tăng độ tin cậy cho kết quả phân tích.
+
+Nhìn chung, các phần bổ sung đã giúp hệ thống chuyển từ phân tích theo thực thể đơn lẻ sang phân tích theo hành vi liên kết, nâng cao khả năng phát hiện chuỗi gian lận và tăng chất lượng giải thích kết quả.
+3.8 Đối tượng nghiên cứu
+Đối tượng nghiên cứu của đề tài là các thực thể dữ liệu xuất hiện trong quá trình phân tích lưu lượng Mạng. Các thực thể này được sử dụng để xây dựng mô hình dữ liệu đồ thị phục vụ phát hiện lừa bịp.
+ 
+Hình 3 Mô hình dữ liệu đồ thị (Graph Data Model) của hệ thống
+Hình 3 mô tả mô hình dữ liệu đồ thị được sử dụng trong hệ thống. Các thực thể chính như Email, IP, URL, Domain, FileNode, FileHash, VictimAccount và AnalysisSession được biểu diễn dưới dạng node trong cơ sở dữ liệu đồ thị. Các mối quan hệ giữa các thực thể được biểu diễn thông qua các relationship như HAS_EMAIL, HAS_IP, HAS_URL, HAS_DOMAIN, HAS_FILE, HAS_FILEHASH, HAS_VICTIM, SENT_FROM_IP, CONTAINS_URL, HOSTED_ON, HOSTED_ON_DOMAIN, RESOLVES_TO, DOWNLOADS, HAS_HASH, RECEIVED và CONNECTS_TO. Việc mô hình hóa dữ liệu dưới dạng đồ thị giúp thể hiện rõ cấu trúc liên kết giữa các thực thể, từ đó hỗ trợ truy vấn, phát hiện mẫu hành vi gian lận và theo dõi phiên phân tích trong hệ thống.
+Bảng 1 Các thực thể dữ liệu trong hệ thống
+STT	Thực thể	Mô tả
+1	IP	Địa chỉ IP xuất hiện trong lưu lượng mạng
+2	Domain	Tên miền được truy cập
+3	URL	Đường dẫn tài nguyên web
+4	Email	Địa chỉ email xuất hiện trong dữ liệu
+5	Victim Account	Tài khoản người dùng có thể bị ảnh hưởng
+
+Các thực thể này được liên kết với nhau thông qua các quan hệ trong mô hình đồ thị.
+Bảng 2 Các quan hệ trong mô hình đồ thị
+STT	Quan hệ	Ý nghĩa
+1	HAS_IP	Tài khoản sử dụng địa chỉ IP
+2	HAS_EMAIL	Tài khoản liên kết với email
+3	HAS_URL	Domain chứa URL
+4	HOSTED_ON	Domain được lưu trữ trên IP
+5	SENT_FROM_IP	Email được gửi từ IP
+
+Mối quan hệ giữa các thực thể trong mô hình đồ thị được minh họa trong Hình 3 bao gồm 05 thực thể và mối liên hệ.
+3.9 Phạm vi nghiên cứu
+Đề tài được thực hiện trong phạm vi môi trường thử nghiệm nhằm đảm bảo tính kiểm soát và an toàn trong quá trình thu thập, xử lý và phân tích dữ liệu lưu lượng mạng. Việc triển khai trong môi trường thử nghiệm cho phép kiểm soát các nguồn dữ liệu đầu vào, đồng thời tránh ảnh hưởng đến các hệ thống Mạng thực tế. Cách tiếp cận này thường được sử dụng trong các nghiên cứu về phân tích lưu lượng Mạng và phát hiện tấn công nhằm đảm bảo tính tái lập và an toàn của quá trình thực nghiệm [51-52].
+Dữ liệu lưu lượng Mạng được thu thập từ các hoạt động Mạng trong môi trường thử nghiệm và được lưu trữ dưới dạng các tệp gói tin (PCAP). Các tệp dữ liệu này sau đó được phân tích bằng công cụ TShark để trích xuất các trường thông tin quan trọng như địa chỉ IP, domain, URL và email. Dữ liệu sau khi trích xuất sẽ được xử lý và chuẩn hóa nhằm loại bỏ các giá trị trùng lặp hoặc không hợp lệ trước khi được sử dụng trong quá trình xây dựng mô hình dữ liệu. Việc khai thác các đặc trưng từ URL và domain đã được chứng minh là có hiệu quả trong nhiều nghiên cứu liên quan đến phát hiện các trang web độc hại và các chiến dịch phishing [1][16][24].
+Phạm vi nghiên cứu của đề tài tập trung vào việc xây dựng mô hình dữ liệu đồ thị nhằm biểu diễn các mối quan hệ giữa các thực thể trong dữ liệu mạng và phục vụ phân tích theo phiên. Các thực thể chính được xem xét trong nghiên cứu bao gồm Email, IP, URL, Domain, FileNode, FileHash, VictimAccount và AnalysisSession. Các thực thể này được liên kết với nhau thông qua các quan hệ như HAS_EMAIL, HAS_IP, HAS_URL, HAS_DOMAIN, HAS_FILE, HAS_FILEHASH, HAS_VICTIM, SENT_FROM_IP, CONTAINS_URL, HOSTED_ON, HOSTED_ON_DOMAIN, RESOLVES_TO, DOWNLOADS, HAS_HASH và RECEIVED. Mô hình dữ liệu đồ thị sau khi được xây dựng sẽ được lưu trữ và quản lý trong hệ quản trị cơ sở dữ liệu đồ thị Neo4j. Phương pháp mô hình hóa dữ liệu dưới dạng đồ thị đã được nhiều nghiên cứu chứng minh là hiệu quả trong việc biểu diễn và phân tích các mối quan hệ phức tạp giữa các thực thể trong hệ thống Mạng và hệ thống gian lận trực tuyến [11][17][22][26].
+Bên cạnh việc xây dựng mô hình dữ liệu, đề tài cũng tập trung thiết kế quy trình phân tích dữ liệu đồ thị nhằm phát hiện các mẫu liên kết bất thường giữa các thực thể. Các truy vấn đồ thị được sử dụng để xác định các mối quan hệ đáng ngờ, chẳng hạn như nhiều tài khoản người dùng sử dụng cùng một địa chỉ IP, nhiều domain được lưu trữ trên cùng một máy chủ hoặc nhiều email được gửi từ cùng một nguồn. Việc phân tích các mối quan hệ này giúp phát hiện các dấu hiệu tiềm ẩn của các hoạt động lừa bịp trong hệ thống. Các phương pháp phân tích Mạng và khai phá đồ thị cũng đã được áp dụng rộng rãi trong các nghiên cứu về phát hiện gian lận và tấn công Mạng [7][30].
+Tuy nhiên, đề tài chỉ tập trung vào việc thiết kế mô hình dữ liệu và xây dựng hệ thống thử nghiệm, do đó một số nội dung không nằm trong phạm vi nghiên cứu. Cụ thể, đề tài chưa triển khai hệ thống trên môi trường Mạng thực tế với quy mô lớn và chưa tích hợp trực tiếp với các hệ thống giám sát hoặc bảo mật Mạng hiện có. Ngoài ra, việc phát triển các thuật toán học máy hoặc trí tuệ nhân tạo để tự động phát hiện gian lận cũng chưa được xem xét trong nghiên cứu này, mặc dù nhiều nghiên cứu gần đây đã chứng minh hiệu quả của các phương pháp học máy và học sâu trong phát hiện các hoạt động gian lận trực tuyến [4][23][29], cũng như phát sinh thêm các dữ liệu sai lệch (Generative AI) và các hành vi lừa bịp (fake deep Face AI) trên không gian Mạng [60-61].
+Nhìn chung, phạm vi nghiên cứu của đề tài tập trung vào việc xây dựng và đánh giá khả năng ứng dụng của mô hình dữ liệu đồ thị trong phân tích dữ liệu Mạng nhằm hỗ trợ phát hiện các hành vi lừa bịp. Các kết quả thu được từ hệ thống thử nghiệm sẽ là cơ sở cho các nghiên cứu và phát triển tiếp theo trong lĩnh vực phân tích an ninh Mạng dựa trên dữ liệu đồ thị. 
+CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU VÀ THẢO LUẬN
+4.1 Thiết kế hệ thống thử nghiệm
+Hệ thống thử nghiệm được xây dựng nhằm đánh giá khả năng áp dụng mô hình dữ liệu đồ thị trong việc phân tích dữ liệu lưu lượng Mạng và phát hiện các hành vi lừa bịp. Hệ thống được thiết kế theo một chuỗi xử lý dữ liệu gồm nhiều bước liên tiếp, bắt đầu từ việc thu thập dữ liệu Mạng cho đến quá trình phân tích các mối quan hệ giữa các thực thể trong hệ thống.
+Quy trình xử lý dữ liệu của hệ thống cho phép chuyển đổi dữ liệu thô từ lưu lượng Mạng thành mô hình dữ liệu đồ thị có cấu trúc. Nhờ đó, các mối quan hệ giữa các thực thể như địa chỉ IP, domain, URL, email và tài khoản người dùng có thể được biểu diễn rõ ràng và dễ dàng phân tích. Thông qua các truy vấn đồ thị, hệ thống có thể phát hiện các mẫu liên kết bất thường có khả năng liên quan đến các hoạt động lừa bịp.
+Quy trình tổng thể của hệ thống được minh họa trong Hình 4.
+ 
+Hình 4 Quy trình xử lý dữ liệu trong hệ thống thử nghiệm
+Quy trình xử lý dữ liệu trong hệ thống thử nghiệm, Hình 4, bao gồm bốn thành phần chính: thu thập dữ liệu, trích xuất dữ liệu, mô hình hóa dữ liệu đồ thị và phân tích truy vấn.
+4.1.1 Thu thập dữ liệu
+Ở giai đoạn đầu, lưu lượng Mạng được thu thập từ môi trường thử nghiệm nhằm tạo nguồn dữ liệu đầu vào cho hệ thống phân tích. Quá trình thu thập được thực hiện bằng các công cụ phân tích Mạng như Wireshark hoặc TShark.
+Các công cụ này cho phép ghi lại toàn bộ các gói tin truyền qua Mạng và lưu trữ dưới dạng tệp PCAP (Packet Capture). File PCAP chứa nhiều thông tin quan trọng của các gói tin Mạng như địa chỉ IP nguồn, địa chỉ IP đích, giao thức truyền thông, cổng kết nối và dữ liệu ứng dụng. Việc lưu trữ dữ liệu dưới dạng PCAP giúp giữ nguyên cấu trúc ban đầu của lưu lượng Mạng và tạo điều kiện thuận lợi cho quá trình phân tích sau này.
+4.1.2 Trích xuất dữ liệu
+Sau khi thu thập dữ liệu mạng, các tệp PCAP sẽ được xử lý nhằm trích xuất các trường thông tin cần thiết phục vụ cho việc phân tích. Quá trình này được thực hiện bằng công cụ TShark, một phiên bản dòng lệnh của Wireshark.
+Thông qua các lệnh truy vấn và bộ lọc dữ liệu, hệ thống có thể trích xuất các trường thông tin quan trọng từ gói tin mạng, bao gồm:
+•	Địa chỉ IP nguồn và IP đích
+•	Domain được truy cập
+•	URL của tài nguyên web
+•	Cổng kết nối (port)
+•	Thời gian xảy ra kết nối
+Các dữ liệu sau khi trích xuất được lưu trữ dưới dạng bảng dữ liệu hoặc file CSV để thuận tiện cho việc xử lý và phân tích ở các bước tiếp theo.
+4.1.3 Xử lý và chuẩn hóa dữ liệu
+Dữ liệu sau khi trích xuất từ các tệp PCAP thường chứa nhiều thông tin dư thừa hoặc trùng lặp. Do đó, trước khi xây dựng mô hình dữ liệu đồ thị, dữ liệu cần được xử lý và chuẩn hóa.
+Quá trình xử lý dữ liệu bao gồm các bước:
+•	Loại bỏ các bản ghi trùng lặp
+•	Lọc bỏ các giá trị không hợp lệ hoặc thiếu dữ liệu
+•	Chuẩn hóa định dạng của các trường dữ liệu
+•	Xác định các thực thể cần thiết để xây dựng mô hình đồ thị
+Sau khi hoàn thành bước xử lý này, dữ liệu sẽ được chuyển đổi sang cấu trúc phù hợp để nhập vào cơ sở dữ liệu đồ thị.
+4.1.4 Mô hình hóa dữ liệu đồ thị
+Ở bước này, dữ liệu đã được xử lý sẽ được chuyển đổi thành mô hình dữ liệu đồ thị để lưu trữ và phân tích. Hệ thống sử dụng cơ sở dữ liệu đồ thị Neo4j để quản lý và lưu trữ các thực thể và mối quan hệ giữa chúng.
+Trong mô hình đồ thị:
+•	Các thực thể như Email, IP, URL, Domain, FileNode, FileHash và VictimAccount được biểu diễn dưới dạng node.
+•	Các mối quan hệ giữa các thực thể được biểu diễn dưới dạng relationship.
+Ví dụ:
+•	AnalysisSession → HAS_EMAIL/HAS_IP/HAS_URL/HAS_DOMAIN/HAS_FILE/HAS_FILEHASH/HAS_VICTIM → thực thể
+•	Email → SENT_FROM_IP → IP
+•	Email → CONTAINS_URL → URL
+•	URL → HOSTED_ON → Domain
+•	URL → HOSTED_ON_DOMAIN → Domain
+•	Domain → RESOLVES_TO → IP
+•	URL → DOWNLOADS → FileNode
+•	FileNode → HAS_HASH → FileHash
+•	VictimAccount → RECEIVED → Email
+Cách biểu diễn này giúp hệ thống dễ dàng truy vết các liên kết giữa các thực thể và phát hiện các chuỗi quan hệ phức tạp.
+4.1.5 Phân tích và truy vấn dữ liệu
+Sau khi dữ liệu đã được lưu trữ trong cơ sở dữ liệu đồ thị, hệ thống tiến hành thực hiện các truy vấn để phân tích mối quan hệ giữa các thực thể. Các truy vấn được thực hiện bằng ngôn ngữ Cypher, ngôn ngữ truy vấn chuyên dụng của Neo4j.
+Thông qua các truy vấn đồ thị, hệ thống có thể phát hiện các mẫu liên kết bất thường, chẳng hạn như:
+•	Một địa chỉ IP được sử dụng bởi nhiều tài khoản người dùng
+•	Nhiều domain được lưu trữ trên cùng một máy chủ
+•	Một email được gửi từ cùng một địa chỉ IP trong nhiều lần khác nhau
+•	Một domain chứa nhiều URL đáng ngờ
+Những mẫu liên kết này có thể là dấu hiệu của các hoạt động lừa bịp hoặc các chiến dịch tấn công có tổ chức. Việc phân tích các mối quan hệ trong đồ thị giúp hệ thống phát hiện các hành vi bất thường một cách hiệu quả hơn so với các phương pháp phân tích dữ liệu truyền thống.
+4.2 Xây dựng mô hình dữ liệu đồ thị
+Mô hình dữ liệu đồ thị của hệ thống được xây dựng dựa trên các thực thể và mối quan hệ đã được xác định trong Chương 3. Việc biểu diễn dữ liệu dưới dạng đồ thị cho phép mô tả trực quan các mối liên kết giữa các thực thể trong hệ thống, từ đó hỗ trợ hiệu quả cho quá trình phân tích và phát hiện các hành vi lừa bịp.
+Trong mô hình dữ liệu đồ thị, các đối tượng dữ liệu được biểu diễn dưới dạng nút (node), trong khi các mối quan hệ giữa các đối tượng được biểu diễn dưới dạng relationship (quan hệ). Cách biểu diễn này giúp thể hiện rõ cấu trúc liên kết giữa các thực thể và cho phép thực hiện các truy vấn quan hệ một cách linh hoạt.
+Hệ thống sử dụng cơ sở dữ liệu đồ thị Neo4j để lưu trữ và quản lý dữ liệu đồ thị. Neo4j cung cấp khả năng lưu trữ dữ liệu dưới dạng node và relationship, đồng thời hỗ trợ ngôn ngữ truy vấn Cypher để phân tích các mối quan hệ trong đồ thị.
+4.2.1 Các thực thể trong mô hình đồ thị
+Các thực thể chính trong hệ thống được xác định dựa trên các thông tin trích xuất từ dữ liệu lưu lượng mạng. Mỗi thực thể được biểu diễn dưới dạng một node trong cơ sở dữ liệu đồ thị.
+Các thực thể chính bao gồm:
+•	IP: Đại diện cho địa chỉ IP xuất hiện trong lưu lượng mạng. Địa chỉ IP có thể đóng vai trò là nguồn hoặc đích của các kết nối Mạng và có thể liên kết với nhiều thực thể khác trong hệ thống.
+•	Domain: Đại diện cho tên miền được truy cập trong quá trình giao tiếp mạng. Một domain có thể chứa nhiều URL khác nhau và được lưu trữ trên một hoặc nhiều địa chỉ IP.
+•	URL: Đại diện cho đường dẫn tài nguyên web cụ thể được truy cập. URL thường là thành phần chi tiết của một domain và có thể được sử dụng trong các trang web hoặc chiến dịch lừa đảo.
+•	Email: Đại diện cho địa chỉ email xuất hiện trong dữ liệu. Email có thể được sử dụng để gửi các thông điệp chứa liên kết độc hại hoặc các nội dung lừa bịp.
+•	VictimAccount: Đại diện cho tài khoản người dùng có khả năng bị ảnh hưởng hoặc bị khai thác trong các hoạt động lừa bịp. Tài khoản này có thể liên kết với nhiều địa chỉ IP hoặc email khác nhau trong quá trình sử dụng hệ thống.
+4.2.2 Các quan hệ trong mô hình đồ thị
+Bên cạnh các thực thể, các mối quan hệ giữa các thực thể đóng vai trò quan trọng trong việc mô tả cấu trúc liên kết của dữ liệu. Các quan hệ này được xác định dựa trên thông  tin trích xuất từ lưu lượng Mạng và được định nghĩa trong Bảng 3.2 của Chương 3.
+Các quan hệ chính trong hệ thống bao gồm:
+•	HAS_IP: Biểu diễn mối quan hệ giữa một VictimAccount và một IP, cho thấy tài khoản người dùng đã sử dụng địa chỉ IP đó để truy cập hoặc thực hiện các hoạt động trên mạng.
+•	HAS_EMAIL: Biểu diễn mối quan hệ giữa một VictimAccount và một Email, thể hiện rằng tài khoản người dùng có liên kết với địa chỉ email tương ứng.
+•	HAS_URL: Biểu diễn mối quan hệ giữa Domain và URL, cho thấy một domain có thể chứa nhiều đường dẫn tài nguyên web khác nhau.
+•	HOSTED_ON: Biểu diễn mối quan hệ giữa Domain và IP, thể hiện rằng domain đó được lưu trữ trên một địa chỉ IP cụ thể.
+•	SENT_FROM_IP: Biểu diễn mối quan hệ giữa Email và IP, cho thấy email được gửi từ một địa chỉ IP nhất định.
+4.2.3 Mô phỏng cấu trúc dữ liệu đồ thị
+Dựa trên các thực thể và quan hệ đã được xác định, mô hình dữ liệu đồ thị của hệ thống có thể được biểu diễn dưới dạng các liên kết giữa các node như sau:
+•	VictimAccount ── HAS_IP ──► IP
+•	VictimAccount ── HAS_EMAIL ──► Email
+•	Domain ── HAS_URL ──► URL
+•	Domain ── HOSTED_ON ──► IP
+•	Email ── SENT_FROM_IP ──► IP
+Trong mô hình này, mỗi node đại diện cho một thực thể dữ liệu, trong khi các mũi tên biểu diễn các quan hệ giữa các thực thể. Cấu trúc đồ thị cho phép hệ thống dễ dàng truy vết các liên kết giữa nhiều loại dữ liệu khác nhau.
+4.2.4 Ý nghĩa của mô hình đồ thị trong phát hiện gian lận
+Việc mô hình hóa dữ liệu theo cấu trúc đồ thị giúp hệ thống có thể phân tích các mối quan hệ phức tạp giữa các thực thể trong dữ liệu mạng. Thay vì chỉ xem xét từng sự kiện riêng lẻ, mô hình đồ thị cho phép hệ thống đánh giá toàn bộ cấu trúc liên kết của dữ liệu.
+Thông qua các truy vấn đồ thị, hệ thống có thể phát hiện các mẫu liên kết bất thường, chẳng hạn như:
+•	Nhiều VictimAccount sử dụng cùng một địa chỉ IP.
+•	Nhiều Domain được lưu trữ trên cùng một máy chủ IP.
+•	Một địa chỉ IP gửi nhiều Email khác nhau trong thời gian ngắn.
+•	Một Domain chứa nhiều URL đáng ngờ.
+Những mẫu liên kết này có thể phản ánh các hoạt động lừa bịp hoặc các chiến dịch tấn công có tổ chức. Nhờ khả năng truy vết theo đường đi trong đồ thị, hệ thống có thể phát hiện các chuỗi liên kết phức tạp mà các phương pháp phân tích dữ liệu truyền thống khó nhận diện.
+4.3 Kết quả phát hiện mẫu bất thường
+Sau khi dữ liệu được thu thập, xử lý và nạp vào cơ sở dữ liệu đồ thị Neo4j, hệ thống tiến hành thực hiện các truy vấn nhằm phân tích các mối quan hệ giữa các thực thể và phát hiện các mẫu liên kết bất thường trong Mạng lưới dữ liệu.
+Kết quả thử nghiệm cho thấy việc mô hình hóa dữ liệu dưới dạng đồ thị giúp làm rõ các mối liên kết giữa các thực thể như địa chỉ IP, domain, URL, email và tài khoản người dùng. Thông qua việc biểu diễn dữ liệu dưới dạng node và relationship, hệ thống có thể phân tích các quan hệ phức tạp giữa nhiều thực thể khác nhau trong hệ thống mạng.
+Không giống như các phương pháp phân tích lưu lượng Mạng truyền thống thường chỉ xem xét từng gói tin hoặc từng sự kiện riêng lẻ, phương pháp phân tích đồ thị cho phép đánh giá toàn bộ cấu trúc liên kết của dữ liệu. Nhờ đó, hệ thống có khả năng phát hiện các mẫu hành vi bất thường hoặc các chuỗi liên kết đáng ngờ có thể liên quan đến các hoạt động lừa bịp trên môi trường mạng.
+4.3.1 Trực quan hóa đồ thị dữ liệu
+Sau khi dữ liệu được nhập vào cơ sở dữ liệu đồ thị, hệ thống tiến hành trực quan hóa cấu trúc liên kết giữa các thực thể nhằm hỗ trợ quá trình phân tích dữ liệu.
+ 
+Hình 5 Trực quan hóa đồ thị gian lận trong hệ thống thử nghiệm
+Hình 5 minh họa cấu trúc đồ thị dữ liệu được xây dựng từ dữ liệu lưu lượng mạng. Trong đồ thị này, mỗi node đại diện cho một thực thể trong hệ thống, chẳng hạn như địa chỉ IP, domain, URL, email hoặc tài khoản người dùng. Các đường kết nối giữa các node biểu diễn các mối quan hệ giữa các thực thể.
+Trong đồ thị:
+•	Các node màu xanh biểu diễn các thực thể thông thường trong hệ thống.
+•	Các node màu vàng hoặc cam biểu diễn các thực thể có mức độ rủi ro cao hơn hoặc có nhiều liên kết đáng ngờ.
+•	Các đường kết nối thể hiện các mối quan hệ giữa các thực thể như truy cập, gửi dữ liệu hoặc lưu trữ tài nguyên.
+Thông qua việc trực quan hóa đồ thị, có thể nhận thấy dữ liệu Mạng hình thành nhiều cụm liên kết (clusters) khác nhau. Một số cụm node có mật độ kết nối cao, cho thấy sự tồn tại của các nhóm thực thể có mối quan hệ chặt chẽ với nhau trong quá trình giao tiếp mạng.
+Đặc biệt, một số nút (node) đóng vai trò như các nút (node) trung tâm (hub nodes) với số lượng kết nối lớn tới nhiều nút khác. Những node này có thể đại diện cho các máy chủ, hệ thống trung gian hoặc các thực thể tham gia vào nhiều phiên giao tiếp Mạng khác nhau. Trong một số trường hợp, các node trung tâm này có thể liên quan đến các hệ thống phát tán nội dung lừa đảo hoặc các chiến dịch tấn công mạng.
+Việc trực quan hóa cấu trúc đồ thị giúp các nhà phân tích dễ dàng nhận diện các cụm liên kết bất thường cũng như các thực thể có vai trò quan trọng trong Mạng lưới dữ liệu.
+4.3.2 Phát hiện các mẫu liên kết bất thường
+Dựa trên các truy vấn quan hệ trong cơ sở dữ liệu đồ thị, hệ thống có thể phát hiện nhiều mẫu liên kết bất thường giữa các thực thể trong dữ liệu mạng.
+Một số mẫu bất thường được phát hiện bao gồm:
+•	Một địa chỉ IP liên kết với nhiều tài khoản người dùng
+o	Thông qua quan hệ HAS_IP, hệ thống phát hiện một số địa chỉ IP được sử dụng bởi nhiều tài khoản người dùng khác nhau. Điều này có thể là dấu hiệu của việc sử dụng cùng một nguồn truy cập để đăng nhập vào nhiều tài khoản, hoặc có thể liên quan đến các hoạt động truy cập bất thường trong hệ thống.
+•	Một domain chứa nhiều URL khác nhau
+o	Quan hệ HAS_URL cho thấy một domain có thể chứa nhiều URL khác nhau. Trong một số trường hợp, các URL này có cấu trúc tương tự nhau hoặc dẫn đến các trang có nội dung tương tự. Điều này có thể cho thấy khả năng tồn tại của các trang web giả mạo hoặc các chiến dịch lừa đảo trực tuyến.
+•	Nhiều domain được lưu trữ trên cùng một địa chỉ IP
+o	Thông qua quan hệ HOSTED_ON, hệ thống phát hiện nhiều domain khác nhau được lưu trữ trên cùng một địa chỉ IP. Khi nhiều domain đáng ngờ được lưu trữ trên cùng một máy chủ, điều này có thể cho thấy sự tồn tại của một hệ thống phát tán nội dung lừa đảo hoặc các dịch vụ lưu trữ được sử dụng cho mục đích tấn công.
+•	Một địa chỉ IP gửi nhiều email
+o	Quan hệ SENT_FROM_IP cho thấy một địa chỉ IP có thể được sử dụng để gửi nhiều email khác nhau. Nếu một địa chỉ IP gửi nhiều email trong một khoảng thời gian ngắn, điều này có thể là dấu hiệu của hoạt động gửi email lừa đảo hoặc spam.
+4.3.3 Phân tích chuỗi liên kết phức tạp
+Ngoài các quan hệ đơn lẻ, hệ thống còn có khả năng phát hiện các chuỗi liên kết phức tạp giữa nhiều loại thực thể khác nhau trong hệ thống.
+Ví dụ một chuỗi liên kết được phát hiện trong đồ thị:
+VictimAccount → HAS_EMAIL → Email → SENT_FROM_IP → IP
+IP ← HOSTED_ON ← Domain → HAS_URL → URL
+Chuỗi liên kết này thể hiện mối quan hệ giữa tài khoản người dùng, địa chỉ email, máy chủ gi email, domain và các tài nguyên web liên quan.
+Khi các chuỗi liên kết tương tự xuất hiện lặp lại nhiều lần trong đồ thị, điều này có thể phản ánh các hoạt động lừa bịp hoặc các chiến dịch tấn công được triển khai có tổ chức. Phương pháp phân tích đồ thị cho phép hệ thống truy vết các chuỗi liên kết này một cách hiệu quả và giúp phát hiện các mối quan hệ ẩn giữa nhiều thực thể khác nhau.
+4.3.4 Phân tích trạng thái và mức độ rủi ro của thực thể
+Bên cạnh việc phân tích cấu trúc đồ thị tổng thể, hệ thống còn cung cấp chức năng hiển thị thông tin chi tiết và trạng thái của từng thực thể trong hệ thống.
+ 
+Hình 6 Khung hiển thị trạng thái và mức độ rủi ro của thực thể
+Hình 6 minh họa giao diện hiển thị chi tiết thông tin của một thực thể trong hệ thống. Khi người dùng lựa chọn một nút trong đồ thị, hệ thống sẽ hiển thị bảng thông tin bao gồm giá trị của thực thể, kết quả đánh giá, điểm rủi ro và các chỉ báo nguy cơ liên quan.
+Các thông tin chính được hiển thị bao gồm:
+•	Value: giá trị cụ thể của thực thể như địa chỉ IP, domain, URL hoặc email.
+•	Verdict: kết quả đánh giá của hệ thống đối với thực thể, có thể ở các trạng thái như bình thường, đáng nghi ngờ hoặc rủi ro cao.
+•	Risk Score: điểm đánh giá mức độ rủi ro của thực thể trên thang điểm từ 0 đến 100.
+•	Node ID: mã định danh duy nhất của node trong cơ sở dữ liệu đồ thị.
+•	Risk Indicators: các chỉ báo nguy cơ được phát hiện trong quá trình phân tích.
+Khung thông tin này giúp người dùng nhanh chóng đánh giá mức độ rủi ro của từng thực thể và hỗ trợ quá trình truy vết các mối quan hệ liên quan trong đồ thị dữ liệu.
+4.3.5 Nhận xét kết quả
+Kết quả thử nghiệm cho thấy việc áp dụng mô hình dữ liệu đồ thị trong phân tích dữ liệu Mạng mang lại nhiều lợi thế trong việc phát hiện các mẫu hành vi bất thường.
+Thông qua việc kết hợp trực quan hóa đồ thị và phân tích quan hệ giữa các thực thể, hệ thống có thể:
+•	Phát hiện các cụm liên kết bất thường trong dữ liệu mạng
+•	Xác định các nút (node) trung tâm có nhiều kết nối
+•	Truy vết các chuỗi liên kết phức tạp giữa nhiều loại thực thể
+•	Hỗ trợ đánh giá mức độ rủi ro của từng thực thể trong hệ thống
+Những kết quả này cho thấy phương pháp phân tích dữ liệu dựa trên mô hình đồ thị có tiềm năng lớn trong việc hỗ trợ phát hiện các hoạt động lừa bịp và các hành vi bất thường trên môi trường mạng.
+4.4 Đánh giá và thảo luận
+Kết quả thử nghiệm cho thấy việc áp dụng mô hình dữ liệu đồ thị trong phân tích dữ liệu Mạng mang lại nhiều lợi thế so với các phương pháp phân tích truyền thống. Thay vì chỉ xem xét các gói tin hoặc sự kiện Mạng một cách độc lập, mô hình đồ thị cho phép biểu diễn và phân tích các mối quan hệ giữa nhiều thực thể khác nhau trong hệ thống như địa chỉ IP, domain, URL, email và tài khoản người dùng.
+Khi dữ liệu được mô hình hóa dưới dạng đồ thị và lưu trữ trong cơ sở dữ liệu đồ thị Neo4j, các mối quan hệ giữa các thực thể có thể được trực quan hóa dựa trên dữ liệu thực (live) không phát sinh sai lệch, hay tạo sinh và truy vấn một cách hiệu quả. Phương pháp này cho phép truy vết theo đường đi giữa các nút (node), từ đó phát hiện các chuỗi hành vi phức tạp, ví dụ như từ tài khoản người dùng đến email, địa chỉ IP và các domain hoặc URL liên quan.
+Ngoài ra, phân tích đồ thị còn hỗ trợ phát hiện các cụm liên kết bất thường trong hệ thống, giúp nhận diện các Mạng lưới hoạt động lừa đảo thay vì chỉ phát hiện từng sự kiện riêng lẻ.
+Tuy nhiên, hiệu quả của hệ thống vẫn phụ thuộc vào làm sạch dữ liệu đầu vào và cách thiết kế mô hình dữ liệu đồ thị. Dữ liệu thu thập từ lưu lượng Mạng thông qua công cụ TShark có thể chứa nhiễu hoặc thiếu thông tin, điều này có thể ảnh hưởng đến độ chính xác của quá trình phân tích. Bên cạnh đó, hệ thống hiện mới được thử nghiệm trên tập dữ liệu có quy mô hạn chế, do đó cần tiếp tục mở rộng và đánh giá trên các tập dữ liệu lớn hơn. Trong tương lai, hệ thống cần làm sạch tự động cả dữ liệu sinh từ AI trong các môi trường Mạng. 
+Nhìn chung, kết quả nghiên cứu cho thấy việc kết hợp phân tích dữ liệu Mạng với mô hình dữ liệu đồ thị là một hướng tiếp cận tiềm năng trong việc phát hiện các hoạt động lừa bịp trên không gian mạng, nhờ khả năng phân tích các mối quan hệ phức tạp giữa các thực thể trong hệ thống. 
+CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
+5.1 Kết luận
+Trong bối cảnh các hoạt động lừa bịp trên không gian Mạng ngày càng gia tăng và trở nên phức tạp, việc phát hiện các hành vi bất thường dựa trên phân tích dữ liệu Mạng là một hướng nghiên cứu quan trọng. Báo cáo này đã tập trung nghiên cứu phương pháp áp dụng mô hình dữ liệu đồ thị để phân tích mối quan hệ giữa các thực thể trong dữ liệu lưu lượng mạng, từ đó hỗ trợ phát hiện các dấu hiệu lừa bịp và có biện pháp ngăn chặn kịp thời cho nhà mạng Quốc Gia.
+Trong quá trình thực hiện, hệ thống thử nghiệm đã được xây dựng theo một quy trình xử lý dữ liệu gồm các bước: thu thập lưu lượng mạng, trích xuất thông tin từ gói tin, xử lý và chuẩn hóa dữ liệu, xây dựng mô hình dữ liệu đồ thị và thực hiện truy vấn để phát hiện các mẫu liên kết bất thường. Dữ liệu Mạng được thu thập và phân tích bằng công cụ TShark nhằm trích xuất các trường thông tin quan trọng như địa chỉ IP, domain, URL và email. Sau đó, dữ liệu được chuyển đổi thành mô hình đồ thị và lưu trữ trong cơ sở dữ liệu đồ thị Neo4j.
+Hệ thống đã xây dựng được mô hình dữ liệu đồ thị bao gồm các thực thể chính như Email, IP, URL, Domain, FileNode, FileHash, VictimAccount và AnalysisSession, cùng với các quan hệ giữa chúng như HAS_EMAIL, HAS_IP, HAS_URL, HAS_DOMAIN, HAS_FILE, HAS_FILEHASH, HAS_VICTIM, SENT_FROM_IP, CONTAINS_URL, HOSTED_ON, HOSTED_ON_DOMAIN, RESOLVES_TO, DOWNLOADS, HAS_HASH và RECEIVED. Mô hình này cho phép biểu diễn trực quan các mối quan hệ giữa các thực thể, hỗ trợ truy vết các chuỗi liên kết phức tạp và phục vụ phân tích hybrid risk trong dữ liệu.
+Kết quả thử nghiệm cho thấy việc sử dụng mô hình đồ thị giúp phát hiện rõ ràng các mẫu liên kết bất thường trong hệ thống, chẳng hạn như nhiều tài khoản sử dụng cùng một địa chỉ IP, nhiều domain được lưu trữ trên cùng một máy chủ, hoặc nhiều email được gửi từ cùng một nguồn. Những mẫu liên kết này có thể là dấu hiệu của các hoạt động lừa bịp hoặc các chiến dịch tấn công có tổ chức.
+Ngoài ra, việc sử dụng cơ sở dữ liệu đồ thị giúp thực hiện các truy vấn quan hệ một cách linh hoạt và hiệu quả. Các truy vấn theo đường đi hoặc theo cụm liên kết có thể nhanh chóng phát hiện các Mạng lưới hoạt động đáng ngờ mà các phương pháp phân tích truyền thống khó có thể nhận diện.
+Nhìn chung, kết quả nghiên cứu cho thấy rằng việc kết hợp phân tích dữ liệu Mạng với mô hình dữ liệu đồ thị là một phương pháp có tiềm năng trong việc phát hiện các hoạt động lừa bịp trên không gian mạng. Phương pháp này không chỉ giúp làm rõ các mối quan hệ giữa các thực thể trong hệ thống mà còn hỗ trợ phát hiện các mẫu hành vi phức tạp thông qua việc phân tích cấu trúc liên kết của dữ liệu.
+5.2 Hướng phát triển
+Mặc dù hệ thống thử nghiệm đã cho thấy những kết quả khả quan, vẫn còn nhiều hướng phát triển có thể được nghiên cứu và triển khai trong tương lai nhằm nâng cao hiệu quả của hệ thống.
+Trước hết, hệ thống có thể được mở rộng để xử lý các tập dữ liệu có quy mô “live” trực tiếp trong hệ thống mạng. Trong nghiên cứu này, hệ thống mới chỉ được thử nghiệm trên tập dữ liệu có trích lọc. Việc triển khai hệ thống trên các tập dữ liệu thực tế với lưu lượng Mạng thực 24/7 sẽ giúp đánh giá chính xác hơn khả năng mở rộng và hiệu năng của phương pháp.
+Thứ hai, có thể tích hợp thêm các kỹ thuật học máy hoặc học sâu để hỗ trợ việc phát hiện các mẫu gian lận phức tạp hơn, tuy nhiên, vẫn đảm bảo loại bỏ các sinh dữ liệu sai lệch từ các công cụ máy học sâu và Generative AI. Các thuật toán học máy có thể được sử dụng để phân tích đặc trưng của các nút và quan hệ trong đồ thị, và loại bỏ được cái dữ liệu tự tạo,  từ đó tự động phát hiện các hành vi bất thường trong Mạng lưới dữ liệu thật.
+Bên cạnh đó, hệ thống có thể được cải tiến bằng cách bổ sung thêm nhiều loại thực thể và quan hệ khác trong mô hình dữ liệu đồ thị. Ví dụ, có thể thêm các thực thể như thiết bị người dùng, vị trí địa lý hoặc thông tin phiên truy cập nhằm giúp mô hình phản ánh đầy đủ hơn các tương tác trong hệ thống.
+Một hướng phát triển khác là xây dựng các công cụ trực quan hóa dữ liệu đồ thị để hỗ trợ người phân tích dễ dàng quan sát và khám phá các mối quan hệ trong dữ liệu. Việc trực quan hóa các cụm liên kết và đường đi trong đồ thị sẽ giúp quá trình phát hiện các Mạng lưới lừa bịp trở nên trực quan và hiệu quả hơn.
+Cuối cùng, hệ thống có thể được tích hợp vào các nền tảng giám sát an ninh Mạng trong mạng lưới Mạng Quốc Gia thực tế nhằm hỗ trợ phát hiện sớm các hoạt động tấn công hoặc lừa bịp và phối hợp với các tổ chức Quốc tế trong việc ngăn ngừa và hành pháp với các hoạt động phi pháp này. Khi được triển khai trong môi trường thực tế, hệ thống có thể hoạt động như một công cụ hỗ trợ phân tích quan hệ và truy vết các hành vi bất thường trong hệ thống Mạng. 
+TÀI LIỆU THAM KHẢO
+[1]	Nguyen, L. T., Quyen, N. M., Hoang, P. V.,
+"Fraud Analysis Service: A Graph-Based Fraud Detection System
+with Explainable Risk Scoring",
+Phenikaa University, 2026.
+[2]	D. Sahoo, C. Liu, and S. C. Hoi, “Malicious URL detection using machine learning: A survey,” ACM Computing Surveys, vol. 52, no. 1, pp. 1–36, 2020.
+[3]	A. Aljofey, Q. Jiang, A. Rasool, H. Chen, and W. Liu, “An effective phishing detection model based on character-level CNN,” Electronics, vol. 9, no. 9, 2020.
+[4]	R. Verma and A. Das, “What’s in a URL: Fast feature extraction for malicious URL detection,” in Proc. IEEE Security Workshops, 2020.
+[5]	R. Vinayakumar et al., “Deep learning approach for intelligent intrusion detection,” IEEE Access, vol. 8, pp. 41525–41550, 2020.
+[6]	A. Sharma and B. B. Gupta, “Phishing detection using deep learning techniques: A review,” Journal of Network and Computer Applications, vol. 178, 2021.
+[7]	A. AlEroud and G. Karabatis, “Phishing detection using URL structure analysis,” Future Internet, vol. 13, no. 4, 2021.
+[8]	S. Kumar and K. Carley, “Detecting online fraud using network analysis,” IEEE Security and Privacy, vol. 19, no. 2, pp. 70–76, 2021.
+[9]	M. Conti, A. Gangwal, and S. Ruj, “On the economic significance of ransomware campaigns,” Computers and Security, vol. 101, 2021.
+[10]	J. Zhang, P. Porras, and J. Ullrich, “Highly predictive blacklisting,” in Proc. USENIX Security Symposium, 2021.
+[11]	P. Mishra and D. Saini, “Phishing website detection using machine learning algorithms,” Procedia Computer Science, vol. 171, pp. 2049–2058, 2021.
+[12]	Y. Zhang, Y. Liu, and L. Zhang, “A graph-based anomaly detection framework for financial fraud,” Information Sciences, vol. 589, pp. 456–470, 2022.
+[13]	L. Akoglu, H. Tong, and D. Koutra, “Graph-based anomaly detection in large networks,” Data Mining and Knowledge Discovery, vol. 36, 2022.
+[14]	W. Li, X. Chen, and Y. Zhang, “Malicious domain detection using deep learning,” IEEE Transactions on Information Forensics and Security, 2022.
+[15]	Q. Zhang, Y. Chen, and H. Li, “A survey of phishing detection techniques,” IEEE Communications Surveys and Tutorials, 2022.
+[16]	Z. Alkhalil, C. Hewage, L. Nawaf, and I. Khan, “Phishing attacks: A recent comprehensive study,” Computers and Security, vol. 110, 2022.
+[17]	X. Wang, H. Liu, and P. Li, “Detecting malicious URLs with deep learning,” Future Generation Computer Systems, vol. 124, 2022.
+[18]	T. Chen, S. Li, and Y. Zhou, “Graph neural networks for fraud detection: A survey,” IEEE Access, vol. 11, pp. 12345–12360, 2023.
+[19]	M. Khan, K. Salah, and R. Jayaraman, “Blockchain-based fraud detection systems,” IEEE Access, vol. 11, 2023.
+[20]	Y. Zhou, G. Cheng, and S. Jiang, “Phishing website detection using hybrid deep learning models,” Applied Sciences, vol. 13, 2023.
+[21]	J. Liang, W. Jiang, and X. Li, “Machine learning approaches for financial fraud detection,” Expert Systems with Applications, vol. 213, 2023.
+[22]	A. Kumar and G. Somani, “Anomaly detection techniques in cybersecurity,” Journal of Information Security and Applications, vol. 70, 2023.
+[23]	A. Singh and K. Chatterjee, “Cyber fraud detection using graph mining techniques,” Information Processing and Management, vol. 60, 2023.
+[24]	Z. Chen, J. Liu, and H. Yang, “Deep learning-based phishing detection systems,” IEEE Access, vol. 12, 2024.
+[25]	B. B. Gupta and A. Tewari, “Recent trends in phishing detection: A survey,” Computers and Security, vol. 137, 2024.
+[26]	H. Zhang and Y. Liu, “Machine learning framework for malicious URL detection,” Applied Soft Computing, vol. 145, 2024.
+[27]	Y. Wang, X. Chen, and F. Zhou, “Graph-based fraud detection in online platforms,” Knowledge-Based Systems, vol. 283, 2024.
+[28]	A. Alqahtani and F. Alotaibi, “Cyber fraud detection using hybrid machine learning models,” Sensors, vol. 24, no. 3, 2024.
+[29]	R. Patel and M. Shah, “Network traffic analysis for cyber fraud detection,” IEEE Access, vol. 12, 2024.
+[30]	F. Hussain, R. Hussain, and S. Hassan, “AI-based phishing detection techniques,” Future Internet, vol. 16, 2024.
+[31]	J. Kim, S. Lee, and K. Park, “Graph analytics for cyber fraud investigation,” IEEE Transactions on Network Science and Engineering, 2024.
+[32]	Neo4j, “Neo4j Graph Database Platform.” Available: https:// neo4j.com
+[33]	Spring, “Spring Data Neo4j Documentation.” Available: https: //spring.io/projects/spring-data-neo4j
+[34]	J. Klensin, “Internationalized Domain Names in Applications (IDNA).” IETF RFC.
+[35]	Public Suffix List. Available: https://publicsuffix.org
+[36]	A. Newton et al., “Registration Data Access Protocol (RDAP).” IETF RFC.
+[37]	IETF, “Domain Name System Security Extensions (DNSSEC).”
+[38]	Google, “Google Safe Browsing.”
+[39]	VirusTotal, “Online Malware Analysis Service.”
+[40]	OWASP Foundation, “Phishing and Social Engineering Attacks.”
+[41]	MITRE, “ATT&CK Framework.”
+[42]	NIST, “Cybersecurity Framework.”
+[43]	ENISA, “Threat Landscape Report 2023.”
+[44]	Cloudflare, “ Overview.”
+[45]	ICANN, “Domain Name System Security Guidelines.”
+[46]	Google, “Transparency Report.”
+[47]	Spamhaus, “Domain and IP Reputation Services.”
+[48]	Cisco Talos, “Threat Intelligence Report.”
+[49]	Microsoft, “Security Intelligence Report.”
+[50]	Symantec, “Internet Security Threat Report.”
+[51]	Kaspersky, “Security Bulletin.”
+[52]	W. Zhang and J. P. Lazaro, “A survey on network security traffic analysis and anomaly detection techniques,” 
+International Journal of Emerging Technologies and Advanced Applications, vol. 1, no. 4, pp. 8–16, 2024.
+[53]	O. H. Abdulganiyu, T. Ait Tchakoucht, and Y. K. Saheed, 
+“A systematic literature review for network intrusion detection systems,” 
+     International Journal of Information Security, vol. 22, pp. 1125–1162, 2023.
+[54]	L. Diana, P. Dini, and D. Paolini, 
+“Overview on intrusion detection systems for computer networking security,” 
+Computers, vol. 14, no. 3, 2025.
+[55]	R. Sommer and V. Paxson, 
+“Outside the closed world: On using machine learning for network intrusion detection,” 
+IEEE Symposium on Security and Privacy, pp. 305–316, 2010.
+[56]	J. Koumar et al., “CESNET-TimeSeries24: Time series dataset for network traffic anomaly detection and forecasting,” 
+Scientific Data (Nature), 2025. 
+[57]	Ndatinya, V., Xiao, Z., Manepalli, V. R., Meng, K., & Xiao, Y. (2015). Network forensics analysis using Wireshark. International Journal of Security and Networks, 10(2), 91-106.
+[58]	Cannavale, C., Claudio, L., & Koroleva, D. (2025). Digitalisation and artificial intelligence development. A cross-country analysis. European Journal of Innovation Management, 28(11), 112-130.
+[59]	Hornsteiner, M., Kreussel, M., Steindl, C., Ebner, F., Empl, P., & Schönig, S. (2024). Real-time text-to-cypher query generation with large language models for graph databases. Future Internet, 16(12), 438.
+[60]	EUROPOL EMPACT Operational Action Project 1.3 – Cybercrime in the Age of AI: The Alarming Threat made by the Misuse of Generative AI, Federal Criminal Police Office Germany (BKA), Accessed at https://www.bka.de/SharedDocs/Downloads/DE/IhreSicherheit/CybercrimeintheAgeofAI.pdf?__blob=publicationFile&v=4
+[61]	Cybercrime-as-a-service takedown, 2025, Europol, Accessed at
+https://www.europol.europa.eu/media-press/newsroom/news/cybercrime-service-takedown-7-arrested
+[62]	Internet Governance Observations and Recommendations from Members of the Internet Technical Community. Retrieved from https://www.internetcollaboration.org/ig-recommendations-itcg/
+
+
+
+ 
+PHỤ LỤC
+PHỤ LỤC A
+TÓM TẮT ĐIỀU HÀNH
+Trong bối cảnh Internet và các dịch vụ trực tuyến phát triển nhanh chóng, các hoạt động gian lận và lừa đảo trên không gian Mạng ngày càng gia tăng cả về quy mô lẫn mức độ tinh vi. Các hình thức tấn công phổ biến như phishing, phát tán mã độc, giả mạo tên miền hay tạo nhiều tài khoản giả thường được triển khai thông qua Mạng lưới liên kết phức tạp giữa nhiều thực thể như địa chỉ IP, domain, email và tài khoản người dùng. Tuy nhiên, nhiều phương pháp phát hiện truyền thống chủ yếu tập trung phân tích từng thực thể riêng lẻ nên khó phát hiện các chiến dịch tấn công có cấu trúc liên kết phức tạp. Vì vậy, nghiên cứu này được thực hiện nhằm tìm hiểu khả năng ứng dụng của cơ sở dữ liệu đồ thị trong việc phân tích dữ liệu Mạng và hỗ trợ phát hiện các hoạt động lừa đảo.
+Mục tiêu chính của nghiên cứu là xây dựng một hệ thống thử nghiệm cho phép thu thập, xử lý và phân tích dữ liệu lưu lượng mạng, đồng thời biểu diễn các mối quan hệ giữa các thực thể trong hệ thống bằng mô hình dữ liệu đồ thị. Nghiên cứu đặt ra câu hỏi liệu việc mô hình hóa dữ liệu Mạng dưới dạng đồ thị có thể hỗ trợ phát hiện các mẫu liên kết bất thường và các dấu hiệu gian lận trong dữ liệu Mạng hay không.
+Phương pháp nghiên cứu được triển khai thông qua việc kết hợp các phương pháp nghiên cứu định lượng, quan sát và thực nghiệm. Dữ liệu lưu lượng Mạng được thu thập từ môi trường thử nghiệm bằng các công cụ phân tích Mạng như Wireshark và TShark. Sau đó, dữ liệu được xử lý để trích xuất các thông tin quan trọng như địa chỉ IP, domain, URL và email. Các dữ liệu này được mô hình hóa thành các node và relationship trong cơ sở dữ liệu đồ thị và được lưu trữ trong hệ quản trị cơ sở dữ liệu Neo4j.
+Để đảm bảo tính nhất quán của dữ liệu khi lưu trữ trong cơ sở dữ liệu đồ thị, hệ thống sử dụng cơ chế MERGE trong ngôn ngữ truy vấn Cypher của Neo4j. Lệnh MERGE cho phép kiểm tra sự tồn tại của một node hoặc relationship dựa trên các thuộc tính định danh trước khi tạo mới. Nếu thực thể đã tồn tại trong cơ sở dữ liệu, hệ thống sẽ sử dụng lại node đó và cập nhật các thuộc tính cần thiết; ngược lại, một node mới sẽ được tạo ra. Cơ chế này giúp tránh việc tạo ra nhiều node trùng lặp cho cùng một thực thể như IP, Domain hoặc Email, đồng thời duy trì tính toàn vẹn của cấu trúc đồ thị khi dữ liệu được nhập từ nhiều nguồn khác nhau.
+Kết quả nghiên cứu cho thấy mô hình dữ liệu đồ thị cho phép biểu diễn rõ ràng các mối quan hệ giữa các thực thể trong hệ thống mạng. Thông qua các truy vấn đồ thị và các mẫu phát hiện gian lận, hệ thống có thể phát hiện các liên kết bất thường như nhiều tài khoản sử dụng cùng một địa chỉ IP, nhiều domain được lưu trữ trên cùng một máy chủ hoặc nhiều domain liên kết với cùng một email. Những liên kết này có thể là dấu hiệu của các chiến dịch gian lận hoặc tấn công Mạng có tổ chức.
+Về mặt khoa học, nghiên cứu minh họa khả năng ứng dụng của cơ sở dữ liệu đồ thị trong phân tích dữ liệu mạng. Về mặt thực tiễn, phương pháp này có tiềm năng hỗ trợ các hệ thống an ninh Mạng trong việc phát hiện sớm các hoạt động đáng ngờ và nâng cao hiệu quả giám sát an toàn thông tin trên môi trường Internet.
+PHỤ LỤC B
+BẢNG SỐ LIỆU VÀ DỮ LIỆU NGHIÊN CỨU
+Bảng 3 Các ngưỡng phát hiện trong truy vấn phát hiện gian lận
+STT	Chỉ số / Biến số	Giá trị	Đơn vị	Nhóm / Điều kiện	Trang hoặc Mục
+1	Số lượng domain kết nối từ một IP (domain_count)	> 10	domain	Suspicious IP–Domain Pattern	Mục 3.7.1
+2	Số lượng domain được lưu trữ trên cùng một IP	> 5	domain	Shared Infrastructure Pattern	Mục 3.7.2
+3	Số lượng domain liên kết với một email	> 3	domain	Phishing Campaign Pattern	Mục 3.7.3
+4	Số lượng tài khoản sử dụng cùng một IP	> 5	tài khoản	Multi-Account Fraud Pattern	Mục 3.7.4
+
+Bảng 4 Các trường dữ liệu được trích xuất từ gói tin mạng
+STT	Chỉ số / Biến số	Giá trị	Đơn vị	Nhóm / Điều kiện	Trang hoặc Mục
+1	Địa chỉ IP nguồn	Tài liệu không cung cấp giá trị cụ thể	–	Phân tích gói tin mạng	Mục 3.4
+2	Địa chỉ IP đích	Tài liệu không cung cấp giá trị cụ thể	–	Phân tích gói tin mạng	Mục 3.4
+3	Cổng nguồn	Tài liệu không cung cấp giá trị cụ thể	–	Phân tích gói tin mạng	Mục 3.4
+4	Cổng đích	Tài liệu không cung cấp giá trị cụ thể	–	Phân tích gói tin mạng	Mục 3.4
+5	Giao thức truyền thông (TCP, UDP, HTTP, DNS)	Tài liệu không cung cấp giá trị cụ thể	–	Phân tích gói tin mạng	Mục 3.4
+6	Thời gian truyền dữ liệu	Tài liệu không cung cấp giá trị cụ thể	–	Phân tích gói tin mạng	Mục 3.4
+
+PHỤ LỤC C
+DANH SÁCH THUẬT NGỮ VÀ TỪ VIẾT TẮT
+Thuật ngữ / Viết tắt	Dạng đầy đủ	Định nghĩa hoặc giải thích trong ngữ cảnh nghiên cứu
+CONNECTED_TO	–	Loại relationship trong mô hình đồ thị, biểu diễn mối liên kết giữa hai thực thể xuất hiện cùng nhau trong một lần phân tích, ví dụ: (Email)-[:CONNECTED_TO]->(IPAddress)
+Cypher	Cypher Query Language	Ngôn ngữ truy vấn được sử dụng trong hệ quản trị cơ sở dữ liệu đồ thị Neo4j
+Domain	Domain Name	Tên miền đại diện cho địa chỉ của một dịch vụ hoặc máy chủ trên Internet
+Email	Electronic Mail	Địa chỉ thư điện tử xuất hiện trong dữ liệu Mạng hoặc trong các chiến dịch lừa đảo
+Fraud Detection Pattern	–	Mẫu truy vấn đồ thị được thiết kế để phát hiện các cấu trúc liên kết bất thường, ví dụ: nhiều tài khoản dùng chung một IP hoặc nhiều domain liên kết với cùng một email
+Graph Database	–	Hệ quản trị cơ sở dữ liệu sử dụng cấu trúc đồ thị để lưu trữ và phân tích dữ liệu có quan hệ phức tạp giữa các thực thể
+IDN	Internationalized Domain Name	Tên miền chứa ký tự ngoài bảng ASCII, có thể bị lợi dụng trong các cuộc tấn công giả mạo thương hiệu (homograph attack)
+IP	Internet Protocol Address	Địa chỉ định danh của thiết bị trong Mạng Internet
+MERGE	–	Lệnh trong Cypher/Neo4j: tìm node/relationship theo thuộc tính định danh, tạo mới nếu chưa tồn tại và cập nhật nếu đã có. Đảm bảo không trùng lặp node trong đồ thị điều tra
+Neo4j	–	Hệ quản trị cơ sở dữ liệu đồ thị được sử dụng để lưu trữ và phân tích dữ liệu trong nghiên cứu
+Node	–	Thực thể trong mô hình dữ liệu đồ thị, ví dụ: node (:Email), (:IPAddress), (:Domain), (:URL), (:VictimAccount)
+ON CREATE SET	–	Khối lệnh trong MERGE, chỉ thực thi khi node được tạo mới lần đầu. Dùng để khởi tạo các thuộc tính như createdAt
+ON MATCH SET	–	Khối lệnh trong MERGE, chỉ thực thi khi node đã tồn tại. Dùng để cập nhật các thuộc tính như lastSeen, riskScore
+PCAP	Packet Capture	Định dạng tệp chứa dữ liệu gói tin mạng, được tạo ra bởi Wireshark hoặc TShark
+Relationship	–	Liên kết có hướng giữa hai node trong cơ sở dữ liệu đồ thị, ví dụ: (Email)-[:CONNECTED_TO]->(IPAddress)
+TShark	–	Phiên bản dòng lệnh của Wireshark, dùng để xử lý và trích xuất dữ liệu từ file PCAP trong môi trường tự động
+URL	Uniform Resource Locator	Địa chỉ tài nguyên web được truy cập trên Internet
+VictimAccount	–	Loại node trong mô hình đồ thị đại diện cho tài khoản người dùng có khả năng bị khai thác trong hoạt động lừa đảo
+Wireshark	–	Công cụ phân tích giao thức Mạng dùng để thu thập và phân tích gói tin, lưu dữ liệu dưới dạng file PCAP
+
+PHỤ LỤC D: GIẢI THÍCH LỆNH MERGE TRONG CYPHER/NEO4J
+D.1. MERGE là gì?
+Trong ngôn ngữ truy vấn Cypher của Neo4j, MERGE là lệnh kết hợp giữa MATCH và CREATE. Khi thực thi lệnh MERGE, Neo4j sẽ kiểm tra xem nút hoặc quan hệ (node hoặc relationship) với các thuộc tính đã cho có tồn tại trong đồ thị hay chưa:
+•	Nếu chưa tồn tại: Neo4j tạo mới node/relationship và thực thi khối ON CREATE SET
+•	Nếu đã tồn tại: Neo4j tái sử dụng node/relationship đó và thực thi khối ON MATCH SET
+Cơ chế này đảm bảo tính nhất quán dữ liệu trong đồ thị điều tra: mỗi thực thể (email, IP, URL) chỉ xuất hiện đúng một lần dưới dạng node, bất kể nó được nộp phân tích bao nhiêu lần.
+D.2. So sánh MERGE và CREATE
+Tiêu chí	CREATE	MERGE
+Hành vi	Luôn tạo node/relationship mới	Tìm trước, tạo mới nếu chưa có
+Trùng lặp	Có thể tạo node trùng lặp	Đảm bảo không trùng lặp (deduplication)
+Cập nhật thuộc tính	Không hỗ trợ ON CREATE / ON MATCH	Hỗ trợ ON CREATE SET và ON MATCH SET riêng biệt
+Phù hợp khi nào	Dữ liệu chắc chắn chưa tồn tại (nạp lần đầu)	Dữ liệu có thể nộp lại nhiều lần (điều tra liên tục)
+D.3. Tại sao dự án sử dụng MERGE thay vì CREATE?
+Trong hệ thống dịch vụ phân tích lừa bịp (Fraud Analysis Service), cùng một địa chỉ IP, email hoặc URL có thể xuất hiện trong nhiều báo cáo gian lận khác nhau từ nhiều người dùng và nhiều thời điểm khác nhau. Nếu sử dụng lệnh CREATE, mỗi lần nộp phân tích sẽ tạo ra một node mới, dẫn đến đồ thị chứa hàng chục bản sao của cùng một thực thể – làm mất đi toàn bộ khả năng phân tích quan hệ.
+Lệnh MERGE giải quyết vấn đề này theo ba cơ chế quan trọng trong ngữ cảnh của dự án:
+•	Khử trùng lặp tự động (Deduplication): Mỗi nút Email, IPAddress, URL chỉ tồn tại đúng một lần trong đồ thị, được định danh bằng thuộc tính khóa chính tương ứng (email, ip, url). Khi cùng một địa chỉ IP xuất hiện trong hai báo cáo độc lập, cả hai báo cáo đều liên kết vào cùng một node IP duy nhất – tạo ra liên kết cross-report tự nhiên.
+•	Cập nhật thông tin theo thời gian (Temporal update): Khối ON MATCH SET cập nhật các trường riskScore, riskLevel, status và lastSeen mỗi khi thực thể được gặp lại. Nhờ đó, điểm rủi ro của một node phản ánh lần đánh giá gần nhất, trong khi lịch sử quan hệ trong đồ thị vẫn được bảo toàn.
+•	Bảo toàn tính toàn vẹn của đồ thị điều tra (Graph Integrity): Các endpoint analyzePreview và analyzeSingle hoạt động ở chế độ read-only, không gọi lệnh MERGE. Điều này ngăn các thao tác kiểm tra thử hay xem trước làm ô nhiễm dữ liệu điều tra thực tế – một yêu cầu thiết kế quan trọng trong bối cảnh pháp lý và điều tra an ninh mạng.
+Ví dụ minh họa từ hệ thống (dựa trên mô hình Email – IPAddress – URL):
+// 1. Lưu node Email (deduplication + cập nhật risk)
+MERGE (e:Email { email: $email })
+ON CREATE SET e.createdAt = timestamp(), e.riskScore = $riskScore, e.status = $status
+ON MATCH SET  e.lastSeen = timestamp(), e.riskScore = $riskScore, e.status = $status
+                
+// 2. Lưu node IPAddress tương tự
+MERGE (i:IPAddress { ip: $ip })
+                
+// 3. Tạo relationship CONNECTED_TO giữa Email và IP (cũng dùng MERGE)
+MERGE (e)-[:CONNECTED_TO]->(i)
+// Nếu relationship đã tồn tại → không tạo thêm, đồ thị không bị nhiễu
+Nhờ cơ chế này, khi phân tích truy vấn đồ thị để tìm "tất cả các email đã từng kết nối với IP 203.0.113.5", kết quả trả về phản ánh đầy đủ lịch sử điều tra tích lũy theo thời gian – thay vì chỉ thấy dữ liệu từ lần nộp gần nhất. Đây là ưu điểm cốt lõi của chiến lược MERGE trong hệ thống phát hiện gian lận dựa trên đồ thị.
