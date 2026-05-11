@@ -6,15 +6,18 @@
     <title>Admin Dashboard</title>
 
     <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
-<body>
+<body class="page-index">
 
 <main class="container">
 
     <!-- ================= HEADER ================= -->
-    <header class="dashboard-header">
+    <header class="header">
         <div>
             <h1>Admin Dashboard</h1>
 
@@ -28,15 +31,42 @@
             </p>
         </div>
 
-<form th:action="@{/admin/logout}" method="post" class="logout-form">
-    <button type="submit" class="logout-btn">
-        Logout
-    </button>
-</form> 
-</header>
+        <div class="header-actions">
+            <button id="btnTheme" class="btn btn-secondary" type="button" aria-label="Bật tắt giao diện sáng tối">Tối</button>
+            <button id="btnOpenDetails" class="btn btn-small" type="button" aria-label="Mở chi tiết node">Mở chi tiết</button>
+            <span class="pill subtle"><span class="dot unknown"></span>Dashboard Admin</span>
+            <form th:action="@{/admin/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <section class="summary-grid" aria-label="Tổng quan trang quản trị">
+        <article class="summary-card">
+            <p class="summary-label">Trang</p>
+            <p class="summary-value">Admin</p>
+            <p class="summary-sub">Quản lý dữ liệu, phân tích và người dùng</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Chức năng</p>
+            <p class="summary-value">9 mục</p>
+            <p class="summary-sub">Email, IP, URL, Domain, File, Hash, Victim</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Nhập liệu</p>
+            <p class="summary-value">Excel</p>
+            <p class="summary-sub">Tải file và đồng bộ dữ liệu nhanh</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Trạng thái</p>
+            <p class="summary-value">Sẵn sàng</p>
+            <p class="summary-sub">Bố cục mới theo mẫu index</p>
+        </article>
+    </section>
 
     <!-- ================= NAV ================= -->
-    <div class="nav-buttons">
+    <div class="card nav-card">
+        <div class="nav-buttons">
         <button onclick="location.href='/dashboard'">Dashboard</button>
         <button onclick="location.href='/admin/admin-email'">Quản lý Email</button>
         <button onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
@@ -47,6 +77,7 @@
         <button onclick="location.href='/admin/admin-victim'">Quản lý Victim account</button>
         <button onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
         <button onclick="location.href='/admin/about'">Giới thiệu</button>
+        </div>
     </div>
 
     <!-- ================= CREATE STAFF ================= -->
@@ -62,44 +93,46 @@
         <p class="message" th:if="${session.message != null}" th:text="${session.message}"></p>
     </section>
 
-    <!-- ================= ANALYZE ================= -->
-    <section class="card">
-        <h2>Phân tích gian lận</h2>
+    <!-- ================= ANALYZE + EXCEL ROW ================= -->
+    <div class="card-row">
+        <!-- ANALYZE -->
+        <div class="card-row-item">
+            <h3>Phân tích gian lận</h3>
 
-        <p class="note">
-            <b>Rủi ro Trực tiếp</b> là kết quả đánh giá từ dữ liệu bạn nhập vào tại thời điểm hiện tại,
-            chưa bao gồm ảnh hưởng lan truyền từ các node khác trong hệ thống.
-        </p>
+            <p class="note">
+                <b>Rủi ro Trực tiếp</b> là kết quả đánh giá từ dữ liệu bạn nhập vào tại thời điểm hiện tại.
+            </p>
 
-        <form class="form-inline" onsubmit="return false;">
-            <input type="email" id="analyzeEmail" placeholder="Email…" autocomplete="off">
-            <input type="text" id="analyzeIP" placeholder="IP…" autocomplete="off">
-            <input type="text" id="analyzeURL" placeholder="URL…" autocomplete="off">
-            <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
-            <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
-            <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
-            <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
-            <button type="button" id="analyzeBtn">Phân tích</button>
-        </form>
+            <form class="form-inline" onsubmit="return false;">
+                <input type="email" id="analyzeEmail" placeholder="Email…" autocomplete="off">
+                <input type="text" id="analyzeIP" placeholder="IP…" autocomplete="off">
+                <input type="text" id="analyzeURL" placeholder="URL…" autocomplete="off">
+                <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
+                <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
+                <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
+                <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
+                <button type="button" id="analyzeBtn">Phân tích</button>
+            </form>
 
-        <div id="analyzeResult" class="analyze-result"></div>
-    </section>
-
-    <!-- ================= EXCEL ================= -->
-    <section class="card">
-        <h2>Nhập file Excel</h2>
-
-        <p class="note">
-            File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
-        </p>
-
-        <div class="form-inline">
-            <input type="file" id="excelFileInput" accept=".xlsx,.xls">
-            <button type="button" id="uploadExcelBtn">Tải lên</button>
+            <div id="analyzeResult" class="analyze-result"></div>
         </div>
 
-        <div id="excelResult" class="analyze-result"></div>
-    </section>
+        <!-- EXCEL -->
+        <div class="card-row-item">
+            <h3>Nhập file Excel</h3>
+
+            <p class="note">
+                File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
+            </p>
+
+            <div class="form-inline">
+                <input type="file" id="excelFileInput" accept=".xlsx,.xls">
+                <button type="button" id="uploadExcelBtn">Tải lên</button>
+            </div>
+
+            <div id="excelResult" class="analyze-result"></div>
+        </div>
+    </div>
 
     <!-- ================= GRAPH ================= -->
     <section class="card">
@@ -158,6 +191,41 @@
 
 </main>
 
+<!-- Right-side node details panel -->
+<div id="nodeDetailsPanel" aria-hidden="true">
+    <div class="panel-head">
+        <div>
+            <div class="panel-title">Chi tiết Node</div>
+            <div class="panel-sub" id="panelNodeType">—</div>
+        </div>
+        <div>
+            <button id="closeNodePanel" class="close-panel">Đóng</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="detail-row">
+            <div class="detail-key">Value</div>
+            <div class="detail-val" id="panelNodeValue">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Risk Score</div>
+            <div class="detail-val" id="panelNodeScore">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Verdict</div>
+            <div class="detail-val" id="panelNodeVerdict">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Indicators</div>
+            <div class="detail-val" id="panelNodeIndicators">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Relations</div>
+            <div class="detail-val" id="panelNodeRelations">—</div>
+        </div>
+    </div>
+</div>
+
 <!-- ================= JS ================= -->
 <script th:src="@{/js/admin-main.js}"></script>
 <script th:src="@{/js/role-enhanced-analysis.js}"></script>
@@ -179,6 +247,65 @@ document.getElementById("reloadGraphBtn")?.addEventListener("click", () => {
 
 document.getElementById("sessionSelect")?.addEventListener("change", e => {
     window.fetchGraph?.(e.target.value || null, { force: true });
+});
+</script>
+
+<script>
+// Open details button: show currently selected node (if any)
+document.getElementById('btnOpenDetails')?.addEventListener('click', () => {
+    try {
+        const id = window.selectedNodeId || (window.__graphContext && window.__graphContext.selectedNodeId) || null;
+        const nodes = (window.__graphContext && window.__graphContext.nodes) || [];
+        const node = nodes.find(n => String(n.id) === String(id));
+        if (node) {
+            if (typeof window.enhancedShowNodeInfo === 'function') window.enhancedShowNodeInfo(node);
+            else if (typeof showNodeInfo === 'function') showNodeInfo(node);
+        } else {
+            alert('Chưa chọn node. Vui lòng click vào node trên đồ thị hoặc bảng để chọn.');
+        }
+    } catch (e) {
+        console.warn('Open details failed', e);
+        alert('Không thể mở chi tiết node');
+    }
+});
+</script>
+
+<script>
+// Listen for nodeSelected events and populate side panel
+window.addEventListener('nodeSelected', (e) => {
+    try {
+        const detail = e.detail || {};
+        const node = detail.node || {};
+        const decision = detail.decision || {};
+        const analysis = detail.analysis || {};
+
+        document.getElementById('panelNodeType').textContent = node.type || '—';
+        document.getElementById('panelNodeValue').textContent = node.value || '—';
+        document.getElementById('panelNodeScore').textContent = String(node.riskScore ?? '—');
+        document.getElementById('panelNodeVerdict').textContent = node.verdict || '—';
+        document.getElementById('panelNodeIndicators').textContent = (Array.isArray(node.indicators) ? node.indicators.join(', ') : (node.indicators || '—'));
+
+        // relations: combine graph relations + related nodes from analysis
+        const relsFromGraph = (function(){
+            try { return (window.__graphContext && Array.isArray(window.__graphContext.links)) ?
+                window.__graphContext.links.filter(l => (l.source && String(l.source) === String(node.id)) || (l.target && String(l.target) === String(node.id)))
+                .slice(0,6).map(l => (l.type || '') + ' ' + ((String(l.source)===String(node.id))? '→ ' + (l.target||l.targetId||'?') : '← ' + (l.source||l.sourceId||'?'))) : [];
+            } catch { return []; }
+        })();
+
+        const relsFromAnalysis = Array.isArray(analysis.relatedNodes) ? analysis.relatedNodes.slice(0,6).map(r => (r.relationship||'') + ' → ' + (r.nodeType||r.nodeId||'?')) : [];
+
+        const rels = relsFromGraph.concat(relsFromAnalysis);
+        document.getElementById('panelNodeRelations').textContent = rels.length ? rels.join('; ') : (analysis.graphIntelligence || '—');
+
+        const panel = document.getElementById('nodeDetailsPanel');
+        if (panel) panel.classList.add('open');
+    } catch (err) { console.warn('nodeSelected handler', err); }
+});
+
+document.getElementById('closeNodePanel')?.addEventListener('click', () => {
+    const panel = document.getElementById('nodeDetailsPanel');
+    if (panel) panel.classList.remove('open');
 });
 </script>
 

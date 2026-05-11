@@ -308,6 +308,22 @@ function renderEnhancedNodeInfo(nodeData, decision, chatbot) {
     bindPopupActions(box, nodeData);
 }
 
+// Emit a global event when enhanced node info is rendered so other UI (side panel) can respond
+function emitNodeSelected(nodeData, decision, chatbot) {
+    try {
+        window.dispatchEvent(new CustomEvent('nodeSelected', { detail: { node: nodeData, decision: decision || null, analysis: chatbot || null } }));
+    } catch (e) {
+        console.warn('emitNodeSelected failed', e);
+    }
+}
+
+// Call emit after rendering
+const _origRender = renderEnhancedNodeInfo;
+renderEnhancedNodeInfo = function(nodeData, decision, chatbot) {
+    _origRender(nodeData, decision, chatbot);
+    emitNodeSelected(nodeData, decision, chatbot);
+};
+
 function bindPopupActions(box, nodeData) {
     const closeBtn = box.querySelector(".node-popup-btn-close");
     if (closeBtn) {

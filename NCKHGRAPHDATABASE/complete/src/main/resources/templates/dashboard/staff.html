@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Staff Dashboard</title>
 
-    <!-- FIX: đúng css staff -->
     <link rel="stylesheet" th:href="@{/css/staff.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
-<body>
+<body class="page-index">
 
 <main class="container">
 
     <!-- HEADER -->
-    <header class="dashboard-header">
+    <header class="header">
         <div>
             <h1>Staff Dashboard</h1>
 
@@ -29,51 +31,85 @@
             </p>
         </div>
 
-        <a th:href="@{/staff/logout}" class="logout-btn">Logout</a>
+        <div class="header-actions">
+            <button id="btnTheme" class="btn btn-secondary" type="button" aria-label="Bật tắt giao diện sáng tối">Tối</button>
+            <button id="btnOpenDetails" class="btn btn-small" type="button" aria-label="Mở chi tiết node">Mở chi tiết</button>
+            <span class="pill subtle"><span class="dot unknown"></span>Dashboard Staff</span>
+            <a th:href="@{/staff/logout}" class="btn">Logout</a>
+        </div>
     </header>
 
+    <section class="summary-grid" aria-label="Tổng quan trang staff">
+        <article class="summary-card">
+            <p class="summary-label">Trang</p>
+            <p class="summary-value">Staff</p>
+            <p class="summary-sub">Thực hiện phân tích và tra cứu dữ liệu</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Phạm vi</p>
+            <p class="summary-value">5 mục</p>
+            <p class="summary-sub">Email, IP, URL, tài khoản, giới thiệu</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Biểu đồ</p>
+            <p class="summary-value">Live</p>
+            <p class="summary-sub">Theo phiên dữ liệu đang chọn</p>
+        </article>
+        <article class="summary-card">
+            <p class="summary-label">Trạng thái</p>
+            <p class="summary-value">Sẵn sàng</p>
+            <p class="summary-sub">Tối ưu theo layout mẫu</p>
+        </article>
+    </section>
+
     <!-- NAVIGATION BUTTONS -->
-    <div class="nav-buttons">
+    <div class="card nav-card">
+        <div class="nav-buttons">
         <button onclick="window.location.href='/dashboard'">Dashboard</button>
         <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
         <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
         <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
         <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
         <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
+        </div>
     </div>
 
-    <section class="card">
-        <h2>Phân tích gian lận</h2>
+    <!-- ================= ANALYZE + EXCEL ROW ================= -->
+    <div class="card-row">
+        <!-- ANALYZE -->
+        <div class="card-row-item">
+            <h3>Phân tích gian lận</h3>
 
-        <form class="form-inline" onsubmit="return false;" title="Nhập ít nhất 1 trong Email / IP / URL và nhấn Phân tích">
-            <input type="email" id="analyzeEmail" placeholder="Nhập Email để phân tích..." autocomplete="off">
-            <input type="text" id="analyzeIP" placeholder="Nhập IP để phân tích..." autocomplete="off">
-            <input type="text" id="analyzeURL" placeholder="Nhập URL để phân tích..." autocomplete="off">
-            <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
-            <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
-            <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
-            <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
-            <button type="button" id="analyzeBtn">Phân tích</button>
-        </form>
+            <form class="form-inline" onsubmit="return false;" title="Nhập ít nhất 1 trong Email / IP / URL và nhấn Phân tích">
+                <input type="email" id="analyzeEmail" placeholder="Nhập Email để phân tích..." autocomplete="off">
+                <input type="text" id="analyzeIP" placeholder="Nhập IP để phân tích..." autocomplete="off">
+                <input type="text" id="analyzeURL" placeholder="Nhập URL để phân tích..." autocomplete="off">
+                <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
+                <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
+                <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
+                <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
+                <button type="button" id="analyzeBtn">Phân tích</button>
+            </form>
 
-        <div id="analyzeResult" class="analyze-result"></div>
-    </section>
-
-    <!-- EXCEL UPLOAD -->
-    <section class="card">
-        <h2>Nhập file Excel</h2>
-
-        <p class="note">
-            File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
-        </p>
-
-        <div class="form-inline">
-            <input type="file" id="excelFile" accept=".xlsx,.xls">
-            <button type="button" id="uploadExcelBtn">Tải lên</button>
+            <div id="analyzeResult" class="analyze-result"></div>
         </div>
 
-        <div id="uploadResult" class="analyze-result"></div>
-    </section>
+        <!-- EXCEL UPLOAD -->
+        <div class="card-row-item">
+            <h3>Nhập file Excel</h3>
+
+            <p class="note">
+                File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
+            </p>
+
+            <div class="form-inline">
+                <input type="file" id="excelFile" accept=".xlsx,.xls">
+                <button type="button" id="uploadExcelBtn">Tải lên</button>
+            </div>
+
+            <div id="uploadResult" class="analyze-result"></div>
+        </div>
+    </div>
 
     <!-- GRAPH -->
     <section class="card">
@@ -186,6 +222,86 @@
 <script th:src="@{/js/role-enhanced-analysis.js}"></script>
 <script th:src="@{/js/staff-analyze.js}"></script>
 <script th:src="@{/js/staff-excel-upload.js}"></script>
+
+<!-- Right-side node details panel -->
+<div id="nodeDetailsPanel" aria-hidden="true">
+    <div class="panel-head">
+        <div>
+            <div class="panel-title">Chi tiết Node</div>
+            <div class="panel-sub" id="panelNodeType">—</div>
+        </div>
+        <div>
+            <button id="closeNodePanel" class="close-panel">Đóng</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="detail-row">
+            <div class="detail-key">Value</div>
+            <div class="detail-val" id="panelNodeValue">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Risk Score</div>
+            <div class="detail-val" id="panelNodeScore">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Verdict</div>
+            <div class="detail-val" id="panelNodeVerdict">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Indicators</div>
+            <div class="detail-val" id="panelNodeIndicators">—</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-key">Relations</div>
+            <div class="detail-val" id="panelNodeRelations">—</div>
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById('btnOpenDetails')?.addEventListener('click', () => {
+    try {
+        const id = window.selectedNodeId || (window.__graphContext && window.__graphContext.selectedNodeId) || null;
+        const nodes = (window.__graphContext && window.__graphContext.nodes) || [];
+        const node = nodes.find(n => String(n.id) === String(id));
+        if (node) {
+            if (typeof window.enhancedShowNodeInfo === 'function') window.enhancedShowNodeInfo(node);
+            else if (typeof showNodeInfo === 'function') showNodeInfo(node);
+        } else {
+            alert('Chưa chọn node. Vui lòng click vào node trên đồ thị hoặc bảng để chọn.');
+        }
+    } catch (e) {
+        console.warn('Open details failed', e);
+        alert('Không thể mở chi tiết node');
+    }
+});
+</script>
+
+<script>
+window.addEventListener('nodeSelected', (e) => {
+    try {
+        const detail = e.detail || {};
+        const node = detail.node || {};
+        const analysis = detail.analysis || {};
+        document.getElementById('panelNodeType').textContent = node.type || '—';
+        document.getElementById('panelNodeValue').textContent = node.value || '—';
+        document.getElementById('panelNodeScore').textContent = String(node.riskScore ?? '—');
+        document.getElementById('panelNodeVerdict').textContent = node.verdict || '—';
+        document.getElementById('panelNodeIndicators').textContent = (Array.isArray(node.indicators) ? node.indicators.join(', ') : (node.indicators || '—'));
+        const relsFromGraph = (window.__graphContext && Array.isArray(window.__graphContext.links)) ?
+            window.__graphContext.links.filter(l => (l.source && String(l.source) === String(node.id)) || (l.target && String(l.target) === String(node.id)))
+            .slice(0,6).map(l => (l.type || '') + ' ' + ((String(l.source)===String(node.id))? '→ ' + (l.target||l.targetId||'?') : '← ' + (l.source||l.sourceId||'?'))) : [];
+        const relsFromAnalysis = Array.isArray(analysis.relatedNodes) ? analysis.relatedNodes.slice(0,6).map(r => (r.relationship||'') + ' → ' + (r.nodeType||r.nodeId||'?')) : [];
+        const rels = relsFromGraph.concat(relsFromAnalysis);
+        document.getElementById('panelNodeRelations').textContent = rels.length ? rels.join('; ') : (analysis.graphIntelligence || '—');
+        const panel = document.getElementById('nodeDetailsPanel'); if (panel) panel.classList.add('open');
+    } catch (err) { console.warn('nodeSelected handler', err); }
+});
+
+document.getElementById('closeNodePanel')?.addEventListener('click', () => {
+    const panel = document.getElementById('nodeDetailsPanel');
+    if (panel) panel.classList.remove('open');
+});
+</script>
 
 <script>
 // Initial graph load is handled by staff-session.js (select latest session by default)

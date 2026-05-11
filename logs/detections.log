@@ -1,0 +1,216 @@
+[2026-05-11 16:06:30.179] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:26:36.468] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:26:45.203] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:36:28.242] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:38:50.284] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:38:58.106] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:50:13.883] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 16:50:24.628] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:713 (URL) | Value: http://e8.i.lencr.org/ | Risk: low | Analysis: Loại node: URL
+Giá trị: http://e8.i.lencr.org/
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://e8.i.lencr.org/` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://e8.i.lencr.org/` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:12:19.435] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:12:37.202] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:642 (URL) | Value: http://download.windowsupdate.com/d/msdownload/update/others/2026/05/45199022_4ad02751f7e431a8b88854aace09eaee322b1011.cab | Risk: low | Analysis: Loại node: URL
+Giá trị: http://download.windowsupdate.com/d/msdownload/update/others/2026/05/45199022_4ad02751f7e431a8b88854aace09eaee322b1011.cab
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://download.windowsupdate.com/d/msdownload/update/others/2026/05/45199022_4ad02751f7e431a8b88854aace09eaee322b1011.cab` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node URL `http://download.windowsupdate.com/d/msdownload/update/others/2026/05/45199022_4ad02751f7e431a8b88854aace09eaee322b1011.cab` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:14:00.974] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:34:59.003] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:35:32.005] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:722 (URL) | Value: http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3 | Risk: low | Analysis: Loại node: URL
+Giá trị: http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node URL `http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:35:32.745] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:722 (URL) | Value: http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3 | Risk: low | Analysis: Loại node: URL
+Giá trị: http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node URL `http://ctldl.windowsupdate.com/msdownload/update/v3/static/trustedr/en/disallowedcertstl.cab?81475f4252d763e3` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:35:44.235] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:457 (URL) | Value: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl | Risk: low | Analysis: Loại node: URL
+Giá trị: http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: signin | Threats: Node URL `http://crl3.digicert.com/DigiCertTrustedG4CodeSigningRSA4096SHA2562021CA1.crl` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:35:56.109] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:713 (URL) | Value: http://e8.i.lencr.org/ | Risk: low | Analysis: Loại node: URL
+Giá trị: http://e8.i.lencr.org/
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://e8.i.lencr.org/` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://e8.i.lencr.org/` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-11 17:36:04.481] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:379 (IPAddress) | Value: 192.168.48.86 | Risk: medium | Analysis: Loại node: IPAddress
+Giá trị: 192.168.48.86
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 40/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `192.168.48.86` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP | Threats: Node IPAddress `192.168.48.86` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-05-11 17:36:12.910] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:701 (URL) | Value: http://ocsp.digicert.com/MFEwTzBNMEswSTAJBgUrDgMCGgUABBQ50otx%2Fh0Ztl%2Bz8SiPI7wEWVxDlQQUTiJUIBiV5uNu5g%2F6%2BrkS7QYXjzkCEAsMayxGaRewR3PGR9SvwMg%3D | Risk: high | Analysis: Loại node: URL
+Giá trị: http://ocsp.digicert.com/MFEwTzBNMEswSTAJBgUrDgMCGgUABBQ50otx%2Fh0Ztl%2Bz8SiPI7wEWVxDlQQUTiJUIBiV5uNu5g%2F6%2BrkS7QYXjzkCEAsMayxGaRewR3PGR9SvwMg%3D
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://ocsp.digicert.com/MFEwTzBNMEswSTAJBgUrDgMCGgUABBQ50otx%2Fh0Ztl%2Bz8SiPI7wEWVxDlQQUTiJUIBiV5uNu5g%2F6%2BrkS7QYXjzkCEAsMayxGaRewR3PGR9SvwMg%3D` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://ocsp.digicert.com/MFEwTzBNMEswSTAJBgUrDgMCGgUABBQ50otx%2Fh0Ztl%2Bz8SiPI7wEWVxDlQQUTiJUIBiV5uNu5g%2F6%2BrkS7QYXjzkCEAsMayxGaRewR3PGR9SvwMg%3D` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-11 17:36:20.000] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:501 (IPAddress) | Value: 172.26.219.229 | Risk: medium | Analysis: Loại node: IPAddress
+Giá trị: 172.26.219.229
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 40/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `172.26.219.229` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP | Threats: Node IPAddress `172.26.219.229` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-05-11 17:36:20.405] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:505 (IPAddress) | Value: 172.26.219.96 | Risk: medium | Analysis: Loại node: IPAddress
+Giá trị: 172.26.219.96
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 40/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `172.26.219.96` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP | Threats: Node IPAddress `172.26.219.96` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
