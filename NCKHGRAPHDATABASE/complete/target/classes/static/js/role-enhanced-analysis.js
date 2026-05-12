@@ -34,7 +34,12 @@ function ensureEnhancedPopupStyles() {
         #nodeInfo .node-popup-premium.low { box-shadow: 0 26px 70px rgba(15,23,42,0.16), 0 8px 24px rgba(16,185,129,0.12); }
         #nodeInfo .node-popup-premium.medium { box-shadow: 0 26px 70px rgba(15,23,42,0.16), 0 8px 24px rgba(245,158,11,0.15); }
         #nodeInfo .node-popup-premium.high { box-shadow: 0 26px 70px rgba(15,23,42,0.16), 0 8px 24px rgba(239,68,68,0.16); }
-        #nodeInfo .node-popup-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding-bottom:16px; border-bottom:1px solid rgba(148,163,184,0.18); }
+        #nodeInfo .node-popup-section-header { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-bottom:12px; margin-bottom:14px; border-bottom:2px solid rgba(148,163,184,0.12); }
+        #nodeInfo .node-popup-section-kicker { font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:1.2px; color:#94a3b8; }
+        #nodeInfo .node-popup-section-title { font-size:15px; font-weight:800; color:#1e293b; }
+        #nodeInfo .node-popup-threats-list { display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+        #nodeInfo .node-popup-threat-item { background:#fff; border:1px solid rgba(229,231,235,0.6); border-radius:10px; transition:all 0.2s ease; }
+        #nodeInfo .node-popup-threat-item:hover { box-shadow:0 4px 12px rgba(0,0,0,0.06); transform:translateY(-1px); }
         #nodeInfo .node-popup-header-left { display:flex; gap:14px; align-items:center; min-width:0; }
         #nodeInfo .node-popup-icon { width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:24px; background:linear-gradient(135deg, rgba(99,102,241,0.16), rgba(59,130,246,0.12)); border:1px solid rgba(99,102,241,0.22); flex:0 0 auto; }
         #nodeInfo .node-popup-type { font-size:17px; font-weight:800; line-height:1.2; }
@@ -280,21 +285,30 @@ function renderEnhancedNodeInfo(nodeData, decision, chatbot) {
                 </div>
             </div>
 
-            <div class="node-popup-indicators">
-                <div class="node-popup-label">Liên kết (highlight trên đồ thị)</div>
-                <div class="node-popup-indicators-list">
-                    ${relationsHtml}
-                </div>
-            </div>
-
             <div class="node-popup-stack">
+            ${renderDangerBlock(chatbot?.specificDangersWithMetadata || chatbot?.specificDangers, sectionRiskClass)}
             ${renderTextBlock("Phân tích node", chatbot?.analysisDescription, "Analysis", sectionRiskClass)}
             ${renderTextBlock("Đánh giá rủi ro", chatbot?.riskAssessment, "Risk", sectionRiskClass)}
-            ${renderDangerBlock(chatbot?.specificDangers, sectionRiskClass)}
             ${renderTextBlock("Giải thích ngữ cảnh graph", chatbot?.graphIntelligence, "Graph", sectionRiskClass)}
             ${renderActionBlock(chatbot?.recommendedActions, sectionRiskClass)}
             ${renderDecisionReasonBlock(decision, sectionRiskClass)}
             </div>
+
+            ${graphRelations.length > 0 || relatedNodes.length > 0 ? `
+            <div class="node-popup-indicators">
+                <div class="node-popup-label">📊 Các liên kết liên quan</div>
+                <div class="node-popup-indicators-list">
+                    ${relationsHtml}
+                </div>
+            </div>
+            ` : `
+            <div class="node-popup-indicators" style="background: rgba(248,250,252,0.6); border: 1px dashed rgba(148,163,184,0.3);">
+                <div class="node-popup-label" style="color: #64748b;">ℹ️ Trạng thái liên kết</div>
+                <div style="color: #64748b; font-size: 13px; line-height: 1.6; margin-top: 8px;">
+                    Node này hiện chưa được liên kết với các node khác trong graph. Điều này có thể do node đang cô lập hoặc dữ liệu phiên hiện tại chưa đủ để xác định quan hệ.
+                </div>
+            </div>
+            `}
 
             <div class="node-popup-footer">
                 ${canManualBlock() && String(nodeData.type || "").toLowerCase() !== "analysissession"
@@ -386,17 +400,79 @@ function renderTextBlock(label, text, kicker = "Details", sectionRiskClass = "se
 
 function renderDangerBlock(items, sectionRiskClass = "section-neutral") {
     if (!Array.isArray(items) || items.length === 0) return "";
-    return `
-        <div class="node-popup-section ${sectionRiskClass}">
-            <div class="node-popup-section-header">
-                <div class="node-popup-section-kicker">Threats</div>
-                <div class="node-popup-section-title">Nguy cơ chính</div>
+    
+    const isDangerWithMetadata = items.length > 0 && typeof items[0] === "object" && items[0].icon;
+    
+    if (isDangerWithMetadata) {
+        return `
+            <div class="node-popup-section ${sectionRiskClass}">
+                <div class="node-popup-section-header">
+                    <div class="node-popup-section-kicker">Threats</div>
+                    <div class="node-popup-section-title">Nguy cơ chính</div>
+                </div>
+                <div class="node-popup-threats-list">
+                    ${items.slice(0, 8).map(threat => `
+                        <div class="node-popup-threat-item" style="
+                            background: ${threat.color}15;
+                            border-left: 4px solid ${threat.color};
+                            padding: 12px;
+                            border-radius: 8px;
+                            margin-bottom: 10px;
+                            display: flex;
+                            gap: 10px;
+                            align-items: flex-start;
+                        ">
+                            <span class="node-popup-threat-icon" style="
+                                font-size: 20px;
+                                flex-shrink: 0;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            ">${escapeHtml(threat.icon)}</span>
+                            <div style="flex: 1;">
+                                <div style="
+                                    font-weight: 700;
+                                    color: ${threat.color};
+                                    font-size: 12px;
+                                    margin-bottom: 4px;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.8px;
+                                ">${escapeHtml(threat.category || threat.severity)}</div>
+                                <div style="
+                                    color: #334155;
+                                    font-size: 13px;
+                                    line-height: 1.5;
+                                ">${escapeHtml(threat.danger)}</div>
+                            </div>
+                            <span class="node-popup-severity-badge" style="
+                                background: ${threat.color};
+                                color: white;
+                                padding: 4px 8px;
+                                border-radius: 4px;
+                                font-size: 11px;
+                                font-weight: 700;
+                                white-space: nowrap;
+                                flex-shrink: 0;
+                            ">${escapeHtml(threat.severity)}</span>
+                        </div>
+                    `).join("")}
+                </div>
             </div>
-            <div class="node-popup-indicators-list">
-                ${items.slice(0, 6).map(item => `<span class="node-popup-badge">${escapeHtml(item)}</span>`).join("")}
+        `;
+    } else {
+        // Cách cũ - string array
+        return `
+            <div class="node-popup-section ${sectionRiskClass}">
+                <div class="node-popup-section-header">
+                    <div class="node-popup-section-kicker">Threats</div>
+                    <div class="node-popup-section-title">Nguy cơ chính</div>
+                </div>
+                <div class="node-popup-indicators-list">
+                    ${items.slice(0, 6).map(item => `<span class="node-popup-badge">${escapeHtml(item)}</span>`).join("")}
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    }
 }
 
 function renderActionBlock(items, sectionRiskClass = "section-neutral") {

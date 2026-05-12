@@ -2,6 +2,7 @@ package com.example.servingwebcontent.service;
 
 import com.example.servingwebcontent.dto.ChatbotResponseDTO;
 import com.example.servingwebcontent.dto.ChatbotResponseDTO.RelatedNodeDTO;
+import com.example.servingwebcontent.dto.ThreatDangerDTO;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,7 @@ public class EnhancedChatbotService {
         response.setAnalysisDescription(generateAnalysisLayer(nodeType, nodeValue, riskScore, pattern, indicators, relatedNodes));
         response.setRiskAssessment(generateRiskAssessment(riskLevel, riskScore, indicators, pattern));
         response.setSpecificDangers(generateThreatExplanation(nodeType, riskLevel, pattern));
+        response.setSpecificDangersWithMetadata(generateThreatExplanationWithMetadata(nodeType, riskLevel, pattern));
         response.setThreatExplanation(generateThreatNarrative(nodeType, nodeValue, riskLevel, pattern, indicators, relatedNodes));
         response.setRecommendedActions(generateRecommendedActions(riskLevel, nodeType, pattern));
         response.setRelatedNodes(relatedNodes);
@@ -229,6 +231,106 @@ public class EnhancedChatbotService {
                 dangers.add("Behavior may escalate quickly if attacker tasking changes.");
             }
             default -> dangers.add("Review linked entities for additional context.");
+        }
+
+        return dangers;
+    }
+
+    private List<ThreatDangerDTO> generateThreatExplanationWithMetadata(String nodeType, String riskLevel, ThreatPattern pattern) {
+        List<ThreatDangerDTO> dangers = new ArrayList<>();
+
+        if ("HIGH".equalsIgnoreCase(riskLevel)) {
+            dangers.add(new ThreatDangerDTO(
+                "This entity is strongly associated with malicious activity.",
+                "🚨", "#ef4444", "CRITICAL", "MALICIOUS"
+            ));
+        } else if ("MEDIUM".equalsIgnoreCase(riskLevel)) {
+            dangers.add(new ThreatDangerDTO(
+                "This entity has suspicious characteristics that require review.",
+                "⚠️", "#f59e0b", "HIGH", "SUSPICIOUS"
+            ));
+        } else {
+            dangers.add(new ThreatDangerDTO(
+                "Current evidence does not show strong malicious behavior.",
+                "ℹ️", "#3b82f6", "LOW", "CAUTION"
+            ));
+        }
+
+        switch (pattern) {
+            case PHISHING -> {
+                dangers.add(new ThreatDangerDTO(
+                    "May steal credentials or payment information.",
+                    "🎣", "#dc2626", "CRITICAL", "PHISHING"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "Often impersonates a trusted service or workflow.",
+                    "🎭", "#f97316", "HIGH", "PHISHING"
+                ));
+            }
+            case C2_COMMAND -> {
+                dangers.add(new ThreatDangerDTO(
+                    "May coordinate compromised hosts or malware.",
+                    "🤖", "#8b5cf6", "CRITICAL", "C2_COMMAND"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "Can support persistence, tasking, and data theft.",
+                    "🔗", "#a855f7", "CRITICAL", "C2_COMMAND"
+                ));
+            }
+            case LATERAL_MOVEMENT -> {
+                dangers.add(new ThreatDangerDTO(
+                    "May indicate an internal host is probing or spreading.",
+                    "↔️", "#ec4899", "HIGH", "LATERAL_MOVEMENT"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "Can expose additional systems through trusted network paths.",
+                    "🌐", "#f43f5e", "HIGH", "LATERAL_MOVEMENT"
+                ));
+            }
+            case MALWARE_HOSTING -> {
+                dangers.add(new ThreatDangerDTO(
+                    "May deliver or host malicious payloads.",
+                    "📦", "#dc2626", "CRITICAL", "MALWARE_HOSTING"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "Systems interacting with it may be at risk of compromise.",
+                    "☠️", "#b91c1c", "CRITICAL", "MALWARE_HOSTING"
+                ));
+            }
+            case DDoS_SOURCE -> {
+                dangers.add(new ThreatDangerDTO(
+                    "May be used to generate disruptive traffic.",
+                    "💥", "#ea580c", "HIGH", "DDoS_SOURCE"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "Can affect service availability or hide parallel activity.",
+                    "⚡", "#f59e0b", "HIGH", "DDoS_SOURCE"
+                ));
+            }
+            case BOTNET -> {
+                dangers.add(new ThreatDangerDTO(
+                    "May be part of coordinated malicious infrastructure.",
+                    "🕷️", "#6366f1", "HIGH", "BOTNET"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "Behavior may escalate quickly if attacker tasking changes.",
+                    "📈", "#4f46e5", "HIGH", "BOTNET"
+                ));
+            }
+            case DATA_EXFILTRATION -> {
+                dangers.add(new ThreatDangerDTO(
+                    "Attempts to steal sensitive data from the organization.",
+                    "📤", "#c2410c", "CRITICAL", "DATA_EXFILTRATION"
+                ));
+                dangers.add(new ThreatDangerDTO(
+                    "May bypass data loss prevention controls.",
+                    "🔓", "#ea580c", "CRITICAL", "DATA_EXFILTRATION"
+                ));
+            }
+            default -> dangers.add(new ThreatDangerDTO(
+                "Review linked entities for additional context.",
+                "🔍", "#6b7280", "MEDIUM", "UNKNOWN"
+            ));
         }
 
         return dangers;

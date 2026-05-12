@@ -486,3 +486,1083 @@ Pattern phát hiện: Clean
 
 Lý do node xuất hiện trong graph:
 - Hệ thống đã ghi nhận Domain `www.google.com.vn` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.google.com.vn` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:05.847] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:749 (Domain) | Value: spclient.wg.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: spclient.wg.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `spclient.wg.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `spclient.wg.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:10.589] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:771 (Domain) | Value: play.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: play.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `play.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `play.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:17.812] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:772 (Domain) | Value: encrypted-tbn0.gstatic.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: encrypted-tbn0.gstatic.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `encrypted-tbn0.gstatic.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `encrypted-tbn0.gstatic.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:25.347] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:773 (Domain) | Value: _spotify-connect._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _spotify-connect._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_spotify-connect._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_spotify-connect._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:28.823] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:775 (Domain) | Value: ogs.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: ogs.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `ogs.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `ogs.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:33.815] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:776 (Domain) | Value: telemetry.individual.githubcopilot.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: telemetry.individual.githubcopilot.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `telemetry.individual.githubcopilot.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `telemetry.individual.githubcopilot.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:36.207] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:38:36.705] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:778 (Domain) | Value: www.gstatic.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.gstatic.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.gstatic.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.gstatic.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:38.503] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:779 (Domain) | Value: ssl.gstatic.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: ssl.gstatic.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `ssl.gstatic.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `ssl.gstatic.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:38:59.140] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:780 (Domain) | Value: optimizationguide-pa.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: optimizationguide-pa.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `optimizationguide-pa.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `optimizationguide-pa.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:39:02.541] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:781 (Domain) | Value: fonts.gstatic.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: fonts.gstatic.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `fonts.gstatic.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `fonts.gstatic.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:39:34.046] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:783 (Domain) | Value: prod-dynamite-prod-02-us-signaler-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: prod-dynamite-prod-02-us-signaler-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 20/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `prod-dynamite-prod-02-us-signaler-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Domain dài | Threats: Node Domain `prod-dynamite-prod-02-us-signaler-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:39:47.154] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:785 (Domain) | Value: 6-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: 6-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 20/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `6-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Domain dài | Threats: Node Domain `6-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:39:56.909] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:786 (Domain) | Value: fonts.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: fonts.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `fonts.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `fonts.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:17.946] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:787 (Domain) | Value: app.launchdarkly.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: app.launchdarkly.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `app.launchdarkly.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `app.launchdarkly.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:22.178] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:788 (Domain) | Value: clientstream.launchdarkly.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: clientstream.launchdarkly.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `clientstream.launchdarkly.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `clientstream.launchdarkly.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:28.445] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:789 (Domain) | Value: www.msftconnecttest.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.msftconnecttest.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.msftconnecttest.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.msftconnecttest.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:32.353] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:790 (URL) | Value: http://www.msftconnecttest.com/connecttest.txt | Risk: low | Analysis: Loại node: URL
+Giá trị: http://www.msftconnecttest.com/connecttest.txt
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://www.msftconnecttest.com/connecttest.txt` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `http://www.msftconnecttest.com/connecttest.txt` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:46.123] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:791 (Domain) | Value: unpkg.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: unpkg.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `unpkg.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `unpkg.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:53.372] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:792 (Domain) | Value: chatgpt.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: chatgpt.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `chatgpt.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `chatgpt.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:55.887] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:756 (Domain) | Value: _rdlink._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _rdlink._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_rdlink._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_rdlink._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:40:57.429] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:756 (Domain) | Value: _rdlink._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _rdlink._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_rdlink._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_rdlink._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:06.906] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:750 (AnalysisSession) | Value: NETWORK_CAPTURE | Risk: low | Analysis: Loại node: AnalysisSession
+Giá trị: NETWORK_CAPTURE
+Mô tả: Analysis session node representing an ingestion or investigation context.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận AnalysisSession `NETWORK_CAPTURE` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node AnalysisSession `NETWORK_CAPTURE` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:12.821] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:793 (Domain) | Value: cloudcode-pa.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: cloudcode-pa.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `cloudcode-pa.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `cloudcode-pa.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:28.368] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:794 (Domain) | Value: www.apple.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.apple.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.apple.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.apple.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:39.107] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:795 (Domain) | Value: _raop._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _raop._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_raop._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_raop._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:40.571] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:796 (Domain) | Value: _airplay._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _airplay._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_airplay._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_airplay._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:41.400] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:797 (Domain) | Value: mobile.events.data.microsoft.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: mobile.events.data.microsoft.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `mobile.events.data.microsoft.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `mobile.events.data.microsoft.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:41:48.887] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:41:57.283] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:42:09.653] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:788 (Domain) | Value: clientstream.launchdarkly.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: clientstream.launchdarkly.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `clientstream.launchdarkly.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `clientstream.launchdarkly.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:11.703] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:42:16.833] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:798 (Domain) | Value: tt-chat3-wpa.chat.zalo.me | Risk: low | Analysis: Loại node: Domain
+Giá trị: tt-chat3-wpa.chat.zalo.me
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `tt-chat3-wpa.chat.zalo.me` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `tt-chat3-wpa.chat.zalo.me` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:23.366] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:42:25.256] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:42:31.679] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:799 (Domain) | Value: accounts.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: accounts.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `accounts.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: account | Threats: Node Domain `accounts.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:33.022] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:799 (Domain) | Value: accounts.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: accounts.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `accounts.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: account | Threats: Node Domain `accounts.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:35.674] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:801 (Domain) | Value: wpad | Risk: low | Analysis: Loại node: Domain
+Giá trị: wpad
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `wpad` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `wpad` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:36.257] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:800 (Domain) | Value: wpad.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: wpad.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `wpad.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `wpad.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:38.941] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:744 (URL) | Value: https://www.google.com | Risk: low | Analysis: Loại node: URL
+Giá trị: https://www.google.com
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `https://www.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `https://www.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:42.321] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:42:45.341] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:803 (Domain) | Value: events.launchdarkly.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: events.launchdarkly.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `events.launchdarkly.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `events.launchdarkly.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:42:54.056] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:804 (Domain) | Value: main.vscode-cdn.net | Risk: low | Analysis: Loại node: Domain
+Giá trị: main.vscode-cdn.net
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `main.vscode-cdn.net` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `main.vscode-cdn.net` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:43:33.874] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:805 (Domain) | Value: update.code.visualstudio.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: update.code.visualstudio.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `update.code.visualstudio.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node Domain `update.code.visualstudio.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:43:44.197] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:807 (Domain) | Value: clientservices.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: clientservices.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `clientservices.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `clientservices.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:43:47.666] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:808 (Domain) | Value: safebrowsing.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: safebrowsing.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `safebrowsing.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `safebrowsing.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:43:52.827] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:809 (Domain) | Value: chromewebstore.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: chromewebstore.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `chromewebstore.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `chromewebstore.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:14.260] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:44:15.706] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:826 (Domain) | Value: _rfb._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _rfb._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_rfb._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_rfb._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:16.555] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:827 (Domain) | Value: _adisk._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _adisk._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_adisk._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_adisk._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:17.569] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:828 (Domain) | Value: _apple-mobdev._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _apple-mobdev._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_apple-mobdev._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_apple-mobdev._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:18.457] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:829 (Domain) | Value: 92170819._sub._apple-mobdev2._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: 92170819._sub._apple-mobdev2._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `92170819._sub._apple-mobdev2._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `92170819._sub._apple-mobdev2._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:19.786] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:830 (Domain) | Value: _apple-pairable._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _apple-pairable._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_apple-pairable._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_apple-pairable._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:46.468] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:831 (Domain) | Value: westus-0.in.applicationinsights.azure.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: westus-0.in.applicationinsights.azure.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `westus-0.in.applicationinsights.azure.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `westus-0.in.applicationinsights.azure.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:53.798] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:832 (Domain) | Value: signaler-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: signaler-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `signaler-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `signaler-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:44:58.510] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:833 (Domain) | Value: console-preview.neo4j.io | Risk: low | Analysis: Loại node: Domain
+Giá trị: console-preview.neo4j.io
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `console-preview.neo4j.io` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `console-preview.neo4j.io` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:45:23.202] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:834 (Domain) | Value: oauth2.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: oauth2.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `oauth2.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `oauth2.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:45:41.030] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:835 (Domain) | Value: people.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: people.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `people.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `people.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:45:46.869] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:836 (Domain) | Value: chat.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: chat.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `chat.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `chat.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:45:51.427] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:837 (Domain) | Value: google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:46:33.874] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:838 (Domain) | Value: MSI | Risk: low | Analysis: Loại node: Domain
+Giá trị: MSI
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `MSI` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `MSI` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:46:35.618] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:840 (Domain) | Value: PUCS | Risk: low | Analysis: Loại node: Domain
+Giá trị: PUCS
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `PUCS` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `PUCS` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:47:17.698] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:841 (Domain) | Value: beacons.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: beacons.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `beacons.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `beacons.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:48:17.269] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:843 (Domain) | Value: teams.events.data.microsoft.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: teams.events.data.microsoft.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `teams.events.data.microsoft.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `teams.events.data.microsoft.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:48:32.091] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:844 (Domain) | Value: docs.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: docs.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `docs.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `docs.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:48:48.053] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:845 (Domain) | Value: drivefrontend-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: drivefrontend-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `drivefrontend-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `drivefrontend-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:49:30.372] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:847 (Domain) | Value: 956107f0._sub._apple-mobdev2._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: 956107f0._sub._apple-mobdev2._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `956107f0._sub._apple-mobdev2._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `956107f0._sub._apple-mobdev2._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:50:01.193] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:848 (Domain) | Value: e2c72.gcp.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: e2c72.gcp.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `e2c72.gcp.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `e2c72.gcp.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:51:04.601] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:07.529] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:749 (Domain) | Value: spclient.wg.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: spclient.wg.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `spclient.wg.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `spclient.wg.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:51:13.230] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:749 (Domain) | Value: spclient.wg.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: spclient.wg.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `spclient.wg.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `spclient.wg.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:51:14.034] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:749 (Domain) | Value: spclient.wg.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: spclient.wg.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `spclient.wg.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `spclient.wg.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:51:14.131] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:749 (Domain) | Value: spclient.wg.spotify.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: spclient.wg.spotify.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `spclient.wg.spotify.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `spclient.wg.spotify.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:51:26.579] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:26.907] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:29.233] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:37.838] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:48.401] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:48.928] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:49.072] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:50.814] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:50.975] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:51:52.693] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:750 (AnalysisSession) | Value: NETWORK_CAPTURE | Risk: low | Analysis: Loại node: AnalysisSession
+Giá trị: NETWORK_CAPTURE
+Mô tả: Analysis session node representing an ingestion or investigation context.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận AnalysisSession `NETWORK_CAPTURE` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node AnalysisSession `NETWORK_CAPTURE` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:51:56.816] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:748 (IPAddress) | Value: 10.60.208.75 | Risk: medium | Analysis: Loại node: IPAddress
+Giá trị: 10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 40/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP | Threats: Node IPAddress `10.60.208.75` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-05-12 11:52:00.647] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:767 (IPAddress) | Value: 10.20.20.250 | Risk: medium | Analysis: Loại node: IPAddress
+Giá trị: 10.20.20.250
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 40/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.20.20.250` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP | Threats: Node IPAddress `10.20.20.250` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-05-12 11:52:02.377] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 11:52:18.707] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:850 (Domain) | Value: beacons5.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: beacons5.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `beacons5.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `beacons5.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:53:00.993] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:851 (Domain) | Value: beacons4.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: beacons4.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `beacons4.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `beacons4.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:53:59.242] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:853 (Domain) | Value: b1.nel.goog | Risk: low | Analysis: Loại node: Domain
+Giá trị: b1.nel.goog
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `b1.nel.goog` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `b1.nel.goog` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:57:26.191] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:855 (Domain) | Value: clients4.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: clients4.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `clients4.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `clients4.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:58:23.131] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:857 (Domain) | Value: login.neo4j.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: login.neo4j.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `login.neo4j.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: login | Threats: Node Domain `login.neo4j.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:59:20.118] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:859 (Domain) | Value: addons-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: addons-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `addons-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `addons-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:59:37.225] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:860 (Domain) | Value: www.google-analytics.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.google-analytics.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.google-analytics.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.google-analytics.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 11:59:58.073] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:861 (Domain) | Value: mail.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: mail.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `mail.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `mail.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:00:28.546] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 12:02:33.174] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:865 (Domain) | Value: update.googleapis.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: update.googleapis.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 15/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `update.googleapis.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Keyword dang ngo: update | Threats: Node Domain `update.googleapis.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:04:03.062] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:866 (Domain) | Value: drive.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: drive.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `drive.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `drive.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:05:17.146] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:870 (Domain) | Value: Ngocdangyeus-Macbook.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: Ngocdangyeus-Macbook.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `Ngocdangyeus-Macbook.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `Ngocdangyeus-Macbook.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:05:49.166] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:871 (Domain) | Value: d3js.org | Risk: low | Analysis: Loại node: Domain
+Giá trị: d3js.org
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `d3js.org` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `d3js.org` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:08:37.495] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:873 (Domain) | Value: _itsdlgt._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: _itsdlgt._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `_itsdlgt._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `_itsdlgt._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:08:41.826] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:874 (Domain) | Value: Ngocdangyeu's Macbook._companion-link._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: Ngocdangyeu's Macbook._companion-link._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `Ngocdangyeu's Macbook._companion-link._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `Ngocdangyeu's Macbook._companion-link._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:11:41.583] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 12:36:28.724] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 12:36:50.456] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:908 (Domain) | Value: 2-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: 2-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 20/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `2-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Domain dài | Threats: Node Domain `2-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:36:57.028] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 12:37:00.507] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high | Analysis: Loại node: IPAddress
+Giá trị: 10.128.128.128,10.60.208.75
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `10.128.128.128,10.60.208.75` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * IP không hợp lệ | Threats: Node IPAddress `10.128.128.128,10.60.208.75` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 12:38:24.454] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:909 (Domain) | Value: cdnjs.cloudflare.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: cdnjs.cloudflare.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `cdnjs.cloudflare.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `cdnjs.cloudflare.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:39:24.084] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 12:40:28.107] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:911 (Domain) | Value: vscode.dev | Risk: low | Analysis: Loại node: Domain
+Giá trị: vscode.dev
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `vscode.dev` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `vscode.dev` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:44:31.110] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:914 (Domain) | Value: vscode-sync.trafficmanager.net | Risk: low | Analysis: Loại node: Domain
+Giá trị: vscode-sync.trafficmanager.net
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `vscode-sync.trafficmanager.net` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `vscode-sync.trafficmanager.net` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:44:48.113] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:915 (Domain) | Value: e2c28.gcp.gvt2.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: e2c28.gcp.gvt2.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `e2c28.gcp.gvt2.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `e2c28.gcp.gvt2.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 12:45:51.022] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []

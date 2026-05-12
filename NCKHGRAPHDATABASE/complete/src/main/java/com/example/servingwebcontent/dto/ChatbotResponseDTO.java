@@ -19,6 +19,7 @@ public class ChatbotResponseDTO {
     // Layer 3: Danger/Threat Explanation
     private String threatExplanation;
     private List<String> specificDangers;
+    private List<ThreatDangerDTO> specificDangersWithMetadata;  // ✅ Thêm metadata (icon, color, severity)
 
     // Layer 4: Specific Actions
     private List<String> recommendedActions;
@@ -65,6 +66,9 @@ public class ChatbotResponseDTO {
 
     public List<String> getSpecificDangers() { return specificDangers; }
     public void setSpecificDangers(List<String> specificDangers) { this.specificDangers = specificDangers; }
+
+    public List<ThreatDangerDTO> getSpecificDangersWithMetadata() { return specificDangersWithMetadata; }
+    public void setSpecificDangersWithMetadata(List<ThreatDangerDTO> specificDangersWithMetadata) { this.specificDangersWithMetadata = specificDangersWithMetadata; }
 
     public List<String> getRecommendedActions() { return recommendedActions; }
     public void setRecommendedActions(List<String> recommendedActions) { this.recommendedActions = recommendedActions; }
