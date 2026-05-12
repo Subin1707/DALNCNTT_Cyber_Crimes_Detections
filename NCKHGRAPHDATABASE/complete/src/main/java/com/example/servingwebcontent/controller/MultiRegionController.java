@@ -28,11 +28,11 @@ public class MultiRegionController {
     }
 
     /**
-     * DEMO 1: Phương pháp miền thực sự
+     * DEMO 1: Phương pháp miền thực sự - 3 node
      * GET /api/multiregion/demo/three-regions
      * 
      * Trả về:
-     * - 3 node khác nhau (safe, suspicious, fraud)
+     * - 3 node (SAFE, SUSPICIOUS, FRAUD)
      * - Khoảng cách tới 3 miền
      * - Xác suất thuộc miền nào
      */
@@ -42,11 +42,39 @@ public class MultiRegionController {
             // In console output
             multiRegionDemoService.demoThreeRegionAnalysis();
             
+            // Tạo API response với dữ liệu
+            List<Map<String, Object>> results = new ArrayList<>();
+            
+            // Node 1: SAFE
+            BehaviorFeatureVector safeNode = new BehaviorFeatureVector(
+                    1, 2, 3, 2, 0, 0.5, false, false, false, false, false, false);
+            MultiRegionAnalysisService.RegionAnalysisResult safeResult = 
+                multiRegionService.analyzeAgainstRegions(safeNode);
+            multiRegionService.applyFeaturePenalties(safeNode, safeResult);
+            results.add(buildDemoResponse("SAFE_NODE", safeNode, safeResult));
+            
+            // Node 2: SUSPICIOUS
+            BehaviorFeatureVector suspiciousNode = new BehaviorFeatureVector(
+                    5, 8, 10, 6, 3, 3.5, true, false, true, false, true, true);
+            MultiRegionAnalysisService.RegionAnalysisResult suspiciousResult = 
+                multiRegionService.analyzeAgainstRegions(suspiciousNode);
+            multiRegionService.applyFeaturePenalties(suspiciousNode, suspiciousResult);
+            results.add(buildDemoResponse("SUSPICIOUS_NODE", suspiciousNode, suspiciousResult));
+            
+            // Node 3: FRAUD
+            BehaviorFeatureVector fraudNode = new BehaviorFeatureVector(
+                    15, 20, 25, 18, 8, 10.0, true, true, true, true, true, true);
+            MultiRegionAnalysisService.RegionAnalysisResult fraudResult = 
+                multiRegionService.analyzeAgainstRegions(fraudNode);
+            multiRegionService.applyFeaturePenalties(fraudNode, fraudResult);
+            results.add(buildDemoResponse("FRAUD_NODE", fraudNode, fraudResult));
+            
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", "SUCCESS");
-            response.put("message", "Demo phương pháp miền - Xem console output");
-            response.put("description", "3 node được phân tích so với 3 miền (Safe, Suspicious, Fraud)");
-            response.put("next_endpoint", "/api/multiregion/demo/complex-case");
+            response.put("title", "DEMO: 3 LOẠI NODE - PHƯƠNG PHÁP MIỀN THỰC SỰ");
+            response.put("description", "Phân tích 3 node với hành vi khác nhau vào 3 miền");
+            response.put("results", results);
+            response.put("console_output", "Xem terminal/console để xem chi tiết đầy đủ");
             
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -56,17 +84,40 @@ public class MultiRegionController {
     }
 
     /**
-     * DEMO 2: Trường hợp phức tạp
-     * Node nằm giữa 2 miền (mâu thuẫn)
+     * DEMO 2: Trường hợp phức tạp - Node mâu thuẫn
+     * GET /api/multiregion/demo/complex-case
+     * 
+     * Node nằm giữa 2 miền (VPN=true nhưng blacklist=false)
      */
     @GetMapping("/demo/complex-case")
     public ResponseEntity<?> demoComplexCase() {
         try {
             multiRegionDemoService.demoComplexCase();
             
+            // Node mâu thuẫn: VPN=true (nghi ngờ) nhưng blacklist=false (bình thường)
+            BehaviorFeatureVector complexNode = new BehaviorFeatureVector(
+                    8, 12, 8, 5, 2, 2.0, true, false, true, false, false, true);
+            
+            MultiRegionAnalysisService.RegionAnalysisResult result = 
+                multiRegionService.analyzeAgainstRegions(complexNode);
+            multiRegionService.applyFeaturePenalties(complexNode, result);
+            
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", "SUCCESS");
-            response.put("message", "Demo trường hợp phức tạp - Xem console output");
+            response.put("title", "DEMO: TRƯỜNG HỢP PHỨC TẠP - MẦU THUẪN");
+            response.put("description", "Node có tính năng vừa bình thường vừa nghi ngờ");
+            response.put("node", formatNode(complexNode));
+            response.put("anomaly", new LinkedHashMap<String, Object>() {{
+                put("score", String.format("%.2f", result.getAnomalyScore()));
+                put("status", result.getAnomalyScore() > 0.4 ? "🔴 ANOMALY DETECTED!" : "✅ Normal");
+                put("reason", "VPN=true nhưng Blacklist=false → Mâu thuẫn trong hành vi");
+            }});
+            response.put("region_analysis", new LinkedHashMap<String, Object>() {{
+                put("primary_region", result.getPrimaryRegion());
+                put("fraud_probability", String.format("%.2f%%", result.getRegionProbability(RegionType.FRAUD) * 100));
+                put("suspicious_probability", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100));
+                put("safe_probability", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100));
+            }});
             
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -77,15 +128,50 @@ public class MultiRegionController {
 
     /**
      * DEMO 3: So sánh Rule-Based vs Multi-Region
+     * GET /api/multiregion/demo/rule-based-vs-region
      */
     @GetMapping("/demo/rule-based-vs-region")
     public ResponseEntity<?> demoRuleBasedVsRegion() {
         try {
             multiRegionDemoService.demoRuleBasedVsRegion();
             
+            // Node A: VPN + Spam (rule-based score ~30)
+            BehaviorFeatureVector nodeA = new BehaviorFeatureVector(
+                    2, 3, 2, 2, 0, 1.0, true, false, false, false, true, false);
+            MultiRegionAnalysisService.RegionAnalysisResult resultA = 
+                multiRegionService.analyzeAgainstRegions(nodeA);
+            multiRegionService.applyFeaturePenalties(nodeA, resultA);
+            
+            // Node B: HighIpCount + HighUrlCount (rule-based score ~25)
+            BehaviorFeatureVector nodeB = new BehaviorFeatureVector(
+                    15, 15, 5, 5, 1, 2.0, false, false, false, false, false, false);
+            MultiRegionAnalysisService.RegionAnalysisResult resultB = 
+                multiRegionService.analyzeAgainstRegions(nodeB);
+            multiRegionService.applyFeaturePenalties(nodeB, resultB);
+            
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", "SUCCESS");
-            response.put("message", "So sánh Rule-Based vs Multi-Region - Xem console output");
+            response.put("title", "DEMO: RULE-BASED vs MULTI-REGION");
+            response.put("description", "Cùng rule-based score nhưng miền khác → Multi-region tốt hơn");
+            response.put("comparison", new ArrayList<Map<String, Object>>() {{
+                add(new LinkedHashMap<String, Object>() {{
+                    put("node", "A: VPN + Spam");
+                    put("rule_based_score", "~30");
+                    put("multi_region", new LinkedHashMap<String, Object>() {{
+                        put("primary_region", resultA.getPrimaryRegion());
+                        put("fraud_probability", String.format("%.2f%%", resultA.getRegionProbability(RegionType.FRAUD) * 100));
+                    }});
+                }});
+                add(new LinkedHashMap<String, Object>() {{
+                    put("node", "B: HighIpCount + HighUrlCount");
+                    put("rule_based_score", "~25");
+                    put("multi_region", new LinkedHashMap<String, Object>() {{
+                        put("primary_region", resultB.getPrimaryRegion());
+                        put("fraud_probability", String.format("%.2f%%", resultB.getRegionProbability(RegionType.FRAUD) * 100));
+                    }});
+                }});
+            }});
+            response.put("conclusion", "Mặc dù cùng rule score, Multi-Region phân biệt loại hành vi khác nhau");
             
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -95,16 +181,56 @@ public class MultiRegionController {
     }
 
     /**
-     * DEMO 4: Visualization
+     * DEMO 4: Định nghĩa 3 miền
+     * GET /api/multiregion/demo/definitions
      */
-    @GetMapping("/demo/visualization")
-    public ResponseEntity<?> demoVisualization() {
+    @GetMapping("/demo/definitions")
+    public ResponseEntity<?> demoDefinitions() {
         try {
-            multiRegionDemoService.printRegionVisualization();
+            multiRegionDemoService.printRegionDefinitions();
             
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("status", "SUCCESS");
-            response.put("message", "ASCII Visualization - Xem console output");
+            response.put("title", "ĐỊNH NGHĨA 3 MIỀN");
+            response.put("regions", new ArrayList<Map<String, Object>>() {{
+                add(new LinkedHashMap<String, Object>() {{
+                    put("name", "🟢 SAFE REGION");
+                    put("score_range", "0.0 - 0.33");
+                    put("characteristics", new ArrayList<String>() {{
+                        add("VPN: false");
+                        add("Blacklist: false");
+                        add("TOR: false");
+                        add("Spam: false");
+                        add("IpCount: 1-2");
+                        add("UrlCount: 1-5");
+                    }});
+                    put("use_case", "Hành vi bình thường, người dùng tin cậy");
+                }});
+                add(new LinkedHashMap<String, Object>() {{
+                    put("name", "🟡 SUSPICIOUS REGION");
+                    put("score_range", "0.33 - 0.67");
+                    put("characteristics", new ArrayList<String>() {{
+                        add("VPN: mixed");
+                        add("Blacklist: sometimes");
+                        add("IpCount: 5-10");
+                        add("UrlCount: 8-15");
+                    }});
+                    put("use_case", "Hành vi rủi ro vừa phải, cần kiểm tra kỹ");
+                }});
+                add(new LinkedHashMap<String, Object>() {{
+                    put("name", "🔴 FRAUD REGION");
+                    put("score_range", "0.67 - 1.0");
+                    put("characteristics", new ArrayList<String>() {{
+                        add("VPN: true");
+                        add("Blacklist: true");
+                        add("TOR: true");
+                        add("Spam: true");
+                        add("IpCount: 15+");
+                        add("UrlCount: 20+");
+                    }});
+                    put("use_case", "Xác định gian lận, cần hành động ngay");
+                }});
+            }});
             
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -212,7 +338,7 @@ public class MultiRegionController {
     }
 
     /**
-     * GET /api/multiregion/safe-node
+     * GET /api/multiregion/sample-nodes/safe
      * Tạo một node AN TOÀN mẫu
      */
     @GetMapping("/sample-nodes/safe")
@@ -226,7 +352,22 @@ public class MultiRegionController {
             multiRegionService.analyzeAgainstRegions(node);
         multiRegionService.applyFeaturePenalties(node, result);
 
-        return buildAnalysisResponse("SAFE_NODE", node, result);
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("nodeType", "SAFE_NODE");
+        response.put("node", formatNode(node));
+        response.put("primaryRegion", result.getPrimaryRegion());
+        response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
+        response.put("distances", Map.of(
+            "SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)),
+            "SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)),
+            "FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD))
+        ));
+        response.put("probabilities", Map.of(
+            "SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100),
+            "SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100),
+            "FRAUD", String.format("%.2f%%", result.getRegionProbability(RegionType.FRAUD) * 100)
+        ));
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -244,7 +385,22 @@ public class MultiRegionController {
             multiRegionService.analyzeAgainstRegions(node);
         multiRegionService.applyFeaturePenalties(node, result);
 
-        return buildAnalysisResponse("SUSPICIOUS_NODE", node, result);
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("nodeType", "SUSPICIOUS_NODE");
+        response.put("node", formatNode(node));
+        response.put("primaryRegion", result.getPrimaryRegion());
+        response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
+        response.put("distances", Map.of(
+            "SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)),
+            "SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)),
+            "FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD))
+        ));
+        response.put("probabilities", Map.of(
+            "SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100),
+            "SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100),
+            "FRAUD", String.format("%.2f%%", result.getRegionProbability(RegionType.FRAUD) * 100)
+        ));
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -262,28 +418,49 @@ public class MultiRegionController {
             multiRegionService.analyzeAgainstRegions(node);
         multiRegionService.applyFeaturePenalties(node, result);
 
-        return buildAnalysisResponse("FRAUD_NODE", node, result);
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("nodeType", "FRAUD_NODE");
+        response.put("node", formatNode(node));
+        response.put("primaryRegion", result.getPrimaryRegion());
+        response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
+        response.put("distances", Map.of(
+            "SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)),
+            "SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)),
+            "FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD))
+        ));
+        response.put("probabilities", Map.of(
+            "SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100),
+            "SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100),
+            "FRAUD", String.format("%.2f%%", result.getRegionProbability(RegionType.FRAUD) * 100)
+        ));
+        return ResponseEntity.ok(response);
     }
 
     /**
-     * Helper: Build analysis response
+     * Helper: Build demo response
      */
-    private ResponseEntity<?> buildAnalysisResponse(String nodeType, 
+    private Map<String, Object> buildDemoResponse(String nodeType, 
                                                    BehaviorFeatureVector node,
                                                    MultiRegionAnalysisService.RegionAnalysisResult result) {
         Map<String, Object> response = new LinkedHashMap<>();
-        response.put("type", nodeType);
+        response.put("nodeType", nodeType);
         response.put("node", formatNode(node));
-        response.put("primary_region", result.getPrimaryRegion());
-        response.put("anomaly_score", String.format("%.2f", result.getAnomalyScore()));
+        response.put("primaryRegion", result.getPrimaryRegion());
+        response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
+        
+        Map<String, String> distances = new LinkedHashMap<>();
+        distances.put("SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)));
+        distances.put("SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)));
+        distances.put("FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD)));
+        response.put("distances", distances);
         
         Map<String, String> probabilities = new LinkedHashMap<>();
-        probabilities.put("SAFE", String.format("%.1f%%", result.getRegionProbability(RegionType.SAFE) * 100));
-        probabilities.put("SUSPICIOUS", String.format("%.1f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100));
-        probabilities.put("FRAUD", String.format("%.1f%%", result.getRegionProbability(RegionType.FRAUD) * 100));
+        probabilities.put("SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100));
+        probabilities.put("SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100));
+        probabilities.put("FRAUD", String.format("%.2f%%", result.getRegionProbability(RegionType.FRAUD) * 100));
         response.put("probabilities", probabilities);
         
-        return ResponseEntity.ok(response);
+        return response;
     }
 
     /**

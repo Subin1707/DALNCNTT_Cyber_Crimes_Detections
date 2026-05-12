@@ -192,3 +192,4 @@
 [2026-05-12 13:56:48.683] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:994 (Domain) | Value: BCD0749DD39E@Long’s MacBook Pro._raop._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-12 13:58:13.959] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:997 (Domain) | Value: DESKTOP-4EAN90E.local | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-12 13:59:16.149] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-13 02:47:01.549] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: medium (Score: 42) | Decision: MONITOR

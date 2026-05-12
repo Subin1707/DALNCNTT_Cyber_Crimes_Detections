@@ -278,6 +278,52 @@ public class MultiRegionDemoService {
     }
 
     /**
+     * Public method: Print region definitions (được gọi từ Controller)
+     */
+    public void printRegionDefinitions() {
+        printRegionSummary();
+    }
+
+    /**
+     * Print region visualization
+     */
+    public void printRegionVisualization() {
+        System.out.println("\n" + "=".repeat(100));
+        System.out.println("🎨 VISUALIZATION: 3 MIỀN TRONG KHÔNG GIAN 12 CHIỀU");
+        System.out.println("=".repeat(100));
+
+        System.out.println("\n[Đơn giản hóa: chiếu xuống 2D bằng các dimension chính]");
+        System.out.println("\nTrục X: IpCount (0-30)");
+        System.out.println("Trục Y: UrlCount (0-30)");
+        System.out.println("Trục Z: Boolean flags (0=all false, 1=all true)");
+
+        System.out.println("\n" + drawVisualization());
+    }
+
+    private String drawVisualization() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("   🔴 FRAUD REGION (15,20,all true)\n");
+        sb.append("   │                    ●\n");
+        sb.append("   │                 /  │\n");
+        sb.append("25 │                ●   │\n");
+        sb.append("   │               /    │\n");
+        sb.append("20 │         🟡    /     │\n");
+        sb.append("   │        ●     /      ●\n");
+        sb.append("15 │       /            /\n");
+        sb.append("   │      /            /\n");
+        sb.append("10 │     /            /\n");
+        sb.append("   │  🟢/            /\n");
+        sb.append(" 5 │●──┴────────────●──────→ IpCount\n");
+        sb.append("   │ 0             15    30\n");
+        sb.append("\n 🟢 = SAFE REGION (1,2,all false)");
+        sb.append("\n 🟡 = SUSPICIOUS REGION (5,8,mixed)");
+        sb.append("\n 🔴 = FRAUD REGION (15,20,all true)");
+        sb.append("\n\n → Node mới được so sánh khoảng cách tới 3 center\n");
+        return sb.toString();
+    }
+
+    /**
      * Format node for display
      */
     private String formatNode(BehaviorFeatureVector node) {
@@ -297,45 +343,5 @@ public class MultiRegionDemoService {
             node.isSpamPattern(),
             node.isAbnormalAccessTime()
         );
-    }
-
-    /**
-     * Print ASCII visualization of regions
-     */
-    public void printRegionVisualization() {
-        System.out.println("\n" + "=".repeat(100));
-        System.out.println("🎨 VISUALIZATION: 3 MIỀN TRONG KHÔNG GIAN HÀNH VI 12 CHIỀU");
-        System.out.println("=".repeat(100));
-
-        System.out.println("""
-            
-            ┌─────────────────────────────────────────────────────────────────┐
-            │                  BEHAVIOR FEATURE SPACE (12D)                   │
-            ├─────────────────────────────────────────────────────────────────┤
-            │                                                                 │
-            │  🟢 SAFE REGION (Xanh)                                          │
-            │  ░░░░░░░░░░░░░░░                                               │
-            │  ░ Normal ░ Low Risk  ░                                         │
-            │  ░░░░░░░░░░░░░░░                                               │
-            │     ↓ Distance metric: 0.5-1.5                                 │
-            │                                                                 │
-            │  🟡 SUSPICIOUS REGION (Vàng)                                    │
-            │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                               │
-            │  ▓ Medium Risk ▓                                               │
-            │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                               │
-            │     ↓ Distance metric: 1.5-3.0                                 │
-            │                                                                 │
-            │  🔴 FRAUD REGION (Đỏ)                                           │
-            │  ████████████████                                              │
-            │  █ Fraud ██ HighRisk █                                         │
-            │  ████████████████                                              │
-            │     ↓ Distance metric: 3.0-5.0                                 │
-            │                                                                 │
-            │  PHƯƠNG PHÁP: Node mới được ánh xạ vào không gian này          │
-            │              → Tính khoảng cách đến 3 miền                     │
-            │              → Miền nào gần nhất → Phân loại đó                │
-            │                                                                 │
-            └─────────────────────────────────────────────────────────────────┘
-            """);
     }
 }
