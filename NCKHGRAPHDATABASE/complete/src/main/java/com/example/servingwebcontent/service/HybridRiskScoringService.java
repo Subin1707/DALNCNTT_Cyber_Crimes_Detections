@@ -18,9 +18,12 @@ public class HybridRiskScoringService {
     private static final int HISTORY_LIMIT = 200;
 
     private final SessionFeatureService sessionFeatureService;
+    private final KNNEnhancedAnalysisService knnEnhancedService;
 
-    public HybridRiskScoringService(SessionFeatureService sessionFeatureService) {
+    public HybridRiskScoringService(SessionFeatureService sessionFeatureService,
+                                     KNNEnhancedAnalysisService knnEnhancedService) {
         this.sessionFeatureService = sessionFeatureService;
+        this.knnEnhancedService = knnEnhancedService;
     }
 
     public HybridRiskScoreDTO scoreSession(String sessionId,
@@ -38,6 +41,11 @@ public class HybridRiskScoringService {
         // Mặc định dùng K=5 cho hệ thống chính
         double knnScore = knnScoreK5;
         double probabilityScore = calculateBayesianScore(features, samples);
+        
+        // NEW: Enhanced KNN Analysis with Multiple Distance Metrics
+        KNNEnhancedAnalysisService.KNNAnalysisResult enhancedKnnResult = 
+            knnEnhancedService.analyzeWithMultipleMetrics(features, samples);
+        
         double finalScore = clamp(
             RULE_WEIGHT * ruleScore +
             KNN_WEIGHT * (knnScore * 100.0) + // nhân 100 để đồng bộ với các score khác
@@ -66,6 +74,12 @@ public class HybridRiskScoringService {
         indicators.add("Rule score=" + format(ruleScore));
         indicators.add("KNN score=" + format(knnScore));
         indicators.add("Bayesian score=" + format(probabilityScore));
+
+        // Add Enhanced KNN Analysis results
+        indicators.add("\n=== 🔍 ADVANCED KNN ANALYSIS (Multiple Distance Metrics) ===");
+        indicators.add(enhancedKnnResult.recommendation);
+        indicators.addAll(enhancedKnnResult.details);
+        indicators.add(String.format("Confidence Level: %.1f%%", enhancedKnnResult.confidence * 100));
 
         if (samples.isEmpty()) {
             indicators.add("Historical dataset is small, KNN/Bayesian fallback to rule-biased estimate");

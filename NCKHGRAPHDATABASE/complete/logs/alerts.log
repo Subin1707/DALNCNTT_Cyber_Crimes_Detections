@@ -162,3 +162,33 @@
 [2026-05-12 12:44:30.316] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:914 (Domain) | Value: vscode-sync.trafficmanager.net | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-12 12:44:47.295] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:915 (Domain) | Value: e2c28.gcp.gvt2.com | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-12 12:45:49.964] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 12:51:04.552] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 12:52:10.934] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 12:52:18.356] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:920 (Domain) | Value: 1-prod-dynamite-prod-02-us-signaler-pa.clients6.google.com | Risk: low (Score: 20) | Decision: ALLOW
+[2026-05-12 12:52:20.795] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:842 (IPAddress) | Value: 10.60.215.142 | Risk: medium (Score: 40) | Decision: MONITOR
+[2026-05-12 12:52:21.981] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:842 (IPAddress) | Value: 10.60.215.142 | Risk: medium (Score: 40) | Decision: MONITOR
+[2026-05-12 12:54:20.075] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:921 (Domain) | Value: v10.events.data.microsoft.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:55:27.672] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:922 (Domain) | Value: _atc._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:56:20.115] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:924 (Domain) | Value: CMZ | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:57:02.463] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:926 (Domain) | Value: www.bing.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:57:28.835] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:927 (Domain) | Value: self.events.data.microsoft.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:59:05.244] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:930 (Domain) | Value: Uyen.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:59:06.375] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:931 (Domain) | Value: Uyen | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:59:15.135] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:932 (Domain) | Value: photo-link-talk.zadn.vn | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:59:18.338] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:933 (Domain) | Value: tt-group-wpa.chat.zalo.me | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:59:21.546] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:934 (Domain) | Value: res-zalo.zadn.vn | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 12:59:23.475] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:935 (Domain) | Value: tt-chat4-wpa.chat.zalo.me | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:01:33.725] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:936 (Domain) | Value: _alljoyn._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:01:34.879] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:937 (Domain) | Value: _alljoyn._udp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:02:41.097] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:938 (Domain) | Value: peoplestack-pa.clients6.google.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:03:46.892] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:939 (Domain) | Value: _meshcop._udp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:04:33.307] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 13:52:12.261] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 13:53:17.593] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:987 (Domain) | Value: acer | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:54:07.929] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:988 (Domain) | Value: 3.25.1.27-ACER.fea59990-aa0d-4e22-9db1-f0b094d002e5._nvstream_dbd._tcp.local | Risk: low (Score: 20) | Decision: ALLOW
+[2026-05-12 13:54:10.180] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:989 (Domain) | Value: acer.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:56:14.692] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:992 (Domain) | Value: _apple-mobdev2._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:56:33.828] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:993 (Domain) | Value: Long’s MacBook Pro._airplay._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:56:48.683] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:994 (Domain) | Value: BCD0749DD39E@Long’s MacBook Pro._raop._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:58:13.959] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:997 (Domain) | Value: DESKTOP-4EAN90E.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 13:59:16.149] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:751 (IPAddress) | Value: 10.128.128.128,10.60.208.75 | Risk: high (Score: 70) | Decision: BLOCK
