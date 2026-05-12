@@ -19,3 +19,10 @@
 [2026-05-11 17:36:12.650] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:701 (URL) | Value: http://ocsp.digicert.com/MFEwTzBNMEswSTAJBgUrDgMCGgUABBQ50otx%2Fh0Ztl%2Bz8SiPI7wEWVxDlQQUTiJUIBiV5uNu5g%2F6%2BrkS7QYXjzkCEAsMayxGaRewR3PGR9SvwMg%3D | Risk: high (Score: 70) | Decision: BLOCK
 [2026-05-11 17:36:19.817] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:501 (IPAddress) | Value: 172.26.219.229 | Risk: medium (Score: 40) | Decision: MONITOR
 [2026-05-11 17:36:20.222] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:505 (IPAddress) | Value: 172.26.219.96 | Risk: medium (Score: 40) | Decision: MONITOR
+[2026-05-12 15:26:18.128] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:882 (Domain) | Value: android.clients.google.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 15:40:28.925] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:1 (Domain) | Value: IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 15:41:20.959] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 15:49:52.018] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 15:49:58.020] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:789 (Domain) | Value: www.msftconnecttest.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 16:06:10.026] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-12 16:06:12.903] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:894 (Domain) | Value: crl3.digicert.com | Risk: low (Score: 0) | Decision: ALLOW

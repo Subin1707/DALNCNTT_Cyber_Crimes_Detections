@@ -214,3 +214,72 @@ Lý do node xuất hiện trong graph:
 - Hệ thống đã ghi nhận IPAddress `172.26.219.96` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
 - Các indicator khiến node này được giữ lại để phân tích:
   * Private IP | Threats: Node IPAddress `172.26.219.96` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-05-12 15:26:18.514] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:882 (Domain) | Value: android.clients.google.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: android.clients.google.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `android.clients.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `android.clients.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 15:40:29.181] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:1 (Domain) | Value: IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 15:41:21.175] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 15:49:52.366] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 15:49:58.180] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:789 (Domain) | Value: www.msftconnecttest.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: www.msftconnecttest.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `www.msftconnecttest.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `www.msftconnecttest.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 16:06:10.177] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-12 16:06:13.186] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:894 (Domain) | Value: crl3.digicert.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: crl3.digicert.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `crl3.digicert.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `crl3.digicert.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []

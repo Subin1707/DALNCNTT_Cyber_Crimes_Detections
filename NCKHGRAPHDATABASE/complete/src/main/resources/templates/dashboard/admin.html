@@ -64,21 +64,7 @@
         </article>
     </section>
 
-    <!-- ================= NAV ================= -->
-    <div class="card nav-card">
-        <div class="nav-buttons">
-        <button onclick="location.href='/dashboard'">Dashboard</button>
-        <button onclick="location.href='/admin/admin-email'">Quản lý Email</button>
-        <button onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
-        <button onclick="location.href='/admin/admin-url'">Quản lý URL</button>
-        <button onclick="location.href='/admin/admin-domain'">Quản lý Domain</button>
-        <button onclick="location.href='/admin/admin-file'">Quản lý File name</button>
-        <button onclick="location.href='/admin/admin-filehash'">Quản lý File hash</button>
-        <button onclick="location.href='/admin/admin-victim'">Quản lý Victim account</button>
-        <button onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
-        <button onclick="location.href='/admin/about'">Giới thiệu</button>
-        </div>
-    </div>
+    <!-- NAV moved to right sidebar for desktop -->
 
     <!-- ================= CREATE STAFF ================= -->
     <section class="card">
@@ -190,6 +176,22 @@
     </section>
 
 </main>
+<!-- Right-side navigation (fixed) -->
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/admin/admin-email'">Quản lý Email</button>
+        <button onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
+        <button onclick="location.href='/admin/admin-url'">Quản lý URL</button>
+        <button onclick="location.href='/admin/admin-domain'">Quản lý Domain</button>
+        <button onclick="location.href='/admin/admin-file'">Quản lý File name</button>
+        <button onclick="location.href='/admin/admin-filehash'">Quản lý File hash</button>
+        <button onclick="location.href='/admin/admin-victim'">Quản lý Victim account</button>
+        <button onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/admin/about'">Giới thiệu</button>
+    </div>
+</aside>
 
 <!-- Right-side node details panel -->
 <div id="nodeDetailsPanel" aria-hidden="true">

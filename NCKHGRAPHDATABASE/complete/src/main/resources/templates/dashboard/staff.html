@@ -62,17 +62,7 @@
         </article>
     </section>
 
-    <!-- NAVIGATION BUTTONS -->
-    <div class="card nav-card">
-        <div class="nav-buttons">
-        <button onclick="window.location.href='/dashboard'">Dashboard</button>
-        <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
-        <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
-        <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
-        <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
-        <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
-        </div>
-    </div>
+    <!-- NAV moved to right sidebar for desktop -->
 
     <!-- ================= ANALYZE + EXCEL ROW ================= -->
     <div class="card-row">
@@ -126,6 +116,19 @@
             <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
         </div>
 
+
+            <!-- Right-side navigation (fixed) -->
+            <aside class="sidebar-left" aria-label="Thanh điều hướng">
+                <div class="sidebar-title">Điều hướng</div>
+                <div class="nav-buttons">
+                    <button onclick="window.location.href='/dashboard'">Dashboard</button>
+                    <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
+                    <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
+                    <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
+                    <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
+                    <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
+                </div>
+            </aside>
         <div id="selectedSessionArea" style="margin-bottom:8px;">
             <b>Phiên:</b> <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
         </div>

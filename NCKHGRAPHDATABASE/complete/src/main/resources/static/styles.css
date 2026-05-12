@@ -920,6 +920,67 @@ tbody tr:hover {
     }
 }
 
+/* Left vertical sidebar (desktop) */
+.sidebar-left {
+    position: fixed;
+    left: 18px;
+    top: 80px;
+    width: 260px;
+    height: calc(100vh - 100px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 20px 60px rgba(2,6,23,0.12);
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+}
+
+.sidebar-left .sidebar-title {
+    font-weight: 900;
+    color: var(--headingText);
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.sidebar-left .nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-left .nav-buttons button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--chipBg);
+    border: 1px solid rgba(255,255,255,0.03);
+    color: var(--text);
+    font-weight: 700;
+}
+
+.sidebar-left .nav-buttons button:hover {
+    background: var(--btnHover);
+    transform: translateY(-1px);
+}
+
+/* give main container breathing room on large screens */
+@media (min-width: 1101px) {
+    .page-index .container {
+        padding-left: 320px; /* space for sidebar */
+    }
+}
+
+@media (max-width: 1100px) {
+    .sidebar-left { display: none; }
+    .page-index .container { padding-left: 18px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     html, body {
         animation: none;
