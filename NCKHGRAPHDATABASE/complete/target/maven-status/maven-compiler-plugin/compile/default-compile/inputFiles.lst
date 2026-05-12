@@ -1,4 +1,5 @@
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\distance\MinkowskiDistance.java
+E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\controller\MultiRegionController.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\HybridRiskScoreDTO.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\FraudAnalysisService.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\AnalysisSessionService.java
@@ -64,6 +65,7 @@ E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\DecisionService.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\model\FileNode.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\DecisionDTO.java
+E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\MultiRegionDemoService.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\MultiRegionAnalysisService.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\util\VerdictUtil.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\AnalysisResultDTO.java

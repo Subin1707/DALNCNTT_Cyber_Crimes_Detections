@@ -2,6 +2,8 @@ package com.example.servingwebcontent.service;
 
 import com.example.servingwebcontent.dto.FraudInputDTO;
 import com.example.servingwebcontent.dto.OutputDTO;
+import com.example.servingwebcontent.dto.BehaviorFeatureVector;
+import com.example.servingwebcontent.model.RegionType;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class FraudAnalysisService {
 
     private final Neo4jClient neo4j;
     private final GraphUpdateBroadcaster graphUpdateBroadcaster;
+    private final MultiRegionAnalysisService multiRegionService;
     private static final String NETWORK_SESSION_ID = "NETWORK_CAPTURE";
 
     private static final Pattern EMAIL_REGEX =
@@ -215,9 +218,114 @@ public class FraudAnalysisService {
             Map.entry("system_verification_bot", 58)
     );
 
-    public FraudAnalysisService(Neo4jClient neo4j, GraphUpdateBroadcaster graphUpdateBroadcaster) {
+    public FraudAnalysisService(Neo4jClient neo4j, GraphUpdateBroadcaster graphUpdateBroadcaster,
+                                 MultiRegionAnalysisService multiRegionService) {
         this.neo4j = neo4j;
         this.graphUpdateBroadcaster = graphUpdateBroadcaster;
+        this.multiRegionService = multiRegionService;
+    }
+
+    /* =========================================================
+       MULTI-REGION ANALYSIS (Phương pháp miền)
+       ========================================================= */
+
+    /**
+     * Trích xuất BehaviorFeatureVector từ input
+     * Chuyển đổi rule-based data thành behavioral vector (12 chiều)
+     */
+    private BehaviorFeatureVector extractBehaviorFeatures(FraudInputDTO input) {
+        if (input == null) {
+            return new BehaviorFeatureVector(0, 0, 0, 0, 0, 0.0, false, false, false, false, false, false);
+        }
+
+        // Tính toán numeric features từ input
+        int ipCount = input.getIp() != null ? 1 : 0;
+        int urlCount = input.getUrl() != null ? 1 : 0;
+        int emailCount = input.getEmail() != null ? 1 : 0;
+        int domainCount = input.getDomain() != null ? 1 : 0;
+        int failedLoginCount = notBlank(input.getEmail()) ? 0 : 1;
+        double requestFrequency = (urlCount + emailCount + ipCount) * 0.5;
+
+        // Boolean features dựa trên blacklist checks
+        boolean vpn = false;
+        boolean blacklist = false;
+        boolean suspiciousUrl = false;
+        boolean torNetwork = false;
+        boolean spamPattern = false;
+        boolean abnormalAccessTime = false;
+
+        // Kiểm tra blacklist
+        if (input.getEmail() != null && EMAIL_BLACKLIST.contains(input.getEmail())) {
+            blacklist = true;
+        }
+        if (input.getIp() != null && IP_BLACKLIST.contains(input.getIp())) {
+            blacklist = true;
+        }
+        if (input.getUrl() != null && PHISHING_URL_BLACKLIST.contains(input.getUrl())) {
+            blacklist = true;
+        }
+
+        // Kiểm tra TOR network
+        if (input.getIp() != null && input.getIp().startsWith("185.") && !input.getIp().startsWith("185.0")) {
+            torNetwork = true;
+        }
+
+        // Kiểm tra spam patterns
+        if (input.getEmail() != null && (
+                input.getEmail().contains("verify") ||
+                input.getEmail().contains("confirm") ||
+                input.getEmail().contains("urgent"))) {
+            spamPattern = true;
+        }
+
+        // Kiểm tra suspicious URLs
+        if (input.getUrl() != null && (
+                input.getUrl().contains("verify") ||
+                input.getUrl().contains("confirm") ||
+                input.getUrl().contains("security"))) {
+            suspiciousUrl = true;
+        }
+
+        return new BehaviorFeatureVector(
+                ipCount, urlCount, emailCount, domainCount, failedLoginCount, requestFrequency,
+                vpn, blacklist, suspiciousUrl, torNetwork, spamPattern, abnormalAccessTime
+        );
+    }
+
+    /**
+     * Phân tích với multi-region
+     * Tính toán xác suất node thuộc miền nào: SAFE, SUSPICIOUS, FRAUD
+     */
+    private int analyzeWithMultiRegion(BehaviorFeatureVector features) {
+        if (features == null || multiRegionService == null) {
+            return 0;
+        }
+
+        // Phân tích node so với 3 miền
+        MultiRegionAnalysisService.RegionAnalysisResult regionResult = 
+            multiRegionService.analyzeAgainstRegions(features);
+
+        // Áp dụng feature penalties
+        multiRegionService.applyFeaturePenalties(features, regionResult);
+
+        // Chuyển đổi xác suất thành score (0-100)
+        double fraudProbability = regionResult.getRegionProbability(RegionType.FRAUD);
+        double suspiciousProbability = regionResult.getRegionProbability(RegionType.SUSPICIOUS);
+
+        // Tính hybrid score
+        int multiRegionScore = (int) ((fraudProbability * 100) * 0.8 + (suspiciousProbability * 100) * 0.2);
+        return Math.min(100, multiRegionScore);
+    }
+
+    /**
+     * Hybrid Analysis: Kết hợp Rule-Based + Multi-Region
+     * Công thức: FinalScore = 60% Rule-Based + 40% Multi-Region
+     */
+    private int hybridAnalysisScore(int ruleBasedScore, BehaviorFeatureVector features) {
+        int multiRegionScore = analyzeWithMultiRegion(features);
+        
+        // Kết hợp: 60% rule-based (proven) + 40% multi-region (AI)
+        return (int) (ruleBasedScore * 0.6 + multiRegionScore * 0.4);
     }
 
     /* =========================================================
@@ -225,6 +333,163 @@ public class FraudAnalysisService {
        ========================================================= */
 
     public OutputDTO analyzePreview(FraudInputDTO input) {
+
+        if (input == null)
+            return OutputDTO.invalid("Input rỗng");
+
+        // ===== RULE-BASED ANALYSIS (Traditional) =====
+        NodeRisk emailRisk = analyzeEmail(input.getEmail());
+        NodeRisk ipRisk = analyzeIP(input.getIp());
+        NodeRisk urlRisk = analyzeURL(input.getUrl());
+        NodeRisk domainRisk = analyzeDomain(input.getDomain());
+        NodeRisk fileNodeRisk = analyzeFileNode(input.getFileNode());
+        NodeRisk hashRisk = analyzeFileHash(input.getFileHash());
+        NodeRisk victimRisk = analyzeVictim(input.getVictimAccount());
+
+        int ruleBasedScore =
+                emailRisk.riskScore +
+                ipRisk.riskScore +
+                urlRisk.riskScore +
+                domainRisk.riskScore +
+                fileNodeRisk.riskScore +
+                hashRisk.riskScore +
+                victimRisk.riskScore;
+
+        ruleBasedScore = Math.min(ruleBasedScore, 100);
+
+        // ===== MULTI-REGION ANALYSIS (AI Behavioral) =====
+        BehaviorFeatureVector features = extractBehaviorFeatures(input);
+        int multiRegionScore = analyzeWithMultiRegion(features);
+
+        // ===== HYBRID SCORE (Rule 60% + Region 40%) =====
+        int finalScore = hybridAnalysisScore(ruleBasedScore, features);
+
+        String riskLevel =
+                finalScore >= 60 ? "high"
+                : finalScore >= 30 ? "medium"
+                : "low";
+
+        String verdict = switch (riskLevel) {
+            case "high" -> "GIAN LẬN";
+            case "medium" -> "ĐÁNG NGHI NGỜ";
+            default -> "AN TOÀN";
+        };
+
+        Set<String> indicatorSet = new LinkedHashSet<>();
+
+        indicatorSet.addAll(emailRisk.indicators);
+        indicatorSet.addAll(ipRisk.indicators);
+        indicatorSet.addAll(urlRisk.indicators);
+        indicatorSet.addAll(domainRisk.indicators);
+        indicatorSet.addAll(fileNodeRisk.indicators);
+        indicatorSet.addAll(hashRisk.indicators);
+        indicatorSet.addAll(victimRisk.indicators);
+
+        // Thêm multi-region indicators
+        indicatorSet.add("Multi-Region Score: " + multiRegionScore);
+        indicatorSet.add("Rule-Based Score: " + ruleBasedScore);
+        indicatorSet.add("Hybrid Score: " + finalScore);
+
+        return new OutputDTO(
+                verdict,
+                "HYBRID_ENGINE",  // Thay vì "RULE_ENGINE"
+                finalScore,
+                riskLevel,
+                "valid",
+                new ArrayList<>(indicatorSet)
+        );
+    }
+
+    /**
+     * OVERLOAD: analyzePreview with diagnostic output
+     */
+    public OutputDTO analyzePreview(FraudInputDTO input, boolean verbose) {
+        if (input == null)
+            return OutputDTO.invalid("Input rỗng");
+
+        // ===== RULE-BASED ANALYSIS =====
+        NodeRisk emailRisk = analyzeEmail(input.getEmail());
+        NodeRisk ipRisk = analyzeIP(input.getIp());
+        NodeRisk urlRisk = analyzeURL(input.getUrl());
+        NodeRisk domainRisk = analyzeDomain(input.getDomain());
+        NodeRisk fileNodeRisk = analyzeFileNode(input.getFileNode());
+        NodeRisk hashRisk = analyzeFileHash(input.getFileHash());
+        NodeRisk victimRisk = analyzeVictim(input.getVictimAccount());
+
+        int ruleBasedScore =
+                emailRisk.riskScore +
+                ipRisk.riskScore +
+                urlRisk.riskScore +
+                domainRisk.riskScore +
+                fileNodeRisk.riskScore +
+                hashRisk.riskScore +
+                victimRisk.riskScore;
+
+        ruleBasedScore = Math.min(ruleBasedScore, 100);
+
+        // ===== MULTI-REGION ANALYSIS =====
+        BehaviorFeatureVector features = extractBehaviorFeatures(input);
+        MultiRegionAnalysisService.RegionAnalysisResult regionResult = 
+            multiRegionService.analyzeAgainstRegions(features);
+        multiRegionService.applyFeaturePenalties(features, regionResult);
+
+        double fraudProb = regionResult.getRegionProbability(RegionType.FRAUD);
+        double suspiciousProb = regionResult.getRegionProbability(RegionType.SUSPICIOUS);
+        int multiRegionScore = (int) ((fraudProb * 100) * 0.8 + (suspiciousProb * 100) * 0.2);
+
+        // ===== HYBRID SCORE =====
+        int finalScore = (int) (ruleBasedScore * 0.6 + multiRegionScore * 0.4);
+
+        String riskLevel =
+                finalScore >= 60 ? "high"
+                : finalScore >= 30 ? "medium"
+                : "low";
+
+        String verdict = switch (riskLevel) {
+            case "high" -> "GIAN LẬN";
+            case "medium" -> "ĐÁNG NGHI NGỜ";
+            default -> "AN TOÀN";
+        };
+
+        Set<String> indicatorSet = new LinkedHashSet<>();
+
+        indicatorSet.addAll(emailRisk.indicators);
+        indicatorSet.addAll(ipRisk.indicators);
+        indicatorSet.addAll(urlRisk.indicators);
+        indicatorSet.addAll(domainRisk.indicators);
+        indicatorSet.addAll(fileNodeRisk.indicators);
+        indicatorSet.addAll(hashRisk.indicators);
+        indicatorSet.addAll(victimRisk.indicators);
+
+        // Multi-region diagnostics
+        if (verbose) {
+            indicatorSet.add("═══ PHƯƠNG PHÁP MIỀN ═══");
+            indicatorSet.add("Region Primary: " + regionResult.getPrimaryRegion());
+            indicatorSet.add("Fraud Probability: " + String.format("%.1f%%", fraudProb * 100));
+            indicatorSet.add("Suspicious Probability: " + String.format("%.1f%%", suspiciousProb * 100));
+            indicatorSet.add("Multi-Region Score: " + multiRegionScore);
+            indicatorSet.add("═══ HYBRID SCORE ═══");
+            indicatorSet.add("Rule-Based (60%): " + String.format("%.0f", ruleBasedScore * 0.6));
+            indicatorSet.add("Multi-Region (40%): " + String.format("%.0f", multiRegionScore * 0.4));
+            indicatorSet.add("Final Hybrid Score: " + finalScore);
+        } else {
+            indicatorSet.add("Multi-Region: " + multiRegionScore);
+            indicatorSet.add("Hybrid Score: " + finalScore);
+        }
+
+        return new OutputDTO(
+                verdict,
+                "HYBRID_ENGINE",
+                finalScore,
+                riskLevel,
+                "valid",
+                new ArrayList<>(indicatorSet)
+        );
+    }
+
+    /* ===== OLD ORIGINAL ANALYZE (DEPRECATED) ===== 
+
+    public OutputDTO analyzePreviewOld(FraudInputDTO input) {
 
         if (input == null)
             return OutputDTO.invalid("Input rỗng");
@@ -653,7 +918,8 @@ public class FraudAnalysisService {
                         String lowerDecoded = decoded.toLowerCase();
 
             if (isBlacklistedUrl(lowerDecoded, PHISHING_URL_BLACKLIST))
-                r.add(100,"Phishing URL" );
+                r.add(100,"Phishing URL" );
+
             addKeywordIndicators(r, lowerDecoded, SUSPICIOUS_WORDS, 15, "Keyword dang ngo");
             addKeywordIndicators(r, lowerDecoded, COPYRIGHT_KEYWORDS, 25, "Copyright");
             addKeywordIndicators(r, lowerDecoded, HACKING_KEYWORDS, 35, "Hack");
