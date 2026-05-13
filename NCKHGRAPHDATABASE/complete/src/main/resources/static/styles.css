@@ -1042,26 +1042,27 @@ tbody tr:hover {
     width: 100%;
 }
 
-/* Update nodeDetailsPanel inside graph-row */
+/* nodeDetailsPanel when inside graph-row (static positioning) */
 .graph-row #nodeDetailsPanel {
-    position: static;
-    right: auto;
-    top: auto;
-    width: 100%;
-    max-height: none;
-    border: 1px solid var(--border);
-    background: var(--panelBg);
-    border-radius: 12px;
-    padding: 12px;
-    box-shadow: none;
-    display: block;
-    animation: none;
-    min-height: 160px;
-    z-index: auto;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-height: none !important;
+    border: 1px solid var(--border) !important;
+    background: var(--panelBg) !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    box-shadow: none !important;
+    display: block !important;
+    animation: none !important;
+    min-height: 160px !important;
+    z-index: auto !important;
+    overflow: visible !important;
 }
 
 .graph-row #nodeDetailsPanel.open {
-    display: block;
+    display: block !important;
 }
 
 /* Side details panel (fixed on desktop, part of grid on graph-row) */

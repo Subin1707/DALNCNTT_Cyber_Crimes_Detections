@@ -26,3 +26,7 @@
 [2026-05-12 15:49:58.020] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:789 (Domain) | Value: www.msftconnecttest.com | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-12 16:06:10.026] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
 [2026-05-12 16:06:12.903] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:894 (Domain) | Value: crl3.digicert.com | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-12 16:07:34.561] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high (Score: 70) | Decision: BLOCK
+[2026-05-13 14:33:58.354] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:85 (URL) | Value: http://1d.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/931a34e3-6a05-4776-9b9f-cf56bbd7e94c?P1=1778664903&P2=404&P3=2&P4=OgyLxTj2cN8%2fnV7ulnhPDFwNYTQACcXdww2sjvHFQuIvK2oeGMj0y4ZIH6smqWdPIMvuqIQVAchfYAWohu2QWg%3d%3d | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-13 14:34:01.440] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:750 (AnalysisSession) | Value: NETWORK_CAPTURE | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-13 14:34:04.722] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:894 (Domain) | Value: crl3.digicert.com | Risk: low (Score: 0) | Decision: ALLOW

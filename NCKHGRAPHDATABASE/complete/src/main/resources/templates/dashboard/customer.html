@@ -248,22 +248,40 @@ document.getElementById("searchNode")?.addEventListener("keypress", e => {
 <script>
 window.addEventListener('nodeSelected', (e) => {
     try {
+        console.log('🔔 nodeSelected event received:', e.detail);
         const detail = e.detail || {};
         const node = detail.node || {};
         const analysis = detail.analysis || {};
-        document.getElementById('panelNodeType').textContent = node.type || '—';
-        document.getElementById('panelNodeValue').textContent = node.value || '—';
-        document.getElementById('panelNodeScore').textContent = String(node.riskScore ?? '—');
-        document.getElementById('panelNodeVerdict').textContent = node.verdict || '—';
-        document.getElementById('panelNodeIndicators').textContent = (Array.isArray(node.indicators) ? node.indicators.join(', ') : (node.indicators || '—'));
+        console.log('📍 Node:', node);
+        
+        const typeEl = document.getElementById('panelNodeType');
+        const valueEl = document.getElementById('panelNodeValue');
+        const scoreEl = document.getElementById('panelNodeScore');
+        const verdictEl = document.getElementById('panelNodeVerdict');
+        const indicatorsEl = document.getElementById('panelNodeIndicators');
+        const relationsEl = document.getElementById('panelNodeRelations');
+        
+        if (typeEl) typeEl.textContent = node.type || '—';
+        if (valueEl) valueEl.textContent = node.value || '—';
+        if (scoreEl) scoreEl.textContent = String(node.riskScore ?? '—');
+        if (verdictEl) verdictEl.textContent = node.verdict || '—';
+        if (indicatorsEl) indicatorsEl.textContent = (Array.isArray(node.indicators) ? node.indicators.join(', ') : (node.indicators || '—'));
+        
         const relsFromGraph = (window.__graphContext && Array.isArray(window.__graphContext.links)) ?
             window.__graphContext.links.filter(l => (l.source && String(l.source) === String(node.id)) || (l.target && String(l.target) === String(node.id)))
             .slice(0,6).map(l => (l.type || '') + ' ' + ((String(l.source)===String(node.id))? '→ ' + (l.target||l.targetId||'?') : '← ' + (l.source||l.sourceId||'?'))) : [];
         const relsFromAnalysis = Array.isArray(analysis.relatedNodes) ? analysis.relatedNodes.slice(0,6).map(r => (r.relationship||'') + ' → ' + (r.nodeType||r.nodeId||'?')) : [];
         const rels = relsFromGraph.concat(relsFromAnalysis);
-        document.getElementById('panelNodeRelations').textContent = rels.length ? rels.join('; ') : (analysis.graphIntelligence || '—');
-        const panel = document.getElementById('nodeDetailsPanel'); if (panel) panel.classList.add('open');
-    } catch (err) { console.warn('nodeSelected handler', err); }
+        if (relationsEl) relationsEl.textContent = rels.length ? rels.join('; ') : (analysis.graphIntelligence || '—');
+        
+        const panel = document.getElementById('nodeDetailsPanel');
+        if (panel) {
+            console.log('✅ Panel found, adding open class');
+            panel.classList.add('open');
+        } else {
+            console.error('❌ Panel #nodeDetailsPanel not found!');
+        }
+    } catch (err) { console.error('nodeSelected handler error:', err); }
 });
 
 document.getElementById('closeNodePanel')?.addEventListener('click', () => {

@@ -99,13 +99,9 @@
         </div>
     </div>
 
-    <!-- GRAPH -->
+    <!-- GRAPH & DETAILS -->
     <section class="card">
-        <h2>Đồ thị liên kết gian lận</h2>
-
-        <p class="note">
-            Biểu diễn mối quan hệ Email – URL – IP trong hệ thống
-        </p>
+        <h2>Đồ thị liên kết gian lận & Chi tiết Node</h2>
 
         <div class="graph-controls">
             <label for="sessionSelect"><b>Phiên:</b></label>
@@ -114,15 +110,6 @@
             </select>
 
             <button type="button" id="reloadGraphBtn">Tải lại</button>
-        </div>
-
-        <p class="note">
-            <b>Rủi ro Mạng</b> thể hiện mức độ nguy hiểm sau khi tính toán sự lan truyền
-            giữa các node trong toàn bộ đồ thị.
-        </p>
-
-        <div class="graph-wrapper">
-            <svg id="graphSVG" width="1000" height="600"></svg>
         </div>
 
         <!-- LEGEND -->
@@ -147,44 +134,52 @@
                 <div style="width:16px;height:16px;border-radius:50%;background:#8e44ad;"></div>
                 <span>CONNECTED_TO</span>
             </div>
+        </div>
 
-            <div style="display:flex;align-items:center;gap:4px;margin-left:20px;">
-                <div style="width:16px;height:4px;background:#1c8ef9;"></div>
-                <span>SUBMITTED_FOR_ANALYSIS link</span>
+        <div class="graph-row">
+            <!-- Graph on left -->
+            <div class="graph-column">
+                <svg id="graphSVG" width="1000" height="600"></svg>
             </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:4px;background:#ffdd57;"></div>
-                <span>CONTAINS_URL link</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:4px;background:#d62728;"></div>
-                <span>SENT_FROM_IP link</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:4px;background:#2ca02c;"></div>
-                <span>HOSTED_ON link</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:4px;background:#8e44ad;"></div>
-                <span>CONNECTED_TO link</span>
+
+            <!-- Node details on right -->
+            <div class="details-column">
+                <div id="nodeDetailsPanel" aria-hidden="true">
+                    <div class="panel-head">
+                        <div>
+                            <div class="panel-title">Chi tiết Node</div>
+                            <div class="panel-sub" id="panelNodeType">—</div>
+                        </div>
+                        <div>
+                            <button id="closeNodePanel" class="close-panel">Đóng</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="detail-row">
+                            <div class="detail-key">Value</div>
+                            <div class="detail-val" id="panelNodeValue">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Risk Score</div>
+                            <div class="detail-val" id="panelNodeScore">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Verdict</div>
+                            <div class="detail-val" id="panelNodeVerdict">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Indicators</div>
+                            <div class="detail-val" id="panelNodeIndicators">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Relations</div>
+                            <div class="detail-val" id="panelNodeRelations">—</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-
-    <!-- NODE INFO POPUP -->
-    <div id="nodeInfo"></div>
-    
-        <!-- Left-side navigation (fixed) -->
-        <aside class="sidebar-left" aria-label="Thanh điều hướng">
-            <div class="sidebar-title">Điều hướng</div>
-            <div class="nav-buttons">
-                <button onclick="window.location.href='/dashboard'">Dashboard</button>
-                <button onclick="window.location.href='/customer/customer-email'">Quản lý Email</button>
-                <button onclick="window.location.href='/customer/customer-ip'">Quản lý IP Address</button>
-                <button onclick="window.location.href='/customer/customer-url'">Quản lý URL</button>
-                <button onclick="window.location.href='/customer/about'">Giới thiệu Nhà phát triển</button>
-            </div>
-        </aside>
 
     <!-- NODE TABLE -->
     <section class="card">
@@ -217,6 +212,18 @@
 
 </main>
 
+<!-- Left-side navigation (fixed) -->
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button onclick="window.location.href='/customer/customer-email'">Quản lý Email</button>
+        <button onclick="window.location.href='/customer/customer-ip'">Quản lý IP Address</button>
+        <button onclick="window.location.href='/customer/customer-url'">Quản lý URL</button>
+        <button onclick="window.location.href='/customer/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+</aside>
+
 <script th:src="@{/js/customer-main.js}"></script>
 <script th:src="@{/js/customer-session.js}"></script>
 <script th:src="@{/js/customer-analyze.js}"></script>
@@ -241,81 +248,45 @@ document.getElementById("searchNode")?.addEventListener("keypress", e => {
 <script>
 window.addEventListener('nodeSelected', (e) => {
     try {
+        console.log('🔔 nodeSelected event received:', e.detail);
         const detail = e.detail || {};
         const node = detail.node || {};
         const analysis = detail.analysis || {};
-        document.getElementById('panelNodeType').textContent = node.type || '—';
-        document.getElementById('panelNodeValue').textContent = node.value || '—';
-        document.getElementById('panelNodeScore').textContent = String(node.riskScore ?? '—');
-        document.getElementById('panelNodeVerdict').textContent = node.verdict || '—';
-        document.getElementById('panelNodeIndicators').textContent = (Array.isArray(node.indicators) ? node.indicators.join(', ') : (node.indicators || '—'));
+        console.log('📍 Node:', node);
+        
+        const typeEl = document.getElementById('panelNodeType');
+        const valueEl = document.getElementById('panelNodeValue');
+        const scoreEl = document.getElementById('panelNodeScore');
+        const verdictEl = document.getElementById('panelNodeVerdict');
+        const indicatorsEl = document.getElementById('panelNodeIndicators');
+        const relationsEl = document.getElementById('panelNodeRelations');
+        
+        if (typeEl) typeEl.textContent = node.type || '—';
+        if (valueEl) valueEl.textContent = node.value || '—';
+        if (scoreEl) scoreEl.textContent = String(node.riskScore ?? '—');
+        if (verdictEl) verdictEl.textContent = node.verdict || '—';
+        if (indicatorsEl) indicatorsEl.textContent = (Array.isArray(node.indicators) ? node.indicators.join(', ') : (node.indicators || '—'));
+        
         const relsFromGraph = (window.__graphContext && Array.isArray(window.__graphContext.links)) ?
             window.__graphContext.links.filter(l => (l.source && String(l.source) === String(node.id)) || (l.target && String(l.target) === String(node.id)))
             .slice(0,6).map(l => (l.type || '') + ' ' + ((String(l.source)===String(node.id))? '→ ' + (l.target||l.targetId||'?') : '← ' + (l.source||l.sourceId||'?'))) : [];
         const relsFromAnalysis = Array.isArray(analysis.relatedNodes) ? analysis.relatedNodes.slice(0,6).map(r => (r.relationship||'') + ' → ' + (r.nodeType||r.nodeId||'?')) : [];
         const rels = relsFromGraph.concat(relsFromAnalysis);
-        document.getElementById('panelNodeRelations').textContent = rels.length ? rels.join('; ') : (analysis.graphIntelligence || '—');
-        const panel = document.getElementById('nodeDetailsPanel'); if (panel) panel.classList.add('open');
-    } catch (err) { console.warn('nodeSelected handler', err); }
+        if (relationsEl) relationsEl.textContent = rels.length ? rels.join('; ') : (analysis.graphIntelligence || '—');
+        
+        const panel = document.getElementById('nodeDetailsPanel');
+        if (panel) {
+            console.log('✅ Panel found, adding open class');
+            panel.classList.add('open');
+        } else {
+            console.error('❌ Panel #nodeDetailsPanel not found!');
+        }
+    } catch (err) { console.error('nodeSelected handler error:', err); }
 });
 
 document.getElementById('closeNodePanel')?.addEventListener('click', () => {
     const panel = document.getElementById('nodeDetailsPanel');
     if (panel) panel.classList.remove('open');
-});
-</script>
-
-<!-- Right-side node details panel -->
-<div id="nodeDetailsPanel" aria-hidden="true">
-    <div class="panel-head">
-        <div>
-            <div class="panel-title">Chi tiết Node</div>
-            <div class="panel-sub" id="panelNodeType">—</div>
-        </div>
-        <div>
-            <button id="closeNodePanel" class="close-panel">Đóng</button>
-        </div>
-    </div>
-    <div class="panel-body">
-        <div class="detail-row">
-            <div class="detail-key">Value</div>
-            <div class="detail-val" id="panelNodeValue">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Risk Score</div>
-            <div class="detail-val" id="panelNodeScore">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Verdict</div>
-            <div class="detail-val" id="panelNodeVerdict">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Indicators</div>
-            <div class="detail-val" id="panelNodeIndicators">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Relations</div>
-            <div class="detail-val" id="panelNodeRelations">—</div>
-        </div>
-    </div>
-</div>
-
-<script>
-document.getElementById('btnOpenDetails')?.addEventListener('click', () => {
-    try {
-        const id = window.selectedNodeId || (window.__graphContext && window.__graphContext.selectedNodeId) || null;
-        const nodes = (window.__graphContext && window.__graphContext.nodes) || [];
-        const node = nodes.find(n => String(n.id) === String(id));
-        if (node) {
-            if (typeof window.enhancedShowNodeInfo === 'function') window.enhancedShowNodeInfo(node);
-            else if (typeof showNodeInfo === 'function') showNodeInfo(node);
-        } else {
-            alert('Chưa chọn node. Vui lòng click vào node trên đồ thị hoặc bảng để chọn.');
-        }
-    } catch (e) {
-        console.warn('Open details failed', e);
-        alert('Không thể mở chi tiết node');
-    }
 });
 </script>
 

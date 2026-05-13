@@ -325,15 +325,20 @@ function renderEnhancedNodeInfo(nodeData, decision, chatbot) {
 // Emit a global event when enhanced node info is rendered so other UI (side panel) can respond
 function emitNodeSelected(nodeData, decision, chatbot) {
     try {
-        window.dispatchEvent(new CustomEvent('nodeSelected', { detail: { node: nodeData, decision: decision || null, analysis: chatbot || null } }));
+        console.log('🚀 emitNodeSelected called with:', { nodeData, decision, chatbot });
+        const eventDetail = { node: nodeData, decision: decision || null, analysis: chatbot || null };
+        console.log('📤 Dispatching nodeSelected event with detail:', eventDetail);
+        window.dispatchEvent(new CustomEvent('nodeSelected', { detail: eventDetail }));
+        console.log('✅ nodeSelected event dispatched');
     } catch (e) {
-        console.warn('emitNodeSelected failed', e);
+        console.error('emitNodeSelected failed', e);
     }
 }
 
 // Call emit after rendering
 const _origRender = renderEnhancedNodeInfo;
 renderEnhancedNodeInfo = function(nodeData, decision, chatbot) {
+    console.log('🎨 renderEnhancedNodeInfo called');
     _origRender(nodeData, decision, chatbot);
     emitNodeSelected(nodeData, decision, chatbot);
 };

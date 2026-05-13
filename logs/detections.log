@@ -283,3 +283,45 @@ Pattern phát hiện: Clean
 
 Lý do node xuất hiện trong graph:
 - Hệ thống đã ghi nhận Domain `crl3.digicert.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `crl3.digicert.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-12 16:07:34.739] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:777 (URL) | Value: http://239.255.255.250:1900* | Risk: high | Analysis: Loại node: URL
+Giá trị: http://239.255.255.250:1900*
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 70/100
+Pattern phát hiện: Malware Hosting
+Ý nghĩa pattern: Hosts or distributes malware
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://239.255.255.250:1900*` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * URL không hợp lệ | Threats: Node URL `http://239.255.255.250:1900*` đang ở mức HIGH và khớp với mẫu Malware Hosting. Các indicator hiện có đang củng cố nhận định này, đặc biệt khi nhiều dấu hiệu xuất hiện đồng thời. | Related: []
+[2026-05-13 14:33:59.151] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:85 (URL) | Value: http://1d.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/931a34e3-6a05-4776-9b9f-cf56bbd7e94c?P1=1778664903&P2=404&P3=2&P4=OgyLxTj2cN8%2fnV7ulnhPDFwNYTQACcXdww2sjvHFQuIvK2oeGMj0y4ZIH6smqWdPIMvuqIQVAchfYAWohu2QWg%3d%3d | Risk: low | Analysis: Loại node: URL
+Giá trị: http://1d.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/931a34e3-6a05-4776-9b9f-cf56bbd7e94c?P1=1778664903&P2=404&P3=2&P4=OgyLxTj2cN8%2fnV7ulnhPDFwNYTQACcXdww2sjvHFQuIvK2oeGMj0y4ZIH6smqWdPIMvuqIQVAchfYAWohu2QWg%3d%3d
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `http://1d.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/931a34e3-6a05-4776-9b9f-cf56bbd7e94c?P1=1778664903&P2=404&P3=2&P4=OgyLxTj2cN8%2fnV7ulnhPDFwNYTQACcXdww2sjvHFQuIvK2oeGMj0y4ZIH6smqWdPIMvuqIQVAchfYAWohu2QWg%3d%3d` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Multi-Region Score: 0
+  * Rule-Based Score: 0
+  * Hybrid Score: 0 | Threats: Node URL `http://1d.tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/931a34e3-6a05-4776-9b9f-cf56bbd7e94c?P1=1778664903&P2=404&P3=2&P4=OgyLxTj2cN8%2fnV7ulnhPDFwNYTQACcXdww2sjvHFQuIvK2oeGMj0y4ZIH6smqWdPIMvuqIQVAchfYAWohu2QWg%3d%3d` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-13 14:34:01.800] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:750 (AnalysisSession) | Value: NETWORK_CAPTURE | Risk: low | Analysis: Loại node: AnalysisSession
+Giá trị: NETWORK_CAPTURE
+Mô tả: Analysis session node representing an ingestion or investigation context.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận AnalysisSession `NETWORK_CAPTURE` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node AnalysisSession `NETWORK_CAPTURE` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-13 14:34:04.994] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:894 (Domain) | Value: crl3.digicert.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: crl3.digicert.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `crl3.digicert.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `crl3.digicert.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
