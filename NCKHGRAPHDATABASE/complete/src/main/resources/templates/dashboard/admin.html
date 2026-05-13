@@ -120,9 +120,9 @@
         </div>
     </div>
 
-    <!-- ================= GRAPH ================= -->
+    <!-- ================= GRAPH & DETAILS ROW ================= -->
     <section class="card">
-        <h2>Đồ thị gian lận</h2>
+        <h2>Đồ thị gian lận & Chi tiết Node</h2>
 
         <div class="graph-controls">
             <label for="sessionSelect"><b>Phiên:</b></label>
@@ -139,13 +139,50 @@
             giữa các node trong toàn bộ đồ thị.
         </p>
 
-        <div class="graph-wrapper">
-            <svg id="graphSVG" width="1000" height="600"></svg>
+        <div class="graph-row">
+            <!-- Graph on left -->
+            <div class="graph-column">
+                <svg id="graphSVG" width="1000" height="600"></svg>
+            </div>
+
+            <!-- Node details on right -->
+            <div class="details-column">
+                <div id="nodeDetailsPanel" aria-hidden="true">
+                    <div class="panel-head">
+                        <div>
+                            <div class="panel-title">Chi tiết Node</div>
+                            <div class="panel-sub" id="panelNodeType">—</div>
+                        </div>
+                        <div>
+                            <button id="closeNodePanel" class="close-panel">Đóng</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="detail-row">
+                            <div class="detail-key">Value</div>
+                            <div class="detail-val" id="panelNodeValue">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Risk Score</div>
+                            <div class="detail-val" id="panelNodeScore">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Verdict</div>
+                            <div class="detail-val" id="panelNodeVerdict">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Indicators</div>
+                            <div class="detail-val" id="panelNodeIndicators">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Relations</div>
+                            <div class="detail-val" id="panelNodeRelations">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- ================= NODE INFO ================= -->
-    <div id="nodeInfo"></div>
 
     <!-- ================= FINAL SESSION TABLE ================= -->
     <section class="card">
@@ -192,41 +229,6 @@
         <button onclick="location.href='/admin/about'">Giới thiệu</button>
     </div>
 </aside>
-
-<!-- Right-side node details panel -->
-<div id="nodeDetailsPanel" aria-hidden="true">
-    <div class="panel-head">
-        <div>
-            <div class="panel-title">Chi tiết Node</div>
-            <div class="panel-sub" id="panelNodeType">—</div>
-        </div>
-        <div>
-            <button id="closeNodePanel" class="close-panel">Đóng</button>
-        </div>
-    </div>
-    <div class="panel-body">
-        <div class="detail-row">
-            <div class="detail-key">Value</div>
-            <div class="detail-val" id="panelNodeValue">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Risk Score</div>
-            <div class="detail-val" id="panelNodeScore">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Verdict</div>
-            <div class="detail-val" id="panelNodeVerdict">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Indicators</div>
-            <div class="detail-val" id="panelNodeIndicators">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Relations</div>
-            <div class="detail-val" id="panelNodeRelations">—</div>
-        </div>
-    </div>
-</div>
 
 <!-- ================= JS ================= -->
 <script th:src="@{/js/admin-main.js}"></script>

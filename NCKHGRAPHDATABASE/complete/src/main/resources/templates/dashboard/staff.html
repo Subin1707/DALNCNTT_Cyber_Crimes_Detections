@@ -101,13 +101,9 @@
         </div>
     </div>
 
-    <!-- GRAPH -->
+    <!-- GRAPH & DETAILS -->
     <section class="card">
-        <h2>Đồ thị liên kết gian lận</h2>
-
-        <p class="note">
-            Biểu diễn mối quan hệ Email – URL – IP trong hệ thống
-        </p>
+        <h2>Đồ thị liên kết gian lận & Chi tiết Node</h2>
 
         <div class="graph-controls">
             <label for="sessionSelect"><b>Phiên:</b></label>
@@ -116,25 +112,8 @@
             <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
         </div>
 
-
-            <!-- Right-side navigation (fixed) -->
-            <aside class="sidebar-left" aria-label="Thanh điều hướng">
-                <div class="sidebar-title">Điều hướng</div>
-                <div class="nav-buttons">
-                    <button onclick="window.location.href='/dashboard'">Dashboard</button>
-                    <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
-                    <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
-                    <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
-                    <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
-                    <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
-                </div>
-            </aside>
         <div id="selectedSessionArea" style="margin-bottom:8px;">
             <b>Phiên:</b> <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
-        </div>
-
-        <div class="graph-wrapper">
-            <svg id="graphSVG"></svg>
         </div>
 
         <!-- LEGEND -->
@@ -181,10 +160,51 @@
                 <span>CONNECTED_TO link</span>
             </div>
         </div>
-    </section>
 
-    <!-- NODE INFO POPUP -->
-    <div id="nodeInfo"></div>
+        <div class="graph-row">
+            <!-- Graph on left -->
+            <div class="graph-column">
+                <svg id="graphSVG"></svg>
+            </div>
+
+            <!-- Node details on right -->
+            <div class="details-column">
+                <div id="nodeDetailsPanel" aria-hidden="true">
+                    <div class="panel-head">
+                        <div>
+                            <div class="panel-title">Chi tiết Node</div>
+                            <div class="panel-sub" id="panelNodeType">—</div>
+                        </div>
+                        <div>
+                            <button id="closeNodePanel" class="close-panel">Đóng</button>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="detail-row">
+                            <div class="detail-key">Value</div>
+                            <div class="detail-val" id="panelNodeValue">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Risk Score</div>
+                            <div class="detail-val" id="panelNodeScore">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Verdict</div>
+                            <div class="detail-val" id="panelNodeVerdict">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Indicators</div>
+                            <div class="detail-val" id="panelNodeIndicators">—</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-key">Relations</div>
+                            <div class="detail-val" id="panelNodeRelations">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- NODE TABLE -->
     <section class="card">
@@ -218,6 +238,19 @@
 
 </main>
 
+<!-- Right-side navigation (fixed) -->
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="window.location.href='/dashboard'">Dashboard</button>
+        <button onclick="window.location.href='/staff/staff-email'">Quản lý Email</button>
+        <button onclick="window.location.href='/staff/staff-ip'">Quản lý IP Address</button>
+        <button onclick="window.location.href='/staff/staff-url'">Quản lý URL</button>
+        <button onclick="window.location.href='/staff/user-management'">Quản lý Tài khoản</button>
+        <button onclick="window.location.href='/staff/about'">Giới thiệu Nhà phát triển</button>
+    </div>
+</aside>
+
 <!-- FIX: session load trước để chặn sai role -->
 <script th:src="@{/js/staff-session.js}"></script>
 
@@ -226,40 +259,6 @@
 <script th:src="@{/js/staff-analyze.js}"></script>
 <script th:src="@{/js/staff-excel-upload.js}"></script>
 
-<!-- Right-side node details panel -->
-<div id="nodeDetailsPanel" aria-hidden="true">
-    <div class="panel-head">
-        <div>
-            <div class="panel-title">Chi tiết Node</div>
-            <div class="panel-sub" id="panelNodeType">—</div>
-        </div>
-        <div>
-            <button id="closeNodePanel" class="close-panel">Đóng</button>
-        </div>
-    </div>
-    <div class="panel-body">
-        <div class="detail-row">
-            <div class="detail-key">Value</div>
-            <div class="detail-val" id="panelNodeValue">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Risk Score</div>
-            <div class="detail-val" id="panelNodeScore">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Verdict</div>
-            <div class="detail-val" id="panelNodeVerdict">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Indicators</div>
-            <div class="detail-val" id="panelNodeIndicators">—</div>
-        </div>
-        <div class="detail-row">
-            <div class="detail-key">Relations</div>
-            <div class="detail-val" id="panelNodeRelations">—</div>
-        </div>
-    </div>
-</div>
 <script>
 document.getElementById('btnOpenDetails')?.addEventListener('click', () => {
     try {
