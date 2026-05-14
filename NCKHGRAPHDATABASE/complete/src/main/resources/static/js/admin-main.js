@@ -365,11 +365,124 @@ window.fetchGraph = fetchGraph;
 
             svg.call(zoom).on("dblclick.zoom", null);
 
+            // Domain positions & colors (MUTABLE for dragging)
+            // Using triangular layout to prevent overlap and ensure clear separation
+            const domainPos = {
+                safe: { x: width * 0.2, y: height * 0.75, color: "#0066cc", label: "MIỀN AN TOÀN", vx: 0, vy: 0 },
+                suspicious: { x: width * 0.8, y: height * 0.75, color: "#cc8800", label: "MIỀN NGHI NGỜ", vx: 0, vy: 0 },
+                fraud: { x: width * 0.5, y: height * 0.15, color: "#cc0033", label: "MIỀN GIAN LẬN", vx: 0, vy: 0 }
+            };
+            
+            // Helper: assign domain based on risk level
+            const assignDomain = (node) => {
+                const risk = String(node.riskLevel || "low").toLowerCase().trim();
+                if (risk === "high") return "fraud";
+                if (risk === "medium") return "suspicious";
+                return "safe";
+            };
+            
+            // Pre-assign domains to all nodes
+            nodes.forEach(n => {
+                if (!n.domainAssignment) {
+                    n.domainAssignment = assignDomain(n);
+                }
+            });
+            
+            // Count nodes in each domain and calculate dynamic radius
+            const domainCounts = { safe: 0, suspicious: 0, fraud: 0 };
+            nodes.forEach(n => {
+                const domain = n.domainAssignment || assignDomain(n);
+                domainCounts[domain]++;
+            });
+            
+            // Dynamic radius: base + scaled by node count (with cap to prevent overlap)
+            const baseDomainRadius = 180;
+            const radiusPerNode = 5;  // Each node adds 5px to radius (reduced from 8)
+            const maxDomainRadius = 280;  // Maximum radius cap to prevent domains from overlapping
+            const domainRadii = {};
+            ['safe', 'suspicious', 'fraud'].forEach(domain => {
+                domainRadii[domain] = Math.max(220, Math.min(maxDomainRadius, baseDomainRadius + domainCounts[domain] * radiusPerNode));
+            });
+            
+            // Draw domain circles background with drag capability
+            const domainCircles = container.append("g").attr("class", "domains");
+            const domainCircleElements = {};
+            
+            ['safe', 'suspicious', 'fraud'].forEach(domain => {
+                const pos = domainPos[domain];
+                const radius = domainRadii[domain];
+                
+                // Create group for each domain
+                const domainGroup = domainCircles.append("g")
+                    .attr("class", `domain-group domain-${domain}`);
+                
+                // Circle element
+                const circleEl = domainGroup.append("circle")
+                    .attr("cx", pos.x)
+                    .attr("cy", pos.y)
+                    .attr("r", radius)
+                    .attr("fill", pos.color)
+                    .attr("fill-opacity", 0.08)
+                    .attr("stroke", pos.color)
+                    .attr("stroke-width", 2)
+                    .attr("stroke-opacity", 0.5);
+                
+                // Label element
+                const labelEl = domainGroup.append("text")
+                    .attr("x", pos.x)
+                    .attr("y", pos.y - (radius - 20))
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "14px")
+                    .attr("font-weight", "700")
+                    .attr("fill", pos.color)
+                    .attr("fill-opacity", 0.7)
+                    .attr("pointer-events", "none")
+                    .text(pos.label);
+                
+                domainCircleElements[domain] = { group: domainGroup, circle: circleEl, label: labelEl };
+            });
+
             simulation = d3.forceSimulation()
-                .force("link", d3.forceLink().id(d => d.id).distance(120))
-                .force("charge", d3.forceManyBody().strength(-500))
-                .force("center", d3.forceCenter(width / 2, height / 2))
-                .force("collision", d3.forceCollide().radius(nodeRadius + 10).iterations(2));
+                .force("link", d3.forceLink().id(d => d.id).distance(l => {
+                    // Longer distance between nodes in different domains to maintain separation
+                    const sourceDomain = (allNodes.find(n => n.id === safeId(l.source))?.domainAssignment) || "unknown";
+                    const targetDomain = (allNodes.find(n => n.id === safeId(l.target))?.domainAssignment) || "unknown";
+                    return sourceDomain !== targetDomain ? 150 : 90;
+                }))
+                .force("charge", d3.forceManyBody().strength(-200))
+                .force("collision", d3.forceCollide().radius(nodeRadius + 10).iterations(2))
+                // VERY AGGRESSIVE Clustering force: PULL nodes into their domains
+                .force("cluster", () => {
+                    nodes.forEach(node => {
+                        if (!node.domainAssignment) {
+                            node.domainAssignment = assignDomain(node);
+                        }
+                        const pos = domainPos[node.domainAssignment];
+                        const dx = pos.x - node.x;
+                        const dy = pos.y - node.y;
+                        const k = 0.25;  // VERY STRONG clustering force (25% velocity per tick toward center)
+                        node.vx += dx * k;
+                        node.vy += dy * k;
+                    });
+                })
+                // Boundary force: MAXIMUM enforcement - keep nodes INSIDE their domain circle
+                .force("boundary", () => {
+                    nodes.forEach(node => {
+                        const domain = node.domainAssignment || assignDomain(node);
+                        const pos = domainPos[domain];
+                        const radius = domainRadii[domain];
+                        const dx = node.x - pos.x;
+                        const dy = node.y - pos.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = radius - nodeRadius - 15;
+                        
+                        if (dist > maxDist) {
+                            const ratio = maxDist / Math.max(dist, 0.001);
+                            node.vx += (pos.x + dx * ratio - node.x) * 1.5;  // MUCH stronger
+                            node.vy += (pos.y + dy * ratio - node.y) * 1.5;
+                        }
+                    });
+                });
 
             linkSel = container.append("g").selectAll("line");
             linkLabelSel = container.append("g").attr("class", "link-labels").selectAll("text");
@@ -549,7 +662,7 @@ window.fetchGraph = fetchGraph;
 
         simulation.nodes(nodes);
         simulation.force("link").links(links);
-        simulation.alpha(isFreshGraph ? 1 : (isAdditive ? 0.6 : 0.25)).restart();
+        simulation.alpha(isFreshGraph ? 1.2 : (isAdditive ? 0.9 : 0.5)).restart();
 
         // Auto-lock sau khi layout dá»«ng Ä‘á»§ lĂ¢u (trĂ¡nh lock quĂ¡ sớm lĂ m node chĂ´ng lĂªn nhau)
         if (autoLockInterval) {
@@ -558,7 +671,7 @@ window.fetchGraph = fetchGraph;
         }
 
         const lockStart = Date.now();
-        const maxWaitMs = isFreshGraph ? 3500 : (isAdditive ? 2200 : 1200);
+        const maxWaitMs = isFreshGraph ? 6000 : (isAdditive ? 4500 : 2500);
         autoLockInterval = setInterval(() => {
             if (!simulation) {
                 clearInterval(autoLockInterval);

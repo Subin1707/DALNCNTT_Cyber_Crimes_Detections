@@ -61,6 +61,55 @@
     min-height:550px;
 }
 
+/* Domain Legend */
+.domain-legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.legend-section {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 3px solid currentColor;
+    background: rgba(255,255,255,0.8);
+    font-size: 13px;
+}
+
+.legend-section.safe { border-left-color: #0066cc; color: #0066cc; }
+.legend-section.suspicious { border-left-color: #cc8800; color: #cc8800; }
+.legend-section.fraud { border-left-color: #cc0033; color: #cc0033; }
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    background: currentColor;
+    opacity: 0.2;
+    flex-shrink: 0;
+}
+
+.legend-section strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: currentColor;
+}
+
+.legend-section small {
+    display: block;
+    color: rgba(0,0,0,0.6);
+    line-height: 1.3;
+    font-size: 11px;
+}
+
 /* ================= TABLE ================= */
 .table-wrapper{
     border-radius:20px;
