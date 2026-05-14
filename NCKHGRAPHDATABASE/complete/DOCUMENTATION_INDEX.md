@@ -101,19 +101,48 @@
 
 ### 📊 Specialized Documentation
 
-#### 10. **KNN_ANALYSIS_DOCUMENTATION.md**
+#### 10. **VISUALIZATION_QUICK_START.md** ⭐ NEW
+- Purpose: Quick start guide for visualization system
+- Contents: 5-minute setup, features, API endpoints, troubleshooting
+- Length: 100+ lines
+- Key Sections:
+  - How to build and run visualization
+  - Feature overview (zoom, pan, hover)
+  - Region meanings (SAFE, SUSPICIOUS, FRAUD)
+  - Expected output and visualization
+  - Common issues and fixes
+- Read Time: 10 minutes
+- Best For: Getting visualization running quickly
+
+#### 11. **VISUALIZATION_GUIDE.md** ✨ NEW
+- Purpose: Complete visualization system documentation
+- Contents: Architecture, API details, usage, test cases, troubleshooting
+- Length: 600+ lines
+- Key Sections:
+  - System overview and components
+  - VisualizationService.java (backend data generation)
+  - VisualizationController.java (REST API endpoints)
+  - HTML visualization page (D3.js frontend)
+  - 3 API endpoints (graph, example, regions)
+  - 6 test cases (loading, interaction, zoom, custom data, regions, performance)
+  - Performance metrics and browser support
+- Technologies: D3.js v7, SVG, Canvas
+- Read Time: 40 minutes
+- Best For: Comprehensive visualization understanding
+
+#### 12. **KNN_ANALYSIS_DOCUMENTATION.md**
 - Purpose: Detailed KNN analysis implementation
 - Contents: K-nearest neighbors algorithm, voting, recall metrics
 - Length: 300+ lines
 - Best For: Understanding KNN component
 
-#### 11. **KNN_VISUAL_GUIDE.md**
+#### 13. **KNN_VISUAL_GUIDE.md**
 - Purpose: Visual guide to KNN algorithm
 - Contents: Diagrams, examples, step-by-step explanations
 - Length: 250+ lines
 - Best For: Visual learners
 
-#### 12. **HYBRID_FRAUD_DETECTION_GUIDE.md**
+#### 14. **HYBRID_FRAUD_DETECTION_GUIDE.md**
 - Purpose: Complete system guide
 - Contents: Full system description, all components, usage patterns
 - Length: 400+ lines
@@ -123,15 +152,15 @@
 
 ### 🔍 Summary Documents
 
-#### 13. **COMPLETION_REPORT.md**
+#### 15. **COMPLETION_REPORT.md**
 - Purpose: Project completion status
 - Best For: Final delivery verification
 
-#### 14. **EXECUTIVE_SUMMARY.md**
+#### 16. **EXECUTIVE_SUMMARY.md**
 - Purpose: Executive-level overview
 - Best For: Management review
 
-#### 15. **FILE_INVENTORY.md**
+#### 17. **FILE_INVENTORY.md**
 - Purpose: Complete file listing
 - Best For: Project organization review
 
@@ -149,12 +178,19 @@
 2. **README.md** - Understand project
 3. **IMPLEMENTATION_GUIDE_VI.md** - Learn how it works
 4. **API_TEST_DEMONSTRATIONS.md** - See API usage
+5. **VISUALIZATION_QUICK_START.md** - Get visualization running (optional but recommended)
+
+### 👨‍💻 Developer - Building Visualization
+1. **VISUALIZATION_QUICK_START.md** - Quick setup (5 minutes)
+2. **VISUALIZATION_GUIDE.md** - Complete documentation
+3. **API_TEST_DEMONSTRATIONS.md** - Test API endpoints
 
 ### 🧪 QA / Test Engineer
 1. **INTEGRATION_TEST_COMPLETE.md** - Learn all tests
 2. **TEST_MULTI_REGION_PENALTIES.md** - Understand penalty tests
 3. **API_TEST_DEMONSTRATIONS.md** - API test cases
-4. **QUICK_REFERENCE.md** - Troubleshooting
+4. **VISUALIZATION_QUICK_START.md** - Test visualization features
+5. **QUICK_REFERENCE.md** - Troubleshooting
 
 ### 🏗️ DevOps / Infrastructure
 1. **QUICK_REFERENCE.md** - Build and deploy

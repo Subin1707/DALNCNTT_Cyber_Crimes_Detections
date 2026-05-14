@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization Đồ thị Đa Miền - Phát hiện Gian lận</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .visualization-area {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #visualization {
+            width: 100%;
+            height: 600px;
+        }
+        
+        .sidebar {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .panel {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .panel h3 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #495057;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+        
+        .region-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+        
+        .region-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+        
+        .region-info {
+            flex: 1;
+        }
+        
+        .region-name {
+            font-weight: 600;
+            color: #212529;
+        }
+        
+        .region-desc {
+            font-size: 11px;
+            color: #6c757d;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .stat-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+        
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+        
+        .tooltip {
+            position: absolute;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .tooltip.show {
+            display: block;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+        
+        .node {
+            cursor: pointer;
+            stroke: white;
+            stroke-width: 2px;
+        }
+        
+        .node:hover {
+            stroke-width: 3px;
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.3));
+        }
+        
+        .node.highlight {
+            filter: drop-shadow(0 0 12px rgba(0,0,0,0.5));
+            stroke-width: 3px;
+        }
+        
+        .link {
+            stroke: #ccc;
+            stroke-width: 1px;
+            opacity: 0.5;
+        }
+        
+        .link.highlight {
+            stroke: #667eea;
+            stroke-width: 2px;
+            opacity: 0.8;
+        }
+        
+        .region-circle {
+            fill: none;
+            stroke-dasharray: 5,5;
+            pointer-events: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            #visualization {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Visualization Đồ thị Liên kết Đa Miền</h1>
+            <p>Hệ thống Phát hiện Gian lận - Multi-Region Analysis</p>
+        </div>
+        
+        <div class="content">
+            <div class="visualization-area">
+                <div id="visualization">
+                    <div class="loading">⏳ Đang tải dữ liệu...</div>
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3498db;"></div>
+                        <span>SAFE - An toàn</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #f39c12;"></div>
+                        <span>SUSPICIOUS - Nghi ngờ</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e74c3c;"></div>
+                        <span>FRAUD - Gian lận</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="panel">
+                    <h3>📍 Miền Phân loại</h3>
+                    
+                    <div class="region-item">
+                        <div class="region-color" style="background: #3498db;"></div>
+                        <div class="region-info">
+                            <div class="region-name">SAFE</div>
+                            <div class="region-desc">Tâm: (250, 400)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="region-item">
+                        <div class="region-color" style="background: #f39c12;"></div>
+                        <div class="region-info">
+                            <div class="region-name">SUSPICIOUS</div>
+                            <div class="region-desc">Tâm: (600, 400)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="region-item">
+                        <div class="region-color" style="background: #e74c3c;"></div>
+                        <div class="region-info">
+                            <div class="region-name">FRAUD</div>
+                            <div class="region-desc">Tâm: (950, 400)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h3>📈 Thống kê</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-safe">0</div>
+                            <div class="stat-label">SAFE</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-suspicious">0</div>
+                            <div class="stat-label">SUSPICIOUS</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-fraud">0</div>
+                            <div class="stat-label">FRAUD</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stat-total">0</div>
+                            <div class="stat-label">Tổng</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h3>🎮 Điều khiển</h3>
+                    <div class="controls">
+                        <button class="btn-primary" onclick="loadExampleData()">
+                            📋 Ví dụ
+                        </button>
+                        <button class="btn-secondary" onclick="resetZoom()">
+                            🔄 Thiết lập lại
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h3>ℹ️ Hướng dẫn</h3>
+                    <div style="font-size: 12px; color: #6c757d; line-height: 1.6;">
+                        <p>• <strong>Kéo để di chuyển:</strong> Click và kéo node</p>
+                        <p>• <strong>Phóng to/Thu nhỏ:</strong> Scroll chuột</p>
+                        <p>• <strong>Xem chi tiết:</strong> Di chuyển chuột qua node</p>
+                        <p>• <strong>Kích thước node:</strong> Tỷ lệ với risk score</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+    
+    <script>
+        // Cấu hình
+        const WIDTH = 1200;
+        const HEIGHT = 600;
+        
+        // SVG setup
+        const svg = d3.select("#visualization")
+            .append("svg")
+            .attr("width", WIDTH)
+            .attr("height", HEIGHT)
+            .style("background", "white");
+        
+        // Add zoom behavior
+        const g = svg.append("g");
+        const zoom = d3.zoom().on("zoom", (event) => {
+            g.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        
+        // Tooltip
+        const tooltip = d3.select("#tooltip");
+        
+        // Initialize with example data
+        function loadExampleData() {
+            fetch('/api/visualization/example')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Loaded data:", data);
+                    updateVisualization(data);
+                    updateStats(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    console.log('Loading hardcoded example data...');
+                    loadHardcodedExample();
+                });
+        }
+        
+        function loadHardcodedExample() {
+            // Hardcoded example data khi API không khả dụng
+            const data = {
+                nodes: [
+                    {id: "user1", x: 200, y: 350, region: "SAFE", riskScore: 0.10, color: "#3498db", size: 20},
+                    {id: "user2", x: 250, y: 420, region: "SAFE", riskScore: 0.18, color: "#3498db", size: 23},
+                    {id: "user3", x: 300, y: 380, region: "SAFE", riskScore: 0.15, color: "#3498db", size: 21},
+                    {id: "user4", x: 180, y: 450, region: "SAFE", riskScore: 0.22, color: "#3498db", size: 24},
+                    {id: "user5", x: 320, y: 300, region: "SAFE", riskScore: 0.08, color: "#3498db", size: 19},
+                    
+                    {id: "user6", x: 550, y: 350, region: "SUSPICIOUS", riskScore: 0.35, color: "#f39c12", size: 28},
+                    {id: "user7", x: 600, y: 420, region: "SUSPICIOUS", riskScore: 0.45, color: "#f39c12", size: 32},
+                    {id: "user8", x: 650, y: 380, region: "SUSPICIOUS", riskScore: 0.40, color: "#f39c12", size: 30},
+                    {id: "user9", x: 580, y: 300, region: "SUSPICIOUS", riskScore: 0.55, color: "#f39c12", size: 36},
+                    {id: "user10", x: 620, y: 480, region: "SUSPICIOUS", riskScore: 0.50, color: "#f39c12", size: 34},
+                    
+                    {id: "user11", x: 900, y: 350, region: "FRAUD", riskScore: 0.72, color: "#e74c3c", size: 39},
+                    {id: "user12", x: 950, y: 420, region: "FRAUD", riskScore: 0.85, color: "#e74c3c", size: 43},
+                    {id: "user13", x: 1000, y: 380, region: "FRAUD", riskScore: 0.78, color: "#e74c3c", size: 41},
+                    {id: "user14", x: 880, y: 450, region: "FRAUD", riskScore: 0.90, color: "#e74c3c", size: 44},
+                    {id: "user15", x: 1020, y: 300, region: "FRAUD", riskScore: 0.68, color: "#e74c3c", size: 38}
+                ],
+                edges: [
+                    {source: "user1", target: "user2", type: "same_region"},
+                    {source: "user1", target: "user4", type: "same_region"},
+                    {source: "user2", target: "user3", type: "same_region"},
+                    
+                    {source: "user6", target: "user7", type: "suspicious"},
+                    {source: "user6", target: "user8", type: "suspicious"},
+                    {source: "user7", target: "user9", type: "suspicious"},
+                    {source: "user8", target: "user10", type: "suspicious"},
+                    
+                    {source: "user11", target: "user12", type: "same_region"},
+                    {source: "user11", target: "user13", type: "same_region"},
+                    {source: "user12", target: "user14", type: "same_region"},
+                    {source: "user13", target: "user15", type: "same_region"}
+                ],
+                regions: [
+                    {name: "SAFE", centerX: 250, centerY: 400, radius: 150, color: "#3498db", opacity: 0.15},
+                    {name: "SUSPICIOUS", centerX: 600, centerY: 400, radius: 120, color: "#f39c12", opacity: 0.15},
+                    {name: "FRAUD", centerX: 950, centerY: 400, radius: 150, color: "#e74c3c", opacity: 0.15}
+                ]
+            };
+            updateVisualization(data);
+            updateStats(data);
+        }
+        
+        function updateVisualization(data) {
+            // Clear previous
+            g.selectAll("*").remove();
+            
+            // Draw region circles
+            g.selectAll(".region-circle")
+                .data(data.regions)
+                .enter()
+                .append("circle")
+                .attr("class", "region-circle")
+                .attr("cx", d => d.centerX)
+                .attr("cy", d => d.centerY)
+                .attr("r", d => d.radius)
+                .attr("fill", d => d.color)
+                .attr("fill-opacity", d => d.opacity)
+                .attr("stroke", d => d.color)
+                .attr("stroke-width", 2)
+                .attr("stroke-opacity", 0.3);
+            
+            // Draw edges
+            g.selectAll(".link")
+                .data(data.edges)
+                .enter()
+                .append("line")
+                .attr("class", "link")
+                .attr("x1", d => {
+                    const source = data.nodes.find(n => n.id === d.source);
+                    return source ? source.x : 0;
+                })
+                .attr("y1", d => {
+                    const source = data.nodes.find(n => n.id === d.source);
+                    return source ? source.y : 0;
+                })
+                .attr("x2", d => {
+                    const target = data.nodes.find(n => n.id === d.target);
+                    return target ? target.x : 0;
+                })
+                .attr("y2", d => {
+                    const target = data.nodes.find(n => n.id === d.target);
+                    return target ? target.y : 0;
+                });
+            
+            // Draw nodes
+            const nodes = g.selectAll(".node")
+                .data(data.nodes)
+                .enter()
+                .append("circle")
+                .attr("class", "node")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", d => d.size)
+                .attr("fill", d => d.color)
+                .on("mouseover", function(event, d) {
+                    // Highlight node
+                    d3.select(this).classed("highlight", true);
+                    
+                    // Show tooltip
+                    tooltip.classed("show", true)
+                        .html(`
+                            <strong>${d.id}</strong><br/>
+                            Region: <strong>${d.region}</strong><br/>
+                            Risk Score: <strong>${(d.riskScore * 100).toFixed(1)}%</strong><br/>
+                            Position: (${d.x.toFixed(0)}, ${d.y.toFixed(0)})
+                        `)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px");
+                    
+                    // Highlight connected edges
+                    g.selectAll(".link").classed("highlight", link => 
+                        link.source === d.id || link.target === d.id
+                    );
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY + 10) + "px");
+                })
+                .on("mouseout", function() {
+                    // Remove highlight
+                    d3.select(this).classed("highlight", false);
+                    
+                    // Hide tooltip
+                    tooltip.classed("show", false);
+                    
+                    // Remove edge highlights
+                    g.selectAll(".link").classed("highlight", false);
+                });
+        }
+        
+        function updateStats(data) {
+            const stats = {
+                SAFE: data.nodes.filter(n => n.region === "SAFE").length,
+                SUSPICIOUS: data.nodes.filter(n => n.region === "SUSPICIOUS").length,
+                FRAUD: data.nodes.filter(n => n.region === "FRAUD").length
+            };
+            
+            document.getElementById("stat-safe").textContent = stats.SAFE;
+            document.getElementById("stat-suspicious").textContent = stats.SUSPICIOUS;
+            document.getElementById("stat-fraud").textContent = stats.FRAUD;
+            document.getElementById("stat-total").textContent = data.nodes.length;
+        }
+        
+        function resetZoom() {
+            svg.transition()
+                .duration(750)
+                .call(zoom.transform, d3.zoomIdentity);
+        }
+        
+        // Load example on page load
+        loadExampleData();
+    </script>
+</body>
+</html>

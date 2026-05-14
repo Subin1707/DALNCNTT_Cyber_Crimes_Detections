@@ -41,4 +41,9 @@ public class DashboardController {
                 return "redirect:/login";
         }
     }
+    
+    @GetMapping("/visualization")
+    public String visualization() {
+        return "visualization";
+    }
 }
