@@ -13,8 +13,25 @@ import java.util.*;
 
 /**
  * Multi-Region Analysis Service
- * Analyzes user behavior across three security regions (Safe, Suspicious, Fraud)
- * Uses multiple distance metrics to calculate membership probability
+ * 
+ * Vietnamese: Dịch vụ Phân tích Theo Miền
+ * 
+ * Phương pháp miền là phương pháp phân tích hành vi bằng cách:
+ * - Đặt node vào không gian đặc trưng
+ * - Xác định node gần miền hành vi nào nhất
+ * 
+ * Hệ thống chia thành 3 miền:
+ * 1. SAFE (an toàn) - hành vi bình thường
+ * 2. SUSPICIOUS (nghi ngờ) - hành vi bất thường nhưng chưa rõ
+ * 3. FRAUD (vi phạm) - hành vi nguy hiểm rõ ràng
+ * 
+ * Sử dụng 3 thuật toán khoảng cách:
+ * - Euclidean: cho dữ liệu số (IP count, URL count)
+ * - Minkowski: cho dữ liệu nhiều chiều phức tạp
+ * - Hamming: cho dữ liệu boolean (VPN, blacklist, TOR)
+ * 
+ * Tích hợp trọng số đặc trưng để một đặc trưng nguy hiểm
+ * có thể kéo node về miền vi phạm.
  */
 @Service
 public class MultiRegionAnalysisService {
@@ -22,15 +39,21 @@ public class MultiRegionAnalysisService {
     private final EuclideanDistance euclideanDistance;
     private final MinkowskiDistance minkowskiDistance;
     private final HammingDistance hammingDistance;
+    private final FeatureWeightsService featureWeightsService;
+    private final FeatureNormalizationUtility normalizationUtility;
 
     private final Map<RegionType, SecurityRegionDTO> regions;
 
     public MultiRegionAnalysisService(EuclideanDistance euclideanDistance,
                                       MinkowskiDistance minkowskiDistance,
-                                      HammingDistance hammingDistance) {
+                                      HammingDistance hammingDistance,
+                                      FeatureWeightsService featureWeightsService,
+                                      FeatureNormalizationUtility normalizationUtility) {
         this.euclideanDistance = euclideanDistance;
         this.minkowskiDistance = minkowskiDistance;
         this.hammingDistance = hammingDistance;
+        this.featureWeightsService = featureWeightsService;
+        this.normalizationUtility = normalizationUtility;
         this.regions = initializeRegions();
     }
 
@@ -66,6 +89,14 @@ public class MultiRegionAnalysisService {
 
     /**
      * Analyze node against all three regions
+     * 
+     * Quy trình:
+     * 1. Tính khoảng cách từ node tới từng miền (3 thuật toán)
+     * 2. Chuyển khoảng cách thành xác suất
+     * 3. Chuẩn hóa xác suất
+     * 4. Áp dụng trọng số đặc trưng nguy hiểm
+     * 5. Phát hiện anomaly
+     * 
      * @param node Behavior feature vector to analyze
      * @return RegionAnalysisResult containing distances and probabilities
      */
@@ -76,7 +107,7 @@ public class MultiRegionAnalysisService {
 
         RegionAnalysisResult result = new RegionAnalysisResult();
 
-        // Calculate distances using all three metrics
+        // Step 1: Calculate distances using all three metrics for each region
         for (RegionType regionType : RegionType.values()) {
             SecurityRegionDTO region = regions.get(regionType);
 
@@ -99,14 +130,17 @@ public class MultiRegionAnalysisService {
             result.addMetricDistance(regionType, "hamming", hammingDist);
         }
 
-        // Normalize probabilities to sum to 1.0
+        // Step 2: Normalize probabilities to sum to 1.0
         result.normalizeProbabilities();
 
-        // Determine primary region
+        // Step 3: Apply weighted feature penalties for dangerous features
+        applyWeightedFeaturePenalties(node, result);
+
+        // Step 4: Determine primary region
         RegionType primaryRegion = result.getPrimaryRegion();
         result.setPrimaryRegion(primaryRegion);
 
-        // Detect anomalies (large probability divergence)
+        // Step 5: Detect anomalies (large probability divergence)
         double maxProb = Collections.max(result.getRegionProbabilities().values());
         double minProb = Collections.min(result.getRegionProbabilities().values());
         double divergence = maxProb - minProb;
@@ -116,43 +150,255 @@ public class MultiRegionAnalysisService {
     }
 
     /**
-     * Apply weighted feature penalties
-     * If node has dangerous features, reduce distance to fraud region
+     * Apply weighted feature penalties to adjust region distances
+     * 
+     * Vietnamese: Áp dụng trọng số đặc trưng nguy hiểm
+     * 
+     * Ý tưởng chính:
+     * - Một đặc trưng nguy hiểm mạnh có thể kéo node về miền vi phạm
+     * - Ví dụ: 9 đặc trưng an toàn + 1 blacklist => node vẫn gần miền vi phạm
+     * 
+     * Cơ chế:
+     * - Nếu node có đặc trưng nguy hiểm
+     * - Giảm khoảng cách tới FRAUD region
+     * - Tăng khoảng cách tới SAFE region
+     * 
+     * @param node Node to analyze
+     * @param result Region analysis result to modify
      */
-    public void applyFeaturePenalties(BehaviorFeatureVector node, RegionAnalysisResult result) {
+    private void applyWeightedFeaturePenalties(BehaviorFeatureVector node, RegionAnalysisResult result) {
         if (node == null || result == null) {
             return;
         }
 
-        SecurityRegionDTO fraudRegion = regions.get(RegionType.FRAUD);
         double fraudDistance = result.getRegionDistance(RegionType.FRAUD);
+        double safeDistance = result.getRegionDistance(RegionType.SAFE);
+        double suspiciousDistance = result.getRegionDistance(RegionType.SUSPICIOUS);
+        
+        List<String> appliedPenalties = new ArrayList<>();
 
-        // Apply penalties for dangerous features
+        // ============ CRITICAL FEATURES (Highest Impact) ============
+        
+        // 1. Blacklist (weight = 10.0)
         if (node.isBlacklist()) {
-            fraudDistance *= 0.3; // Severe penalty
-            result.addDetail("Blacklist detected - significantly closer to fraud region");
+            fraudDistance *= 0.3;  // Severe penalty: reduce by 70%
+            safeDistance *= 1.5;   // Increase distance from SAFE
+            appliedPenalties.add("⚠️ BLACKLIST (weight=10): Severe penalty - significantly closer to FRAUD");
         }
 
+        // 2. TOR Network (weight = 12.0)
         if (node.isTorNetwork()) {
-            fraudDistance *= 0.4;
-            result.addDetail("TOR network detected - significantly closer to fraud region");
+            fraudDistance *= 0.4;  // Severe penalty: reduce by 60%
+            safeDistance *= 2.0;   // Double distance from SAFE
+            appliedPenalties.add("⚠️ TOR NETWORK (weight=12): Severe penalty - strongly suggests FRAUD");
         }
 
-        if (node.isVpn() && node.isBlacklist()) {
-            fraudDistance *= 0.5;
-            result.addDetail("VPN + Blacklist combination - indicates obfuscation attempt");
-        }
-
+        // ============ HIGH-RISK FEATURES ============
+        
+        // 3. Spam Pattern (weight = 8.0)
         if (node.isSpamPattern()) {
-            fraudDistance *= 0.6;
-            result.addDetail("Spam pattern detected - increased fraud probability");
+            fraudDistance *= 0.55;
+            suspiciousDistance *= 0.8;
+            appliedPenalties.add("⚠️ SPAM PATTERN (weight=8): High-risk feature detected");
         }
 
-        // Update result
+        // 4. Suspicious URL (weight = 7.0)
+        if (node.isSuspiciousUrl()) {
+            fraudDistance *= 0.6;
+            suspiciousDistance *= 0.85;
+            appliedPenalties.add("⚠️ SUSPICIOUS URL (weight=7): Malicious URL detected");
+        }
+
+        // 5. Failed Login Count (weight = 6.0)
+        if (node.getFailedLoginCount() > 5) {
+            fraudDistance *= 0.65;
+            suspiciousDistance *= 0.9;
+            appliedPenalties.add(String.format("⚠️ FAILED LOGINS (weight=6): %d failed attempts", 
+                node.getFailedLoginCount()));
+        }
+
+        // ============ OBFUSCATION ATTEMPTS ============
+        
+        // 6. VPN + Blacklist combination (indicates hiding)
+        if (node.isVpn() && node.isBlacklist()) {
+            fraudDistance *= 0.25;  // Ultra severe
+            safeDistance *= 3.0;
+            appliedPenalties.add("⚠️ VPN+BLACKLIST COMBO: Obfuscation attempt detected - extreme risk");
+        }
+
+        // 7. VPN alone (weight = 5.0)
+        else if (node.isVpn()) {
+            fraudDistance *= 0.7;
+            appliedPenalties.add("ℹ️ VPN (weight=5): Privacy tool detected - moderate risk");
+        }
+
+        // ============ ABNORMAL BEHAVIOR ============
+        
+        // 8. Abnormal Access Time (weight = 4.0)
+        if (node.isAbnormalAccessTime()) {
+            fraudDistance *= 0.75;
+            suspiciousDistance *= 0.95;
+            appliedPenalties.add("ℹ️ ABNORMAL TIME (weight=4): Access outside normal hours");
+        }
+
+        // ============ NUMERIC THRESHOLD PENALTIES ============
+        
+        // 9. High IP Count (weight = 3.0)
+        if (node.getIpCount() > 10) {
+            fraudDistance *= 0.8;
+            suspiciousDistance *= 0.9;
+            appliedPenalties.add(String.format("ℹ️ HIGH IP COUNT (weight=3): %d unique IPs", node.getIpCount()));
+        }
+
+        // 10. High URL Count (weight = 2.5)
+        if (node.getUrlCount() > 20) {
+            fraudDistance *= 0.82;
+            suspiciousDistance *= 0.92;
+            appliedPenalties.add(String.format("ℹ️ HIGH URL COUNT (weight=2.5): %d unique URLs", node.getUrlCount()));
+        }
+
+        // 11. High Request Frequency (weight = 3.0)
+        if (node.getRequestFrequency() > 50) {
+            fraudDistance *= 0.85;
+            suspiciousDistance *= 0.95;
+            appliedPenalties.add(String.format("ℹ️ HIGH FREQUENCY (weight=3): %.1f req/min", node.getRequestFrequency()));
+        }
+
+        // ============ CUMULATIVE PENALTY ============
+        // If multiple dangerous features detected, apply additional penalty
+        int dangerousFeatureCount = countDangerousFeatures(node);
+        if (dangerousFeatureCount >= 3) {
+            fraudDistance *= 0.9; // Additional 10% reduction
+            appliedPenalties.add(String.format("🚨 CUMULATIVE: %d dangerous features detected - additional penalty", 
+                dangerousFeatureCount));
+        }
+
+        // Update result with adjusted distances
         result.addRegionDistance(RegionType.FRAUD, fraudDistance);
+        result.addRegionDistance(RegionType.SAFE, safeDistance);
+        result.addRegionDistance(RegionType.SUSPICIOUS, suspiciousDistance);
+
+        // Recalculate probabilities with new distances
         double fraudProb = Math.exp(-fraudDistance * 2.5);
+        double safeProb = Math.exp(-safeDistance * 2.5);
+        double suspiciousProb = Math.exp(-suspiciousDistance * 2.5);
+
         result.addRegionProbability(RegionType.FRAUD, fraudProb);
+        result.addRegionProbability(RegionType.SAFE, safeProb);
+        result.addRegionProbability(RegionType.SUSPICIOUS, suspiciousProb);
+
+        // Renormalize probabilities
         result.normalizeProbabilities();
+
+        // Store penalty details
+        for (String penalty : appliedPenalties) {
+            result.addDetail(penalty);
+        }
+    }
+
+    /**
+     * Count dangerous features in a behavior vector
+     * Helper method for cumulative penalty calculation
+     */
+    private int countDangerousFeatures(BehaviorFeatureVector node) {
+        int count = 0;
+        
+        if (node.isBlacklist()) count++;
+        if (node.isTorNetwork()) count++;
+        if (node.isVpn()) count++;
+        if (node.isSpamPattern()) count++;
+        if (node.isSuspiciousUrl()) count++;
+        if (node.isAbnormalAccessTime()) count++;
+        if (node.getFailedLoginCount() > 5) count++;
+        if (node.getIpCount() > 10) count++;
+        if (node.getUrlCount() > 20) count++;
+        if (node.getRequestFrequency() > 50) count++;
+
+        return count;
+    }
+
+    /**
+     * Generate detailed region analysis report
+     * 
+     * Vietnamese: Tạo báo cáo phân tích miền chi tiết
+     * 
+     * Báo cáo bao gồm:
+     * 1. Khoảng cách tới từng miền
+     * 2. Xác suất từng miền
+     * 3. Các đặc trưng đã áp dụng penalty
+     * 4. Kết luận miền chính
+     */
+    public String generateDetailedReport(BehaviorFeatureVector node, RegionAnalysisResult result) {
+        if (result == null) {
+            return "No region analysis result";
+        }
+
+        StringBuilder report = new StringBuilder();
+        report.append("=== MULTI-REGION ANALYSIS REPORT ===\n\n");
+
+        // Section 1: Region Distances
+        report.append("DISTANCES FROM NODE TO REGIONS:\n");
+        report.append(String.format("  Distance to SAFE:       %.2f\n", result.getRegionDistance(RegionType.SAFE)));
+        report.append(String.format("  Distance to SUSPICIOUS: %.2f\n", result.getRegionDistance(RegionType.SUSPICIOUS)));
+        report.append(String.format("  Distance to FRAUD:      %.2f\n", result.getRegionDistance(RegionType.FRAUD)));
+
+        // Section 2: Region Probabilities
+        report.append("\nPROBABILITY OF MEMBERSHIP:\n");
+        report.append(String.format("  P(SAFE):        %.2f%%\n", result.getRegionProbability(RegionType.SAFE) * 100));
+        report.append(String.format("  P(SUSPICIOUS):  %.2f%%\n", result.getRegionProbability(RegionType.SUSPICIOUS) * 100));
+        report.append(String.format("  P(FRAUD):       %.2f%%\n", result.getRegionProbability(RegionType.FRAUD) * 100));
+
+        // Section 3: Primary Region
+        report.append("\nPRIMARY REGION:\n");
+        report.append(String.format("  Region: %s\n", result.getPrimaryRegion()));
+        report.append(String.format("  Confidence: %.2f%%\n", 
+            result.getRegionProbability(result.getPrimaryRegion()) * 100));
+
+        // Section 4: Metric Distances
+        report.append("\nDISTANCE METRICS BREAKDOWN:\n");
+        Map<String, Map<String, Double>> metricDistances = result.getMetricDistances();
+        for (RegionType region : RegionType.values()) {
+            report.append(String.format("  %s:\n", region.name()));
+            Map<String, Double> metrics = metricDistances.get(region.name());
+            if (metrics != null) {
+                metrics.forEach((metric, distance) ->
+                    report.append(String.format("    - %s: %.2f\n", metric, distance))
+                );
+            }
+        }
+
+        // Section 5: Applied Penalties
+        report.append("\nAPPLIED FEATURE PENALTIES:\n");
+        List<String> penalties = result.getDetails();
+        if (penalties.isEmpty()) {
+            report.append("  No penalties applied\n");
+        } else {
+            for (String penalty : penalties) {
+                report.append(String.format("  %s\n", penalty));
+            }
+        }
+
+        // Section 6: Anomaly Score
+        report.append("\nANOMALY SCORE:\n");
+        report.append(String.format("  Score: %.4f\n", result.getAnomalyScore()));
+        if (result.getAnomalyScore() > 0.5) {
+            report.append("  Assessment: High - Node behavior is highly ambiguous\n");
+        } else if (result.getAnomalyScore() > 0.3) {
+            report.append("  Assessment: Medium - Node behavior shows some ambiguity\n");
+        } else {
+            report.append("  Assessment: Low - Node behavior is clear\n");
+        }
+
+        return report.toString();
+    }
+
+    /**
+     * Legacy method - deprecated in favor of applyWeightedFeaturePenalties
+     * Kept for backward compatibility
+     */
+    @Deprecated
+    public void applyFeaturePenalties(BehaviorFeatureVector node, RegionAnalysisResult result) {
+        applyWeightedFeaturePenalties(node, result);
     }
 
     /**
@@ -244,6 +490,15 @@ public class MultiRegionAnalysisService {
 
         public List<String> getDetails() {
             return new ArrayList<>(details);
+        }
+
+        public Map<String, Map<String, Double>> getMetricDistances() {
+            return new HashMap<>(metricDistances);
+        }
+
+        public void addMetricDistance(String region, String metric, double distance) {
+            metricDistances.computeIfAbsent(region, k -> new HashMap<>())
+                    .put(metric, distance);
         }
 
         @Override

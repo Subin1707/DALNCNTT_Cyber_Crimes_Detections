@@ -1868,3 +1868,64 @@ Lý do node xuất hiện trong graph:
   * Multi-Region Score: 0
   * Rule-Based Score: 70
   * Hybrid Score: 42 | Threats: Node URL `http://239.255.255.250:1900*` có dấu hiệu đáng ngờ và cần xem cùng ngữ cảnh graph. Pattern hiện tại là Clean. Các indicator hiện có đang củng cố nhận định này. | Related: []
+[2026-05-14 07:49:59.771] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:1 (Domain) | Value: IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local | Risk: low | Analysis: Loại node: Domain
+Giá trị: IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `IzFCTzP8n14AAA._FC9F5ED42C8A._tcp.local` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-14 07:49:59.903] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:211 (Domain) | Value: aa.agkn.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: aa.agkn.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `aa.agkn.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Multi-Region Score: 0
+  * Rule-Based Score: 0
+  * Hybrid Score: 0 | Threats: Node Domain `aa.agkn.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-14 07:50:27.940] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:212 (Domain) | Value: m.adnxs.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: m.adnxs.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `m.adnxs.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Multi-Region Score: 0
+  * Rule-Based Score: 0
+  * Hybrid Score: 0 | Threats: Node Domain `m.adnxs.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-14 07:50:36.632] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:213 (Domain) | Value: pippio.com | Risk: low | Analysis: Loại node: Domain
+Giá trị: pippio.com
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `pippio.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Multi-Region Score: 0
+  * Rule-Based Score: 0
+  * Hybrid Score: 0 | Threats: Node Domain `pippio.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-14 07:50:38.794] 🎯 DETECTION | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:214 (Domain) | Value: trace.popin.cc | Risk: low | Analysis: Loại node: Domain
+Giá trị: trace.popin.cc
+Mô tả: Domain observed in the fraud graph and linked to other entities.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Domain `trace.popin.cc` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Multi-Region Score: 0
+  * Rule-Based Score: 0
+  * Hybrid Score: 0 | Threats: Node Domain `trace.popin.cc` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
