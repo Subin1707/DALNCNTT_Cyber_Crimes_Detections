@@ -136,16 +136,16 @@ public class DomainRegionVisualizationTest {
     }
 
     @Test
-    @DisplayName("Should add node to specific region")
+    @DisplayName("Should add node to fraud region based on risk score")
     public void testAddNodeToSpecificRegion() {
         NodeVisualization node = visualizationService.createNode(
             "test_1", "TestNode", "User",
             new double[]{1, 2, 3},
-            0.25,
+            0.85,
             100.0, 150.0
         );
 
-        visualizationService.addNodeToRegion(node, RegionType.FRAUD);
+        visualizationService.addNodeToAppropriateRegion(node);
 
         RegionVisualization fraudRegion = visualizationService.getRegion(RegionType.FRAUD);
         assertEquals(1, fraudRegion.getNodeCount(), "FRAUD region should contain 1 node");

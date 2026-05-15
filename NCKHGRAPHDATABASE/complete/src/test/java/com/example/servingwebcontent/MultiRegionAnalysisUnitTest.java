@@ -34,14 +34,10 @@ public class MultiRegionAnalysisUnitTest {
         hammingDistance = new HammingDistance();
         
         // Create service with injected dependencies
-        // Note: FeatureWeightsService and FeatureNormalizationUtility are optional
-        // The service can work with default initialization
         multiRegionService = new MultiRegionAnalysisService(
-            euclideanDistance, 
-            minkowskiDistance, 
-            hammingDistance,
-            null,  // FeatureWeightsService - optional
-            null   // FeatureNormalizationUtility - optional
+            euclideanDistance,
+            null, minkowskiDistance,
+            hammingDistance, null, null
         );
     }
 
