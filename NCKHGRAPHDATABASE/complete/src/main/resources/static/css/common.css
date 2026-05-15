@@ -190,6 +190,34 @@ svg .link-labels text{
     user-select:none;
 }
 
+svg .link-distance-labels text{
+    font-size:10px;
+    font-weight:800;
+    fill:#7c2d12;
+    paint-order:stroke;
+    stroke:rgba(255,255,255,0.96);
+    stroke-width:3px;
+    stroke-linejoin:round;
+    pointer-events:none;
+    user-select:none;
+}
+
+svg .center-distance-links line{
+    pointer-events:none;
+}
+
+svg .center-distance-labels text{
+    font-size:10px;
+    font-weight:800;
+    fill:#0f172a;
+    paint-order:stroke;
+    stroke:rgba(255,255,255,0.96);
+    stroke-width:3px;
+    stroke-linejoin:round;
+    pointer-events:none;
+    user-select:none;
+}
+
 .table-wrapper{
     border-radius:var(--radius-lg);
     overflow:hidden;

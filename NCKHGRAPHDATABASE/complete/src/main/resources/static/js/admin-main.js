@@ -29,8 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let container = null;
     let linkSel = null;
     let linkLabelSel = null;
+    let linkDistanceLabelSel = null;
+    let centerDistanceLinkSel = null;
+    let centerDistanceLabelSel = null;
     let nodeSel = null;
     let labelSel = null;
+    let renderGraphPositions = null;
     let zoom = null;
     let prevAllNodeIds = new Set();
     let didInitialFit = false;
@@ -115,6 +119,78 @@ document.addEventListener("DOMContentLoaded", () => {
         return "safe";
     };
 
+    const riskValue = (node) => Math.max(0, Math.min(100, Number(node?.riskScore) || 0));
+    const clamp01 = (v) => Math.max(0, Math.min(1, v));
+    const domainStrength = (node) => {
+        const domain = node?.domainAssignment || assignDomain(node);
+        const risk = riskValue(node);
+
+        if (domain === "safe") {
+            return clamp01(1 - (risk / 33));
+        }
+        if (domain === "fraud") {
+            return clamp01((risk - 67) / 33);
+        }
+        if (domain === "suspicious") {
+            return clamp01(1 - (Math.abs(risk - 50) / 17));
+        }
+        return 0;
+    };
+    const distanceToDomainCenter = (node) => {
+        if (!node || isSessionNode(node)) return null;
+        return (1 - domainStrength(node)) * 100;
+    };
+    const distanceLabel = (node) => {
+        const distance = distanceToDomainCenter(node);
+        return distance == null ? "" : `d=${distance.toFixed(2)}`;
+    };
+    const nodeFeatureDistance = (a, b) => {
+        if (!a || !b) return null;
+
+        const domainIndex = { safe: 0, suspicious: 0.5, fraud: 1 };
+        const typeIndex = {
+            AnalysisSession: 0,
+            Email: 0.15,
+            IPAddress: 0.3,
+            URL: 0.45,
+            Domain: 0.6,
+            FileNode: 0.75,
+            FileHash: 0.85,
+            VictimAccount: 1
+        };
+        const statusIndex = { valid: 0, suspicious: 0.5, fake: 1 };
+        const riskLevelIndex = { low: 0, medium: 0.5, high: 1 };
+
+        const vector = (node) => [
+            riskValue(node) / 100,
+            domainIndex[node.domainAssignment || assignDomain(node) || "safe"] ?? 0,
+            typeIndex[node.type] ?? 0.5,
+            statusIndex[String(node.status || "valid").toLowerCase()] ?? 0,
+            riskLevelIndex[String(node.riskLevel || "low").toLowerCase()] ?? 0,
+            node.manualBlocked ? 1 : 0
+        ];
+
+        const va = vector(a);
+        const vb = vector(b);
+        const squared = va.reduce((sum, value, index) => {
+            const diff = value - vb[index];
+            return sum + diff * diff;
+        }, 0);
+
+        return Math.sqrt(squared) * 100;
+    };
+    const resolveNode = (nodeOrId, nodeMap) => {
+        const id = safeId(nodeOrId);
+        if (!id) return null;
+        if (typeof nodeOrId === "object" && nodeOrId?.id) return nodeOrId;
+        return nodeMap?.get(id) || null;
+    };
+    const nodeDistanceLabel = (link, nodeMap) => {
+        const sourceNode = resolveNode(link?.source, nodeMap);
+        const targetNode = resolveNode(link?.target, nodeMap);
+        const distance = nodeFeatureDistance(sourceNode, targetNode);
+        return distance == null ? "" : `d=${distance.toFixed(2)}`;
+    };
     const linkTypeLabel = (t) => ({
         HAS_EMAIL: "phiên → email",
         HAS_IP: "phiên → IP",
@@ -609,8 +685,11 @@ window.fetchGraph = fetchGraph;
                     });
                 });
 
+            centerDistanceLinkSel = container.append("g").attr("class", "center-distance-links").selectAll("line");
             linkSel = container.append("g").selectAll("line");
+            centerDistanceLabelSel = container.append("g").attr("class", "center-distance-labels").selectAll("text");
             linkLabelSel = container.append("g").attr("class", "link-labels").selectAll("text");
+            linkDistanceLabelSel = container.append("g").attr("class", "link-distance-labels").selectAll("text");
             nodeSel = container.append("g").selectAll("circle");
             labelSel = container.append("g").selectAll("text");
 
@@ -682,7 +761,7 @@ window.fetchGraph = fetchGraph;
                 }
             };
 
-            simulation.on("tick", () => {
+            renderGraphPositions = () => {
                 separateOverlappingNodes();
                 (simulation.nodes() || []).forEach(clampNodeInsideDomain);
 
@@ -699,8 +778,36 @@ window.fetchGraph = fetchGraph;
 
                 linkLabelSel
                     .attr("x", d => (d.source.x + d.target.x) / 2)
-                    .attr("y", d => (d.source.y + d.target.y) / 2);
-            });
+                    .attr("y", d => ((d.source.y + d.target.y) / 2) - 8);
+
+                if (linkDistanceLabelSel) {
+                    linkDistanceLabelSel
+                        .attr("x", d => (d.source.x + d.target.x) / 2)
+                        .attr("y", d => ((d.source.y + d.target.y) / 2) + 8);
+                }
+
+                if (centerDistanceLinkSel) {
+                    centerDistanceLinkSel
+                        .attr("x1", d => domainPos[d.domainAssignment || assignDomain(d)]?.x || d.x)
+                        .attr("y1", d => domainPos[d.domainAssignment || assignDomain(d)]?.y || d.y)
+                        .attr("x2", d => d.x)
+                        .attr("y2", d => d.y);
+                }
+
+                if (centerDistanceLabelSel) {
+                    centerDistanceLabelSel
+                        .attr("x", d => {
+                            const pos = domainPos[d.domainAssignment || assignDomain(d)];
+                            return pos ? (pos.x + d.x) / 2 : d.x;
+                        })
+                        .attr("y", d => {
+                            const pos = domainPos[d.domainAssignment || assignDomain(d)];
+                            return pos ? (pos.y + d.y) / 2 : d.y;
+                        });
+                }
+            };
+
+            simulation.on("tick", renderGraphPositions);
 
             svg.on("dblclick", () => {
                 svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity);
@@ -831,6 +938,29 @@ window.fetchGraph = fetchGraph;
         }
 
         const linkKey = l => `${safeId(l.source)}->${safeId(l.target)}::${l.type || ""}`;
+        const visibleNodeMap = new Map((nodes || []).map(n => [n.id, n]));
+        const centerDistanceNodes = nodes.filter(n => !isSessionNode(n) && (n.domainAssignment || assignDomain(n)));
+
+        if (centerDistanceLinkSel) {
+            centerDistanceLinkSel = centerDistanceLinkSel.data(centerDistanceNodes, d => d.id);
+            centerDistanceLinkSel.exit().remove();
+            const centerDistanceLinkEnter = centerDistanceLinkSel.enter().append("line");
+            centerDistanceLinkSel = centerDistanceLinkEnter.merge(centerDistanceLinkSel)
+                .attr("stroke", d => DOMAIN_COLORS[d.domainAssignment || assignDomain(d)] || "#94a3b8")
+                .attr("stroke-width", 1.15)
+                .attr("stroke-opacity", 0.45)
+                .attr("stroke-dasharray", "4 4");
+        }
+
+        if (centerDistanceLabelSel) {
+            centerDistanceLabelSel = centerDistanceLabelSel.data(centerDistanceNodes, d => d.id);
+            centerDistanceLabelSel.exit().remove();
+            const centerDistanceLabelEnter = centerDistanceLabelSel.enter().append("text");
+            centerDistanceLabelSel = centerDistanceLabelEnter.merge(centerDistanceLabelSel)
+                .attr("text-anchor", "middle")
+                .attr("dy", "-0.35em")
+                .text(d => distanceLabel(d));
+        }
 
         linkSel = linkSel.data(links, linkKey);
         linkSel.exit().remove();
@@ -857,6 +987,14 @@ window.fetchGraph = fetchGraph;
         linkLabelSel = linkLabelEnter.merge(linkLabelSel)
             .text(d => linkTypeLabel(d.type));
 
+        linkDistanceLabelSel = linkDistanceLabelSel.data(links, linkKey);
+        linkDistanceLabelSel.exit().remove();
+        const linkDistanceLabelEnter = linkDistanceLabelSel.enter().append("text")
+            .style("display", "none")
+            .text(d => nodeDistanceLabel(d, visibleNodeMap));
+        linkDistanceLabelSel = linkDistanceLabelEnter.merge(linkDistanceLabelSel)
+            .text(d => nodeDistanceLabel(d, visibleNodeMap));
+
         nodeSel = nodeSel.data(nodes, d => d.id);
         nodeSel.exit().remove();
         const nodeEnter = nodeSel.enter().append("circle")
@@ -872,9 +1010,9 @@ window.fetchGraph = fetchGraph;
                 }
             })
             .call(d3.drag()
-                .on("start", e => {
-                    if (!e.active) {
-                        simulation.alphaTarget(0.3).restart();
+                .on("start", () => {
+                    if (simulation) {
+                        simulation.alphaTarget(0).alpha(0).stop();
                     }
                 })
                 .on("drag", (e, d) => {
@@ -902,14 +1040,17 @@ window.fetchGraph = fetchGraph;
                         newY = pos.y + dy * ratio;
                     }
                     
+                    d.x = newX;
+                    d.y = newY;
                     d.fx = newX;
                     d.fy = newY;
+                    if (renderGraphPositions) {
+                        renderGraphPositions();
+                    }
                 })
-                .on("end", e => {
-                    // Lock node at current position (don't let it drift)
-                    // fx and fy already set during drag, just ensure simulation stops
-                    if (!e.active) {
-                        simulation.alphaTarget(0).alpha(0);
+                .on("end", () => {
+                    if (simulation) {
+                        simulation.alphaTarget(0).alpha(0).stop();
                     }
                 })
             );
@@ -929,7 +1070,7 @@ window.fetchGraph = fetchGraph;
             .attr("stroke-dasharray", d => d._isNew ? null : null)
             .attr("r", d => {
                 const fresh = d._newAt && (Date.now() - d._newAt) < 6000;
-                return fresh ? nodeRadius + 4 : nodeRadius;
+                return nodeRadius;
             });
 
         labelSel = labelSel.data(nodes, d => d.id);
@@ -956,7 +1097,24 @@ window.fetchGraph = fetchGraph;
 
         simulation.nodes(nodes);
         simulation.force("link").links(links);
-        simulation.alpha(isFreshGraph ? 1.2 : (isAdditive ? 0.9 : 0.5)).restart();
+        simulation.alpha(isFreshGraph ? 1.2 : (isAdditive ? 0.9 : 0.5)).stop();
+
+        const staticTicks = isFreshGraph ? 90 : (isAdditive ? 60 : 25);
+        for (let i = 0; i < staticTicks; i++) {
+            simulation.tick();
+        }
+
+        if (renderGraphPositions) {
+            renderGraphPositions();
+        }
+        nodes.forEach(n => {
+            n.vx = 0;
+            n.vy = 0;
+            n.fx = n.x;
+            n.fy = n.y;
+        });
+
+        simulation.alphaTarget(0).alpha(0).stop();
         lastLayoutKey = layoutKey;
 
         // Auto-lock sau khi layout dá»«ng Ä‘á»§ lĂ¢u (trĂ¡nh lock quĂ¡ sớm lĂ m node chĂ´ng lĂªn nhau)
@@ -1182,7 +1340,8 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                 const other = nodeMap.get(otherId);
                 const otherLabel = other ? `${other.type || ""}: ${other.value || otherId}` : otherId;
                 const dir = s === d.id ? "→" : "←";
-                return `<span class="node-popup-badge">${safeTextHtml(linkTypeLabel(l.type))} ${dir} ${safeTextHtml(otherLabel)}</span>`;
+                const distance = nodeDistanceLabel(l, nodeMap);
+                return `<span class="node-popup-badge">${safeTextHtml(linkTypeLabel(l.type))}${distance ? ` (${safeTextHtml(distance)})` : ""} ${dir} ${safeTextHtml(otherLabel)}</span>`;
             })
             .join("");
 
@@ -1340,6 +1499,9 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             nodeSel.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
             linkSel.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
             if (linkLabelSel) linkLabelSel.style("display", showLinkLabelsAlways ? null : "none").classed("dim", false);
+            if (linkDistanceLabelSel) linkDistanceLabelSel.style("display", showLinkLabelsAlways ? null : "none").classed("dim", false);
+            if (centerDistanceLinkSel) centerDistanceLinkSel.classed("dim", false).classed("pulse", false);
+            if (centerDistanceLabelSel) centerDistanceLabelSel.classed("dim", false);
             return;
         }
 
@@ -1374,6 +1536,26 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                     if (showLinkLabelsAlways) return null;
                     return connectedKeys.has(linkKey(d)) ? null : "none";
                 });
+        }
+
+        if (linkDistanceLabelSel) {
+            linkDistanceLabelSel
+                .classed("dim", d => !connectedKeys.has(linkKey(d)))
+                .style("display", d => {
+                    if (showLinkLabelsAlways) return null;
+                    return connectedKeys.has(linkKey(d)) ? null : "none";
+                });
+        }
+
+        if (centerDistanceLinkSel) {
+            centerDistanceLinkSel
+                .classed("dim", d => d.id !== nodeId)
+                .classed("pulse", d => d.id === nodeId);
+        }
+
+        if (centerDistanceLabelSel) {
+            centerDistanceLabelSel
+                .classed("dim", d => d.id !== nodeId);
         }
     }
 
