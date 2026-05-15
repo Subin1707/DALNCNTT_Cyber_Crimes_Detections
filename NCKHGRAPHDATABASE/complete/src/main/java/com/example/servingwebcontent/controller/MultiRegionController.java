@@ -388,6 +388,10 @@ public class MultiRegionController {
             response.put("total_predictions", result.getTotalPredictions());
             response.put("correct_predictions", result.getCorrectPredictions());
             response.put("accuracy", String.format("%.2f%%", result.getAccuracy() * 100));
+            response.put("precision", String.format("%.2f%%", result.getMacroPrecision() * 100));
+            response.put("recall", String.format("%.2f%%", result.getMacroRecall() * 100));
+            response.put("f1_score", String.format("%.2f%%", result.getMacroF1Score() * 100));
+            response.put("class_metrics", result.getClassMetrics());
             response.put("confusion_matrix", result.getConfusionMatrix());
             response.put("rows", result.getRows());
 
@@ -416,6 +420,9 @@ public class MultiRegionController {
                 Map<String, Object> row = new LinkedHashMap<>();
                 row.put("method", metric);
                 row.put("accuracy", String.format("%.2f%%", result.getAccuracy() * 100));
+                row.put("precision", String.format("%.2f%%", result.getMacroPrecision() * 100));
+                row.put("recall", String.format("%.2f%%", result.getMacroRecall() * 100));
+                row.put("f1_score", String.format("%.2f%%", result.getMacroF1Score() * 100));
                 row.put("correct", result.getCorrectPredictions());
                 row.put("total", result.getTotalPredictions());
                 methods.add(row);

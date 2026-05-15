@@ -148,19 +148,24 @@
 - Length: 400+ lines
 - Best For: Comprehensive understanding
 
+#### 15. **THUYET_MINH_CHUAN_DO_AN_KNN_REGION_RULE_BASE.md** DEFENSE READY
+- Purpose: Vietnamese thesis-defense explanation for Rule Base, KNN, Feature Vector, Normalization, Region Center, Evaluation
+- Contents: Rule Base as explainability/baseline, KNN on normalized feature vectors, region center vectors, training dataset, Precision/Recall/F1, Confusion Matrix, final architecture
+- Best For: Explaining the method to lecturers and avoiding the misunderstanding that the old Rule Base system was removed
+
 ---
 
 ### 🔍 Summary Documents
 
-#### 15. **COMPLETION_REPORT.md**
+#### 16. **COMPLETION_REPORT.md**
 - Purpose: Project completion status
 - Best For: Final delivery verification
 
-#### 16. **EXECUTIVE_SUMMARY.md**
+#### 17. **EXECUTIVE_SUMMARY.md**
 - Purpose: Executive-level overview
 - Best For: Management review
 
-#### 17. **FILE_INVENTORY.md**
+#### 18. **FILE_INVENTORY.md**
 - Purpose: Complete file listing
 - Best For: Project organization review
 

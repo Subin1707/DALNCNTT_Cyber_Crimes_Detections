@@ -33,6 +33,15 @@ import java.util.*;
  * 
  * Tích hợp trọng số đặc trưng để một đặc trưng nguy hiểm
  * có thể kéo node về miền vi phạm.
+ *
+ * Design note for thesis defense:
+ * - Rule Base is not removed. It remains the explainability layer, baseline,
+ *   and feature-engineering support layer.
+ * - KNN works on normalized feature vectors, not raw node IDs or text values.
+ * - Regions are represented by center vectors; each node is compared against
+ *   SAFE, SUSPICIOUS, and FRAUD centers and also against labeled samples.
+ * - Evaluation should include Accuracy, Precision, Recall, F1-score, and
+ *   Confusion Matrix.
  */
 @Service
 public class MultiRegionAnalysisService {
@@ -595,6 +604,15 @@ public class MultiRegionAnalysisService {
     public record EvaluationRow(String nodeId, RegionType manualLabel, RegionType systemLabel, boolean correct) {
     }
 
+    public record ClassMetrics(int truePositive,
+                               int falsePositive,
+                               int falseNegative,
+                               int trueNegative,
+                               double precision,
+                               double recall,
+                               double f1Score) {
+    }
+
     public static class KNNClassificationResult {
         private final String metric;
         private final int k;
@@ -659,6 +677,10 @@ public class MultiRegionAnalysisService {
         private final double accuracy;
         private final Map<RegionType, Map<RegionType, Integer>> confusionMatrix;
         private final List<EvaluationRow> rows;
+        private final Map<RegionType, ClassMetrics> classMetrics;
+        private final double macroPrecision;
+        private final double macroRecall;
+        private final double macroF1Score;
 
         public EvaluationResult(String metric,
                                 int totalPredictions,
@@ -672,6 +694,10 @@ public class MultiRegionAnalysisService {
             this.accuracy = accuracy;
             this.confusionMatrix = confusionMatrix;
             this.rows = new ArrayList<>(rows);
+            this.classMetrics = calculateClassMetrics(confusionMatrix, totalPredictions);
+            this.macroPrecision = averageMetric(classMetrics, "precision");
+            this.macroRecall = averageMetric(classMetrics, "recall");
+            this.macroF1Score = averageMetric(classMetrics, "f1");
         }
 
         public String getMetric() {
@@ -696,6 +722,69 @@ public class MultiRegionAnalysisService {
 
         public List<EvaluationRow> getRows() {
             return new ArrayList<>(rows);
+        }
+
+        public Map<RegionType, ClassMetrics> getClassMetrics() {
+            return new EnumMap<>(classMetrics);
+        }
+
+        public double getMacroPrecision() {
+            return macroPrecision;
+        }
+
+        public double getMacroRecall() {
+            return macroRecall;
+        }
+
+        public double getMacroF1Score() {
+            return macroF1Score;
+        }
+
+        private static Map<RegionType, ClassMetrics> calculateClassMetrics(
+                Map<RegionType, Map<RegionType, Integer>> matrix,
+                int totalPredictions) {
+            Map<RegionType, ClassMetrics> metrics = new EnumMap<>(RegionType.class);
+            for (RegionType type : RegionType.values()) {
+                int tp = matrix.getOrDefault(type, Map.of()).getOrDefault(type, 0);
+                int fn = 0;
+                int fp = 0;
+
+                for (RegionType predicted : RegionType.values()) {
+                    if (predicted != type) {
+                        fn += matrix.getOrDefault(type, Map.of()).getOrDefault(predicted, 0);
+                    }
+                }
+
+                for (RegionType actual : RegionType.values()) {
+                    if (actual != type) {
+                        fp += matrix.getOrDefault(actual, Map.of()).getOrDefault(type, 0);
+                    }
+                }
+
+                int tn = Math.max(0, totalPredictions - tp - fp - fn);
+                double precision = (tp + fp) == 0 ? 0.0 : (double) tp / (tp + fp);
+                double recall = (tp + fn) == 0 ? 0.0 : (double) tp / (tp + fn);
+                double f1 = (precision + recall) == 0 ? 0.0 : 2.0 * precision * recall / (precision + recall);
+
+                metrics.put(type, new ClassMetrics(tp, fp, fn, tn, precision, recall, f1));
+            }
+            return metrics;
+        }
+
+        private static double averageMetric(Map<RegionType, ClassMetrics> metrics, String name) {
+            if (metrics.isEmpty()) {
+                return 0.0;
+            }
+            double sum = 0.0;
+            for (ClassMetrics metric : metrics.values()) {
+                sum += switch (name) {
+                    case "precision" -> metric.precision();
+                    case "recall" -> metric.recall();
+                    case "f1" -> metric.f1Score();
+                    default -> 0.0;
+                };
+            }
+            return sum / metrics.size();
         }
     }
 
