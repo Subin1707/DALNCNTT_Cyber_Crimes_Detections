@@ -1500,7 +1500,26 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             const db = Number(String(b.distance || "").replace("d=", "")) || Number.MAX_VALUE;
             return da - db;
         });
-        const nearest = sortedRelations.slice(0, 5);
+        const allDistanceNeighbors = (allNodes || [])
+            .filter(n => n?.id && n.id !== node.id && !isSessionNode(n))
+            .map(n => ({
+                type: "FEATURE_DISTANCE",
+                direction: "->",
+                otherLabel: `${n.type || "Node"}: ${nodeDisplayValue(n)}`,
+                distanceValue: nodeFeatureDistance(node, n)
+            }))
+            .filter(n => Number.isFinite(n.distanceValue))
+            .sort((a, b) => a.distanceValue - b.distanceValue)
+            .map(n => ({
+                ...n,
+                distance: `d=${n.distanceValue.toFixed(2)}`
+            }));
+        const candidateCount = allDistanceNeighbors.length;
+        const suggestedK = Math.max(1, Math.round(Math.sqrt(Math.max(1, candidateCount))));
+        const actualK = Math.min(suggestedK, allDistanceNeighbors.length || suggestedK);
+        const nearest = allDistanceNeighbors.length
+            ? allDistanceNeighbors.slice(0, actualK)
+            : sortedRelations.slice(0, actualK);
         const probabilityRows = DOMAIN_ORDER.map(key => {
             const pct = probs[key] || 0;
             const active = key === domain ? "active" : "";
@@ -1547,6 +1566,11 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                 <div class="explain-card">
                     <div class="explain-k">Lý do chính</div>
                     <div class="explain-text">${safeTextHtml(reason)}</div>
+                </div>
+                <div class="explain-card">
+                    <div class="explain-k">K node gan nhat</div>
+                    <div class="explain-v">K = ${actualK}</div>
+                    <div class="explain-meta">N=${candidateCount} node ung vien, chon K xap xi round(sqrt(N)). Tinh distance toi tat ca node, sap xep tang dan, lay ${actualK} node dau tien.</div>
                 </div>
             </div>
 

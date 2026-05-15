@@ -279,6 +279,41 @@ Với node mới:
 5. Tính xác suất SAFE / SUSPICIOUS / FRAUD
 ```
 
+### 8.1 Cách xác định số node gần nhất K
+
+Số node gần nhất được xác định bằng tham số `K` trong KNN. Nếu tập dữ liệu huấn luyện có `N` node đã gán nhãn, cách chọn phổ biến là:
+
+```text
+K ≈ round(sqrt(N))
+```
+
+Ví dụ:
+
+```text
+N = 30
+K ≈ round(sqrt(30)) = 5
+```
+
+Sau khi có `K`, hệ thống thực hiện:
+
+```text
+1. Tính distance từ node cần xét tới tất cả node trong training dataset
+2. Sắp xếp các node theo distance tăng dần
+3. Lấy K node đầu tiên làm K nearest neighbors
+```
+
+Ví dụ:
+
+| Node lịch sử | Nhãn | Distance |
+|---|---|---:|
+| N12 | FRAUD | 0.12 |
+| N08 | SUSPICIOUS | 0.18 |
+| N21 | FRAUD | 0.24 |
+| N03 | SAFE | 0.41 |
+| N17 | SUSPICIOUS | 0.48 |
+
+Nếu `K = 3`, lấy `N12`, `N08`, `N21`. Nếu `K = 5`, lấy cả năm node trong bảng. Các node này được dùng để vote hoặc weighted vote nhằm tính xác suất thuộc miền.
+
 Weighted voting:
 
 ```text
