@@ -1,40 +1,125 @@
 package com.example.servingwebcontent.model;
 
+import java.util.Arrays;
+
 /**
- * KHOẢNG CÁCH - Các thuật toán tính khoảng cách giữa nodes
- * 
- * Kết hợp 3 thuật toán:
- * 1. EUCLIDEAN: Khoảng cách Euclid (dữ liệu số)
- * 2. MINKOWSKI: Khoảng cách Minkowski (dữ liệu nhiều chiều)
- * 3. HAMMING: Khoảng cách Hamming (dữ liệu boolean)
+ * DISTANCE METRIC
+ *
+ * Hệ thống thuật toán khoảng cách dùng cho:
+ * - KNN
+ * - Region Classification
+ * - Fraud Detection
+ * - Node Similarity
+ * - Domain Movement
+ *
+ * Hỗ trợ:
+ * - Euclidean
+ * - Manhattan
+ * - Minkowski
+ * - Hamming
+ * - Cosine
  */
 public abstract class DistanceMetric {
 
+    // =========================================================
+    // ABSTRACT METHODS
+    // =========================================================
+
     public abstract double calculate(double[] vector1, double[] vector2);
+
     public abstract String getName();
+
     public abstract String getDescription();
 
-    // ============== EUCLIDEAN DISTANCE ==============
+    // =========================================================
+    // COMMON VALIDATION
+    // =========================================================
+
     /**
-     * Khoảng cách Euclid (L2 norm)
-     * 
-     * Formula: sqrt(Σ(xi - yi)²)
-     * 
-     * Ứng dụng:
-     * - Dữ liệu liên tục
-     * - Vector đặc trưng số thực
+     * Kiểm tra vector hợp lệ
+     */
+    protected boolean isValid(double[] vector1, double[] vector2) {
+
+        if (vector1 == null || vector2 == null) {
+            return false;
+        }
+
+        if (vector1.length == 0 || vector2.length == 0) {
+            return false;
+        }
+
+        return vector1.length == vector2.length;
+    }
+
+    /**
+     * Làm sạch vector NaN/Infinity
+     */
+    protected double sanitize(double value) {
+
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
+            return 0.0;
+        }
+
+        return value;
+    }
+
+    /**
+     * Chuẩn hóa vector
+     */
+    protected double[] normalize(double[] vector) {
+
+        if (vector == null) {
+            return new double[0];
+        }
+
+        double norm = 0.0;
+
+        for (double v : vector) {
+            norm += v * v;
+        }
+
+        norm = Math.sqrt(norm);
+
+        if (norm == 0.0) {
+            return Arrays.copyOf(vector, vector.length);
+        }
+
+        double[] normalized = new double[vector.length];
+
+        for (int i = 0; i < vector.length; i++) {
+            normalized[i] = vector[i] / norm;
+        }
+
+        return normalized;
+    }
+
+    // =========================================================
+    // EUCLIDEAN DISTANCE
+    // =========================================================
+
+    /**
+     * Công thức:
+     *
+     * d(x,y) = sqrt(Σ(xi - yi)^2)
      */
     public static class EuclideanDistance extends DistanceMetric {
+
         @Override
         public double calculate(double[] vector1, double[] vector2) {
-            if (vector1 == null || vector2 == null ||
-                vector1.length != vector2.length) {
+
+            if (!isValid(vector1, vector2)) {
                 return Double.MAX_VALUE;
             }
 
             double sum = 0.0;
+
             for (int i = 0; i < vector1.length; i++) {
-                double diff = vector1[i] - vector2[i];
+
+                double v1 = sanitize(vector1[i]);
+                double v2 = sanitize(vector2[i]);
+
+                double diff = v1 - v2;
+
                 sum += diff * diff;
             }
 
@@ -42,186 +127,218 @@ public abstract class DistanceMetric {
         }
 
         @Override
-        public String getName() { return "EUCLIDEAN"; }
+        public String getName() {
+            return "EUCLIDEAN";
+        }
 
         @Override
         public String getDescription() {
             return """
-                Khoảng cách Euclid (L2 norm)
-                Formula: sqrt(Σ(xi - yi)²)
-                Ứng dụng: Dữ liệu liên tục, vector đặc trưng số thực
-                Ví dụ: Khoảng cách giữa 2 điểm trong không gian 3D
-                """;
+                    Euclidean Distance (L2 Norm)
+
+                    Formula:
+                    sqrt(Σ(xi - yi)^2)
+
+                    Use Cases:
+                    - KNN
+                    - Fraud similarity
+                    - Numerical vectors
+                    - Graph embeddings
+                    """;
         }
     }
 
-    // ============== MINKOWSKI DISTANCE ==============
+    // =========================================================
+    // MANHATTAN DISTANCE
+    // =========================================================
+
     /**
-     * Khoảng cách Minkowski (Lp norm)
-     * 
-     * Formula: (Σ|xi - yi|^p)^(1/p)
-     * 
-     * Trường hợp đặc biệt:
-     * - p=1: Manhattan distance (L1 norm)
-     * - p=2: Euclidean distance (L2 norm)
-     * - p=∞: Chebyshev distance (L∞ norm)
-     * 
-     * Ứng dụng:
-     * - Dữ liệu nhiều chiều
-     * - Điều chỉnh linh hoạt theo p
-     */
-    public static class MinkowskiDistance extends DistanceMetric {
-        private final double p;
-
-        public MinkowskiDistance(double p) {
-            this.p = p;
-        }
-
-        @Override
-        public double calculate(double[] vector1, double[] vector2) {
-            if (vector1 == null || vector2 == null ||
-                vector1.length != vector2.length) {
-                return Double.MAX_VALUE;
-            }
-
-            double sum = 0.0;
-            for (int i = 0; i < vector1.length; i++) {
-                double diff = Math.abs(vector1[i] - vector2[i]);
-                sum += Math.pow(diff, p);
-            }
-
-            return Math.pow(sum, 1.0 / p);
-        }
-
-        @Override
-        public String getName() { return "MINKOWSKI(p=" + p + ")"; }
-
-        @Override
-        public String getDescription() {
-            return String.format("""
-                Khoảng cách Minkowski (Lp norm, p=%.1f)
-                Formula: (Σ|xi - yi|^%.1f)^(1/%.1f)
-                
-                Trường hợp đặc biệt:
-                - p=1: Manhattan distance (L1 norm)
-                - p=2: Euclidean distance (L2 norm)
-                - p=∞: Chebyshev distance (L∞ norm)
-                
-                Ứng dụng: Dữ liệu nhiều chiều, điều chỉnh linh hoạt
-                """, p, p, p);
-        }
-
-        public double getP() { return p; }
-    }
-
-    // ============== HAMMING DISTANCE ==============
-    /**
-     * Khoảng cách Hamming
-     * 
-     * Formula: Số lượng vị trí khác nhau giữa 2 vector
-     * 
-     * Ứng dụng:
-     * - Dữ liệu boolean (binary)
-     * - So sánh bit hoặc chuỗi bit
-     * 
-     * Ví dụ:
-     * [1,0,1,0] vs [1,1,1,0] => Hamming = 1 (khác tại vị trí 1)
-     */
-    public static class HammingDistance extends DistanceMetric {
-        @Override
-        public double calculate(double[] vector1, double[] vector2) {
-            if (vector1 == null || vector2 == null ||
-                vector1.length != vector2.length) {
-                return Double.MAX_VALUE;
-            }
-
-            int differences = 0;
-            for (int i = 0; i < vector1.length; i++) {
-                // Coi vector là binary: 0 hoặc khác 0
-                boolean bit1 = vector1[i] != 0.0;
-                boolean bit2 = vector2[i] != 0.0;
-                if (bit1 != bit2) {
-                    differences++;
-                }
-            }
-
-            return (double) differences;
-        }
-
-        @Override
-        public String getName() { return "HAMMING"; }
-
-        @Override
-        public String getDescription() {
-            return """
-                Khoảng cách Hamming
-                Formula: Số lượng vị trí khác nhau
-                
-                Ứng dụng: Dữ liệu boolean (binary), so sánh bit
-                
-                Ví dụ:
-                [1,0,1,0] vs [1,1,1,0] => Hamming = 1
-                """;
-        }
-    }
-
-    // ============== Manhattan Distance (Special Minkowski) ==============
-    /**
-     * Khoảng cách Manhattan (Minkowski với p=1)
-     * 
-     * Formula: Σ|xi - yi|
-     * 
-     * Ứng dụng:
-     * - Grid-based movement
-     * - Urban distance (taxicab geometry)
+     * Công thức:
+     *
+     * d(x,y) = Σ|xi - yi|
      */
     public static class ManhattanDistance extends DistanceMetric {
+
         @Override
         public double calculate(double[] vector1, double[] vector2) {
-            if (vector1 == null || vector2 == null ||
-                vector1.length != vector2.length) {
+
+            if (!isValid(vector1, vector2)) {
                 return Double.MAX_VALUE;
             }
 
             double sum = 0.0;
+
             for (int i = 0; i < vector1.length; i++) {
-                sum += Math.abs(vector1[i] - vector2[i]);
+
+                double v1 = sanitize(vector1[i]);
+                double v2 = sanitize(vector2[i]);
+
+                sum += Math.abs(v1 - v2);
             }
 
             return sum;
         }
 
         @Override
-        public String getName() { return "MANHATTAN"; }
+        public String getName() {
+            return "MANHATTAN";
+        }
 
         @Override
         public String getDescription() {
             return """
-                Khoảng cách Manhattan (L1 norm)
-                Formula: Σ|xi - yi|
-                
-                Ứng dụng: Grid-based movement, urban distance
-                Còn gọi: Taxicab geometry
-                """;
+                    Manhattan Distance (L1 Norm)
+
+                    Formula:
+                    Σ|xi - yi|
+
+                    Use Cases:
+                    - Grid movement
+                    - Sparse data
+                    - High dimensional data
+                    """;
         }
     }
 
-    // ============== Cosine Similarity (1 - Cosine Similarity) ==============
+    // =========================================================
+    // MINKOWSKI DISTANCE
+    // =========================================================
+
     /**
-     * Khoảng cách dựa trên Cosine Similarity
-     * 
-     * Formula: 1 - (u·v) / (||u|| * ||v||)
-     * 
-     * Ứng dụng:
-     * - Vector cao chiều
-     * - So sánh hướng của vector
-     * - Phân tích văn bản
+     * Công thức:
+     *
+     * d(x,y) = (Σ|xi-yi|^p)^(1/p)
      */
-    public static class CosineDistance extends DistanceMetric {
+    public static class MinkowskiDistance extends DistanceMetric {
+
+        private final double p;
+
+        public MinkowskiDistance(double p) {
+
+            if (p <= 0) {
+                throw new IllegalArgumentException("p must be > 0");
+            }
+
+            this.p = p;
+        }
+
         @Override
         public double calculate(double[] vector1, double[] vector2) {
-            if (vector1 == null || vector2 == null ||
-                vector1.length != vector2.length) {
+
+            if (!isValid(vector1, vector2)) {
+                return Double.MAX_VALUE;
+            }
+
+            double sum = 0.0;
+
+            for (int i = 0; i < vector1.length; i++) {
+
+                double v1 = sanitize(vector1[i]);
+                double v2 = sanitize(vector2[i]);
+
+                sum += Math.pow(Math.abs(v1 - v2), p);
+            }
+
+            return Math.pow(sum, 1.0 / p);
+        }
+
+        @Override
+        public String getName() {
+            return "MINKOWSKI(p=" + p + ")";
+        }
+
+        @Override
+        public String getDescription() {
+            return """
+                    Minkowski Distance
+
+                    Formula:
+                    (Σ|xi-yi|^p)^(1/p)
+
+                    Special Cases:
+                    p=1 -> Manhattan
+                    p=2 -> Euclidean
+
+                    Use Cases:
+                    - Flexible distance
+                    - Multi-dimensional vectors
+                    """;
+        }
+
+        public double getP() {
+            return p;
+        }
+    }
+
+    // =========================================================
+    // HAMMING DISTANCE
+    // =========================================================
+
+    /**
+     * Công thức:
+     *
+     * số lượng vị trí khác nhau
+     */
+    public static class HammingDistance extends DistanceMetric {
+
+        @Override
+        public double calculate(double[] vector1, double[] vector2) {
+
+            if (!isValid(vector1, vector2)) {
+                return Double.MAX_VALUE;
+            }
+
+            int differences = 0;
+
+            for (int i = 0; i < vector1.length; i++) {
+
+                boolean bit1 = sanitize(vector1[i]) != 0.0;
+                boolean bit2 = sanitize(vector2[i]) != 0.0;
+
+                if (bit1 != bit2) {
+                    differences++;
+                }
+            }
+
+            return differences;
+        }
+
+        @Override
+        public String getName() {
+            return "HAMMING";
+        }
+
+        @Override
+        public String getDescription() {
+            return """
+                    Hamming Distance
+
+                    Formula:
+                    count(xi != yi)
+
+                    Use Cases:
+                    - Binary vectors
+                    - Boolean comparison
+                    - Security signatures
+                    """;
+        }
+    }
+
+    // =========================================================
+    // COSINE DISTANCE
+    // =========================================================
+
+    /**
+     * Công thức:
+     *
+     * 1 - (A.B / |A||B|)
+     */
+    public static class CosineDistance extends DistanceMetric {
+
+        @Override
+        public double calculate(double[] vector1, double[] vector2) {
+
+            if (!isValid(vector1, vector2)) {
                 return Double.MAX_VALUE;
             }
 
@@ -230,53 +347,103 @@ public abstract class DistanceMetric {
             double norm2 = 0.0;
 
             for (int i = 0; i < vector1.length; i++) {
-                dotProduct += vector1[i] * vector2[i];
-                norm1 += vector1[i] * vector1[i];
-                norm2 += vector2[i] * vector2[i];
+
+                double v1 = sanitize(vector1[i]);
+                double v2 = sanitize(vector2[i]);
+
+                dotProduct += v1 * v2;
+
+                norm1 += v1 * v1;
+                norm2 += v2 * v2;
             }
 
             norm1 = Math.sqrt(norm1);
             norm2 = Math.sqrt(norm2);
 
             if (norm1 == 0.0 || norm2 == 0.0) {
-                return Double.MAX_VALUE;
+                return 1.0;
             }
 
             double cosineSimilarity = dotProduct / (norm1 * norm2);
+
+            cosineSimilarity = Math.max(-1.0,
+                    Math.min(1.0, cosineSimilarity));
+
             return 1.0 - cosineSimilarity;
         }
 
         @Override
-        public String getName() { return "COSINE"; }
+        public String getName() {
+            return "COSINE";
+        }
 
         @Override
         public String getDescription() {
             return """
-                Khoảng cách Cosine (1 - Cosine Similarity)
-                Formula: 1 - (u·v) / (||u|| * ||v||)
-                
-                Ứng dụng: Vector cao chiều, so sánh hướng
-                Thường dùng: Phân tích văn bản, NLP
-                """;
+                    Cosine Distance
+
+                    Formula:
+                    1 - (A.B / |A||B|)
+
+                    Use Cases:
+                    - NLP
+                    - Embedding vectors
+                    - Similarity search
+                    - Fraud pattern analysis
+                    """;
         }
     }
 
-    // ============== Factory Method ==============
+    // =========================================================
+    // FACTORY
+    // =========================================================
+
     public static DistanceMetric getMetric(String name) {
+
+        if (name == null) {
+            return new EuclideanDistance();
+        }
+
         return switch (name.toUpperCase()) {
-            case "EUCLIDEAN" -> new EuclideanDistance();
-            case "MINKOWSKI" -> new MinkowskiDistance(2.0);
-            case "HAMMING" -> new HammingDistance();
-            case "MANHATTAN" -> new ManhattanDistance();
-            case "COSINE" -> new CosineDistance();
-            default -> new EuclideanDistance();
+
+            case "EUCLIDEAN" ->
+                    new EuclideanDistance();
+
+            case "MANHATTAN" ->
+                    new ManhattanDistance();
+
+            case "HAMMING" ->
+                    new HammingDistance();
+
+            case "COSINE" ->
+                    new CosineDistance();
+
+            case "MINKOWSKI" ->
+                    new MinkowskiDistance(2.0);
+
+            default ->
+                    new EuclideanDistance();
         };
     }
 
     /**
-     * Tạo Minkowski distance với p tùy chỉnh
+     * Tạo Minkowski custom
      */
     public static DistanceMetric createMinkowski(double p) {
         return new MinkowskiDistance(p);
+    }
+
+    // =========================================================
+    // DEBUG
+    // =========================================================
+
+    public static void printVector(double[] vector) {
+
+        if (vector == null) {
+            System.out.println("null");
+            return;
+        }
+
+        System.out.println(Arrays.toString(vector));
     }
 }

@@ -338,6 +338,98 @@ public class MultiRegionController {
     }
 
     /**
+     * POST /api/multiregion/knn/analyze?k=5&metric=euclidean
+     * KNN classification with SAFE/SUSPICIOUS/FRAUD probabilities.
+     */
+    @PostMapping("/knn/analyze")
+    public ResponseEntity<?> analyzeNodeWithKnn(@RequestBody BehaviorFeatureVector node,
+                                                @RequestParam(defaultValue = "5") int k,
+                                                @RequestParam(defaultValue = "euclidean") String metric) {
+        if (node == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Node khong duoc null"));
+        }
+
+        try {
+            MultiRegionAnalysisService.KNNClassificationResult result =
+                    multiRegionService.classifyWithKnn(node, k, metric);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", "SUCCESS");
+            response.put("method", "KNN_REGION_CLASSIFICATION");
+            response.put("metric", result.getMetric());
+            response.put("k", result.getK());
+            response.put("node", formatNode(node));
+            response.put("predicted_region", result.getPredictedRegion());
+            response.put("votes", result.getVotes());
+            response.put("probabilities", formatProbabilityMap(result.getProbabilities()));
+            response.put("nearest_neighbors", result.getNeighbors());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    /**
+     * GET /api/multiregion/evaluation/manual?k=5&metric=euclidean
+     * Manual evaluation over 30 labeled nodes.
+     */
+    @GetMapping("/evaluation/manual")
+    public ResponseEntity<?> evaluateManualSamples(@RequestParam(defaultValue = "5") int k,
+                                                   @RequestParam(defaultValue = "euclidean") String metric) {
+        try {
+            MultiRegionAnalysisService.EvaluationResult result =
+                    multiRegionService.evaluateManualSamples(k, metric);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", "SUCCESS");
+            response.put("metric", result.getMetric());
+            response.put("k", k);
+            response.put("total_predictions", result.getTotalPredictions());
+            response.put("correct_predictions", result.getCorrectPredictions());
+            response.put("accuracy", String.format("%.2f%%", result.getAccuracy() * 100));
+            response.put("confusion_matrix", result.getConfusionMatrix());
+            response.put("rows", result.getRows());
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    /**
+     * GET /api/multiregion/evaluation/compare-metrics?k=5
+     * Compare Euclidean, Manhattan, Minkowski and Hamming.
+     */
+    @GetMapping("/evaluation/compare-metrics")
+    public ResponseEntity<?> compareDistanceMetrics(@RequestParam(defaultValue = "5") int k) {
+        try {
+            Map<String, MultiRegionAnalysisService.EvaluationResult> comparison =
+                    multiRegionService.compareDistanceMetrics(k);
+
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("status", "SUCCESS");
+            response.put("k", k);
+
+            List<Map<String, Object>> methods = new ArrayList<>();
+            comparison.forEach((metric, result) -> {
+                Map<String, Object> row = new LinkedHashMap<>();
+                row.put("method", metric);
+                row.put("accuracy", String.format("%.2f%%", result.getAccuracy() * 100));
+                row.put("correct", result.getCorrectPredictions());
+                row.put("total", result.getTotalPredictions());
+                methods.add(row);
+            });
+            response.put("methods", methods);
+            response.put("details", comparison);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    /**
      * GET /api/multiregion/sample-nodes/safe
      * Tạo một node AN TOÀN mẫu
      */
@@ -480,6 +572,14 @@ public class MultiRegionController {
         formatted.put("torNetwork", node.isTorNetwork());
         formatted.put("spamPattern", node.isSpamPattern());
         formatted.put("abnormalAccessTime", node.isAbnormalAccessTime());
+        return formatted;
+    }
+
+    private Map<String, String> formatProbabilityMap(Map<RegionType, Double> probabilities) {
+        Map<String, String> formatted = new LinkedHashMap<>();
+        for (RegionType type : RegionType.values()) {
+            formatted.put(type.name(), String.format("%.2f%%", probabilities.getOrDefault(type, 0.0) * 100));
+        }
         return formatted;
     }
 }

@@ -6,6 +6,7 @@ import com.example.servingwebcontent.model.RegionType;
 import com.example.servingwebcontent.service.distance.DistanceMetric;
 import com.example.servingwebcontent.service.distance.EuclideanDistance;
 import com.example.servingwebcontent.service.distance.HammingDistance;
+import com.example.servingwebcontent.service.distance.ManhattanDistance;
 import com.example.servingwebcontent.service.distance.MinkowskiDistance;
 import org.springframework.stereotype.Service;
 
@@ -37,24 +38,29 @@ import java.util.*;
 public class MultiRegionAnalysisService {
 
     private final EuclideanDistance euclideanDistance;
+    private final ManhattanDistance manhattanDistance;
     private final MinkowskiDistance minkowskiDistance;
     private final HammingDistance hammingDistance;
     private final FeatureWeightsService featureWeightsService;
     private final FeatureNormalizationUtility normalizationUtility;
 
     private final Map<RegionType, SecurityRegionDTO> regions;
+    private final List<LabeledBehaviorSample> labeledSamples;
 
     public MultiRegionAnalysisService(EuclideanDistance euclideanDistance,
+                                      ManhattanDistance manhattanDistance,
                                       MinkowskiDistance minkowskiDistance,
                                       HammingDistance hammingDistance,
                                       FeatureWeightsService featureWeightsService,
                                       FeatureNormalizationUtility normalizationUtility) {
         this.euclideanDistance = euclideanDistance;
+        this.manhattanDistance = manhattanDistance;
         this.minkowskiDistance = minkowskiDistance;
         this.hammingDistance = hammingDistance;
         this.featureWeightsService = featureWeightsService;
         this.normalizationUtility = normalizationUtility;
         this.regions = initializeRegions();
+        this.labeledSamples = initializeManualEvaluationSamples();
     }
 
     /**
@@ -113,11 +119,12 @@ public class MultiRegionAnalysisService {
 
             // Calculate distance using each metric
             double euclideanDist = euclideanDistance.calculate(node, region.getCenterVector());
+            double manhattanDist = manhattanDistance.calculate(node, region.getCenterVector());
             double minkowskiDist = minkowskiDistance.calculate(node, region.getCenterVector());
             double hammingDist = hammingDistance.calculate(node, region.getCenterVector());
 
-            // Average the three distances
-            double avgDistance = (euclideanDist + minkowskiDist + hammingDist) / 3.0;
+            // Average the four distances
+            double avgDistance = (euclideanDist + manhattanDist + minkowskiDist + hammingDist) / 4.0;
 
             // Convert distance to probability (closer = higher probability)
             // Using inverse exponential: prob = e^(-distance*k) where k controls sensitivity
@@ -126,6 +133,7 @@ public class MultiRegionAnalysisService {
             result.addRegionDistance(regionType, avgDistance);
             result.addRegionProbability(regionType, probability);
             result.addMetricDistance(regionType, "euclidean", euclideanDist);
+            result.addMetricDistance(regionType, "manhattan", manhattanDist);
             result.addMetricDistance(regionType, "minkowski", minkowskiDist);
             result.addMetricDistance(regionType, "hamming", hammingDist);
         }
@@ -168,6 +176,9 @@ public class MultiRegionAnalysisService {
      */
     private void applyWeightedFeaturePenalties(BehaviorFeatureVector node, RegionAnalysisResult result) {
         if (node == null || result == null) {
+            return;
+        }
+        if (result.isPenaltiesApplied()) {
             return;
         }
 
@@ -294,6 +305,7 @@ public class MultiRegionAnalysisService {
         for (String penalty : appliedPenalties) {
             result.addDetail(penalty);
         }
+        result.setPenaltiesApplied(true);
     }
 
     /**
@@ -315,6 +327,168 @@ public class MultiRegionAnalysisService {
         if (node.getRequestFrequency() > 50) count++;
 
         return count;
+    }
+
+    public KNNClassificationResult classifyWithKnn(BehaviorFeatureVector node, int k, String metricName) {
+        if (node == null || labeledSamples.isEmpty()) {
+            return KNNClassificationResult.empty();
+        }
+
+        return classifyWithKnn(node, labeledSamples, k, normalizeMetric(metricName));
+    }
+
+    public EvaluationResult evaluateManualSamples(int k, String metricName) {
+        String metric = normalizeMetric(metricName);
+        List<EvaluationRow> rows = new ArrayList<>();
+        Map<RegionType, Map<RegionType, Integer>> confusionMatrix = initializeConfusionMatrix();
+
+        int correct = 0;
+        for (LabeledBehaviorSample sample : labeledSamples) {
+            List<LabeledBehaviorSample> trainingSet = labeledSamples.stream()
+                    .filter(candidate -> !candidate.nodeId().equals(sample.nodeId()))
+                    .toList();
+            KNNClassificationResult prediction = classifyWithKnn(sample.vector(), trainingSet, k, metric);
+            boolean isCorrect = sample.label() == prediction.getPredictedRegion();
+            if (isCorrect) {
+                correct++;
+            }
+            confusionMatrix.get(sample.label()).put(
+                    prediction.getPredictedRegion(),
+                    confusionMatrix.get(sample.label()).get(prediction.getPredictedRegion()) + 1
+            );
+            rows.add(new EvaluationRow(sample.nodeId(), sample.label(), prediction.getPredictedRegion(), isCorrect));
+        }
+
+        double accuracy = labeledSamples.isEmpty() ? 0.0 : (double) correct / labeledSamples.size();
+        return new EvaluationResult(metric, labeledSamples.size(), correct, accuracy, confusionMatrix, rows);
+    }
+
+    public Map<String, EvaluationResult> compareDistanceMetrics(int k) {
+        Map<String, EvaluationResult> comparison = new LinkedHashMap<>();
+        for (String metric : List.of("euclidean", "manhattan", "minkowski", "hamming")) {
+            comparison.put(metric, evaluateManualSamples(k, metric));
+        }
+        return comparison;
+    }
+
+    public List<LabeledBehaviorSample> getManualEvaluationSamples() {
+        return labeledSamples;
+    }
+
+    private KNNClassificationResult classifyWithKnn(BehaviorFeatureVector node,
+                                                   List<LabeledBehaviorSample> trainingSet,
+                                                   int k,
+                                                   String metric) {
+        if (node == null || trainingSet == null || trainingSet.isEmpty()) {
+            return KNNClassificationResult.empty();
+        }
+
+        int actualK = Math.max(1, Math.min(k, trainingSet.size()));
+        List<KNNNeighbor> neighbors = new ArrayList<>();
+        for (LabeledBehaviorSample sample : trainingSet) {
+            double distance = calculateDistance(node, sample.vector(), metric);
+            neighbors.add(new KNNNeighbor(sample.nodeId(), sample.label(), distance));
+        }
+        neighbors.sort(Comparator.comparingDouble(KNNNeighbor::distance));
+
+        Map<RegionType, Integer> votes = new EnumMap<>(RegionType.class);
+        Map<RegionType, Double> weightedVotes = new EnumMap<>(RegionType.class);
+        for (RegionType type : RegionType.values()) {
+            votes.put(type, 0);
+            weightedVotes.put(type, 0.0);
+        }
+
+        double totalWeight = 0.0;
+        List<KNNNeighbor> kNearest = neighbors.subList(0, actualK);
+        for (KNNNeighbor neighbor : kNearest) {
+            votes.put(neighbor.label(), votes.get(neighbor.label()) + 1);
+            double weight = 1.0 / Math.max(0.001, neighbor.distance() + 1.0);
+            weightedVotes.put(neighbor.label(), weightedVotes.get(neighbor.label()) + weight);
+            totalWeight += weight;
+        }
+
+        Map<RegionType, Double> probabilities = new EnumMap<>(RegionType.class);
+        for (RegionType type : RegionType.values()) {
+            probabilities.put(type, totalWeight > 0 ? weightedVotes.get(type) / totalWeight : 0.0);
+        }
+
+        RegionType predicted = probabilities.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(RegionType.SAFE);
+
+        return new KNNClassificationResult(metric, actualK, predicted, votes, probabilities, kNearest);
+    }
+
+    private double calculateDistance(BehaviorFeatureVector a, BehaviorFeatureVector b, String metric) {
+        return switch (metric) {
+            case "manhattan" -> manhattanDistance.calculate(a, b);
+            case "minkowski" -> minkowskiDistance.calculate(a, b);
+            case "hamming" -> hammingDistance.calculate(a, b);
+            default -> euclideanDistance.calculate(a, b);
+        };
+    }
+
+    private String normalizeMetric(String metricName) {
+        if (metricName == null || metricName.isBlank()) {
+            return "euclidean";
+        }
+        String metric = metricName.trim().toLowerCase(Locale.ROOT);
+        if (Set.of("euclidean", "manhattan", "minkowski", "hamming").contains(metric)) {
+            return metric;
+        }
+        return "euclidean";
+    }
+
+    private Map<RegionType, Map<RegionType, Integer>> initializeConfusionMatrix() {
+        Map<RegionType, Map<RegionType, Integer>> matrix = new EnumMap<>(RegionType.class);
+        for (RegionType actual : RegionType.values()) {
+            Map<RegionType, Integer> predictedMap = new EnumMap<>(RegionType.class);
+            for (RegionType predicted : RegionType.values()) {
+                predictedMap.put(predicted, 0);
+            }
+            matrix.put(actual, predictedMap);
+        }
+        return matrix;
+    }
+
+    private List<LabeledBehaviorSample> initializeManualEvaluationSamples() {
+        List<LabeledBehaviorSample> samples = new ArrayList<>();
+
+        samples.add(new LabeledBehaviorSample("N01", RegionType.SAFE, new BehaviorFeatureVector(1, 2, 2, 1, 0, 0.4, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N02", RegionType.SAFE, new BehaviorFeatureVector(2, 3, 3, 2, 0, 0.8, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N03", RegionType.SAFE, new BehaviorFeatureVector(1, 1, 2, 1, 1, 0.6, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N04", RegionType.SAFE, new BehaviorFeatureVector(3, 4, 4, 2, 1, 1.2, false, false, false, false, false, true)));
+        samples.add(new LabeledBehaviorSample("N05", RegionType.SAFE, new BehaviorFeatureVector(2, 2, 5, 3, 0, 1.0, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N06", RegionType.SAFE, new BehaviorFeatureVector(1, 3, 4, 2, 0, 0.9, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N07", RegionType.SAFE, new BehaviorFeatureVector(3, 5, 4, 3, 1, 1.4, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N08", RegionType.SAFE, new BehaviorFeatureVector(2, 1, 3, 2, 0, 0.5, false, false, false, false, false, false)));
+        samples.add(new LabeledBehaviorSample("N09", RegionType.SAFE, new BehaviorFeatureVector(4, 4, 5, 3, 1, 1.6, false, false, false, false, false, true)));
+        samples.add(new LabeledBehaviorSample("N10", RegionType.SAFE, new BehaviorFeatureVector(1, 2, 3, 1, 0, 0.7, false, false, false, false, false, false)));
+
+        samples.add(new LabeledBehaviorSample("N11", RegionType.SUSPICIOUS, new BehaviorFeatureVector(5, 8, 7, 4, 3, 3.0, true, false, true, false, false, true)));
+        samples.add(new LabeledBehaviorSample("N12", RegionType.SUSPICIOUS, new BehaviorFeatureVector(7, 10, 8, 5, 4, 4.0, true, false, false, false, true, true)));
+        samples.add(new LabeledBehaviorSample("N13", RegionType.SUSPICIOUS, new BehaviorFeatureVector(6, 9, 10, 6, 5, 4.5, true, false, true, false, true, false)));
+        samples.add(new LabeledBehaviorSample("N14", RegionType.SUSPICIOUS, new BehaviorFeatureVector(8, 12, 8, 5, 2, 3.8, true, false, false, false, true, true)));
+        samples.add(new LabeledBehaviorSample("N15", RegionType.SUSPICIOUS, new BehaviorFeatureVector(9, 13, 10, 7, 5, 5.0, false, false, true, false, true, true)));
+        samples.add(new LabeledBehaviorSample("N16", RegionType.SUSPICIOUS, new BehaviorFeatureVector(5, 7, 9, 6, 4, 3.2, true, false, false, false, false, true)));
+        samples.add(new LabeledBehaviorSample("N17", RegionType.SUSPICIOUS, new BehaviorFeatureVector(10, 14, 11, 7, 5, 5.5, true, false, true, false, true, true)));
+        samples.add(new LabeledBehaviorSample("N18", RegionType.SUSPICIOUS, new BehaviorFeatureVector(7, 11, 7, 5, 3, 4.2, false, false, true, false, true, false)));
+        samples.add(new LabeledBehaviorSample("N19", RegionType.SUSPICIOUS, new BehaviorFeatureVector(9, 10, 12, 8, 6, 5.8, true, false, true, false, false, true)));
+        samples.add(new LabeledBehaviorSample("N20", RegionType.SUSPICIOUS, new BehaviorFeatureVector(6, 8, 9, 5, 4, 3.6, true, false, false, false, true, false)));
+
+        samples.add(new LabeledBehaviorSample("N21", RegionType.FRAUD, new BehaviorFeatureVector(12, 18, 15, 10, 7, 8.0, true, true, true, true, true, true)));
+        samples.add(new LabeledBehaviorSample("N22", RegionType.FRAUD, new BehaviorFeatureVector(15, 20, 20, 12, 9, 10.0, true, true, true, true, true, true)));
+        samples.add(new LabeledBehaviorSample("N23", RegionType.FRAUD, new BehaviorFeatureVector(18, 25, 22, 15, 12, 14.0, true, true, true, true, true, true)));
+        samples.add(new LabeledBehaviorSample("N24", RegionType.FRAUD, new BehaviorFeatureVector(14, 19, 18, 13, 8, 9.5, true, true, true, false, true, true)));
+        samples.add(new LabeledBehaviorSample("N25", RegionType.FRAUD, new BehaviorFeatureVector(20, 28, 25, 16, 15, 18.0, true, true, true, true, true, true)));
+        samples.add(new LabeledBehaviorSample("N26", RegionType.FRAUD, new BehaviorFeatureVector(13, 22, 16, 11, 10, 11.0, true, true, true, true, false, true)));
+        samples.add(new LabeledBehaviorSample("N27", RegionType.FRAUD, new BehaviorFeatureVector(16, 24, 20, 14, 11, 13.0, true, true, true, false, true, true)));
+        samples.add(new LabeledBehaviorSample("N28", RegionType.FRAUD, new BehaviorFeatureVector(22, 30, 26, 18, 18, 20.0, true, true, true, true, true, true)));
+        samples.add(new LabeledBehaviorSample("N29", RegionType.FRAUD, new BehaviorFeatureVector(15, 21, 19, 13, 9, 12.0, true, true, false, true, true, true)));
+        samples.add(new LabeledBehaviorSample("N30", RegionType.FRAUD, new BehaviorFeatureVector(19, 27, 24, 17, 14, 16.5, true, true, true, true, true, true)));
+
+        return Collections.unmodifiableList(samples);
     }
 
     /**
@@ -412,6 +586,119 @@ public class MultiRegionAnalysisService {
         regions.put(type, region);
     }
 
+    public record LabeledBehaviorSample(String nodeId, RegionType label, BehaviorFeatureVector vector) {
+    }
+
+    public record KNNNeighbor(String nodeId, RegionType label, double distance) {
+    }
+
+    public record EvaluationRow(String nodeId, RegionType manualLabel, RegionType systemLabel, boolean correct) {
+    }
+
+    public static class KNNClassificationResult {
+        private final String metric;
+        private final int k;
+        private final RegionType predictedRegion;
+        private final Map<RegionType, Integer> votes;
+        private final Map<RegionType, Double> probabilities;
+        private final List<KNNNeighbor> neighbors;
+
+        public KNNClassificationResult(String metric,
+                                       int k,
+                                       RegionType predictedRegion,
+                                       Map<RegionType, Integer> votes,
+                                       Map<RegionType, Double> probabilities,
+                                       List<KNNNeighbor> neighbors) {
+            this.metric = metric;
+            this.k = k;
+            this.predictedRegion = predictedRegion;
+            this.votes = new EnumMap<>(votes);
+            this.probabilities = new EnumMap<>(probabilities);
+            this.neighbors = new ArrayList<>(neighbors);
+        }
+
+        public static KNNClassificationResult empty() {
+            Map<RegionType, Integer> votes = new EnumMap<>(RegionType.class);
+            Map<RegionType, Double> probabilities = new EnumMap<>(RegionType.class);
+            for (RegionType type : RegionType.values()) {
+                votes.put(type, 0);
+                probabilities.put(type, 0.0);
+            }
+            return new KNNClassificationResult("euclidean", 0, RegionType.SAFE, votes, probabilities, List.of());
+        }
+
+        public String getMetric() {
+            return metric;
+        }
+
+        public int getK() {
+            return k;
+        }
+
+        public RegionType getPredictedRegion() {
+            return predictedRegion;
+        }
+
+        public Map<RegionType, Integer> getVotes() {
+            return new EnumMap<>(votes);
+        }
+
+        public Map<RegionType, Double> getProbabilities() {
+            return new EnumMap<>(probabilities);
+        }
+
+        public List<KNNNeighbor> getNeighbors() {
+            return new ArrayList<>(neighbors);
+        }
+    }
+
+    public static class EvaluationResult {
+        private final String metric;
+        private final int totalPredictions;
+        private final int correctPredictions;
+        private final double accuracy;
+        private final Map<RegionType, Map<RegionType, Integer>> confusionMatrix;
+        private final List<EvaluationRow> rows;
+
+        public EvaluationResult(String metric,
+                                int totalPredictions,
+                                int correctPredictions,
+                                double accuracy,
+                                Map<RegionType, Map<RegionType, Integer>> confusionMatrix,
+                                List<EvaluationRow> rows) {
+            this.metric = metric;
+            this.totalPredictions = totalPredictions;
+            this.correctPredictions = correctPredictions;
+            this.accuracy = accuracy;
+            this.confusionMatrix = confusionMatrix;
+            this.rows = new ArrayList<>(rows);
+        }
+
+        public String getMetric() {
+            return metric;
+        }
+
+        public int getTotalPredictions() {
+            return totalPredictions;
+        }
+
+        public int getCorrectPredictions() {
+            return correctPredictions;
+        }
+
+        public double getAccuracy() {
+            return accuracy;
+        }
+
+        public Map<RegionType, Map<RegionType, Integer>> getConfusionMatrix() {
+            return confusionMatrix;
+        }
+
+        public List<EvaluationRow> getRows() {
+            return new ArrayList<>(rows);
+        }
+    }
+
     /**
      * Region Analysis Result
      */
@@ -421,6 +708,7 @@ public class MultiRegionAnalysisService {
         private final Map<String, Map<String, Double>> metricDistances = new HashMap<>();
         private RegionType primaryRegion;
         private double anomalyScore;
+        private boolean penaltiesApplied;
         private final List<String> details = new ArrayList<>();
 
         public void addRegionDistance(RegionType type, double distance) {
@@ -486,6 +774,14 @@ public class MultiRegionAnalysisService {
 
         public void addDetail(String detail) {
             this.details.add(detail);
+        }
+
+        public boolean isPenaltiesApplied() {
+            return penaltiesApplied;
+        }
+
+        public void setPenaltiesApplied(boolean penaltiesApplied) {
+            this.penaltiesApplied = penaltiesApplied;
         }
 
         public List<String> getDetails() {

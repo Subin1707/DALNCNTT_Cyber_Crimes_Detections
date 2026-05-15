@@ -4,7 +4,7 @@ import com.example.servingwebcontent.dto.BehaviorFeatureVector;
 
 /**
  * Interface for distance metric calculations
- * Implementations: Euclidean, Minkowski, Hamming
+ * Implementations: Euclidean, Manhattan, Minkowski, Hamming
  */
 public interface DistanceMetric {
 

@@ -10,7 +10,6 @@ com\example\servingwebcontent\service\SessionFeatureService$HistoricalSessionSam
 com\example\servingwebcontent\util\VerdictUtil.class
 com\example\servingwebcontent\controller\MultiRegionController$3$1.class
 com\example\servingwebcontent\service\EnhancedConsensusEngineService$ConvergenceAnalysis.class
-com\example\servingwebcontent\service\DomainRegionVisualizationService.class
 com\example\servingwebcontent\controller\MultiRegionController$1.class
 com\example\servingwebcontent\model\RegionVisualization$1.class
 com\example\servingwebcontent\dto\GraphResponseDTO.class
@@ -81,7 +80,6 @@ com\example\servingwebcontent\service\KNNEnhancedAnalysisService$Neighbor.class
 com\example\servingwebcontent\service\KNNEnhancedAnalysisService.class
 com\example\servingwebcontent\config\AuthInterceptor.class
 com\example\servingwebcontent\service\HybridFraudDetectionService.class
-com\example\servingwebcontent\controller\DomainRegionVisualizationController.class
 com\example\servingwebcontent\controller\VisualizationController.class
 com\example\servingwebcontent\service\KNNVotingAndRecallService$RecallMetrics.class
 com\example\servingwebcontent\dto\ThreatDangerDTO.class

@@ -25,6 +25,7 @@ E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\UpdateNodeRequest.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\config\Neo4jConfig.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\dto\BehaviorFeatureVector.java
+E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\distance\ManhattanDistance.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\SessionFeatureService.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\config\SecurityBeansConfig.java
 E:\DALNCNTT_Cyber_Crimes_Detections\NCKHGRAPHDATABASE\complete\src\main\java\com\example\servingwebcontent\service\HybridFraudDetectionService.java

@@ -4,260 +4,698 @@ import java.util.*;
 
 /**
  * NODE - Đối tượng dữ liệu trong không gian miền
- * 
- * Đại diện cho:
- * - Thực thể dữ liệu (User, IP, Domain, etc.)
- * - Điểm trong không gian hành vi
- * - Có vector đặc trưng và mức độ nguy hiểm
- * 
- * Hiển thị:
- * - Hình tròn nhỏ
- * - Màu phụ thuộc vào region
- * - Kích thước phụ thuộc vào mức độ nguy hiểm
+ *
+ * Chức năng:
+ * - Đại diện cho thực thể dữ liệu
+ * - Hỗ trợ KNN
+ * - Hỗ trợ phương pháp miền
+ * - Hỗ trợ clustering
+ * - Hỗ trợ force-directed visualization
+ * - Hỗ trợ phân tích xác suất
  */
 public class NodeVisualization {
 
+    // =====================================================
+    // BASIC INFO
+    // =====================================================
+
     private String nodeId;
+
     private String nodeLabel;
-    
-    // Vector đặc trưng của node
+
+    private String nodeType;
+
+    // =====================================================
+    // FEATURES
+    // =====================================================
+
     private double[] featureVector;
-    
-    // Mức độ nguy hiểm (0.0 - 1.0)
+
     private double riskScore;
-    
-    // Loại node
-    private String nodeType; // User, IP, Domain, Email, etc.
-    
-    // Vùng hành vi mà node thuộc về
+
+    // =====================================================
+    // REGION
+    // =====================================================
+
     private RegionType regionType;
+
     private RegionVisualization region;
-    
-    // Tọa độ hiển thị (2D)
+
+    // =====================================================
+    // POSITION
+    // =====================================================
+
     private double x;
+
     private double y;
-    
-    // KNN Neighbors
-    private List<NodeVisualization> knnNeighbors = new ArrayList<>();
-    private int k = 3;
-    
-    // Khoảng cách đến center vector của miền
+
+    // =====================================================
+    // MOVEMENT
+    // =====================================================
+
+    private double velocityX = 0;
+
+    private double velocityY = 0;
+
+    private double damping = 0.90;
+
+    private double attractionForce = 0.03;
+
+    // =====================================================
+    // KNN
+    // =====================================================
+
+    private List<NodeVisualization> knnNeighbors =
+            new ArrayList<>();
+
+    private int k = 7;
+
+    // =====================================================
+    // DISTANCE
+    // =====================================================
+
     private double distanceToCenterVector;
-    
-    // Trọng số của node
+
+    private Map<RegionType, Double> regionDistances =
+            new HashMap<>();
+
+    // =====================================================
+    // ANALYSIS
+    // =====================================================
+
+    private double confidenceScore;
+
     private double weight;
-    
-    // Trạng thái: NORMAL, WARNING, ANALYZING, DANGEROUS
+
+    // =====================================================
+    // STATUS
+    // =====================================================
+
     private NodeStatus status;
 
-    // ============== ENUM: Trạng thái Node ==============
+    // =====================================================
+    // ENUM
+    // =====================================================
+
     public enum NodeStatus {
-        NORMAL("Normal", "Node bình thường"),
-        WARNING("Warning", "Node cần cảnh báo"),
-        ANALYZING("Analyzing", "Node đang phân tích"),
-        DANGEROUS("Dangerous", "Node nguy hiểm");
+
+        NORMAL(
+                "Normal",
+                "Node bình thường"
+        ),
+
+        WARNING(
+                "Warning",
+                "Node nghi ngờ"
+        ),
+
+        ANALYZING(
+                "Analyzing",
+                "Node đang phân tích"
+        ),
+
+        DANGEROUS(
+                "Dangerous",
+                "Node nguy hiểm"
+        );
 
         private final String label;
+
         private final String description;
 
-        NodeStatus(String label, String description) {
+        NodeStatus(
+                String label,
+                String description
+        ) {
+
             this.label = label;
             this.description = description;
         }
 
-        public String getLabel() { return label; }
-        public String getDescription() { return description; }
+        public String getLabel() {
+            return label;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
-    // ============== Constructor ==============
+    // =====================================================
+    // CONSTRUCTOR
+    // =====================================================
 
-    public NodeVisualization(String nodeId, String nodeLabel, String nodeType,
-                            double[] featureVector, double riskScore,
-                            double x, double y) {
+    public NodeVisualization(
+            String nodeId,
+            String nodeLabel,
+            String nodeType,
+            double[] featureVector,
+            double riskScore,
+            double x,
+            double y
+    ) {
+
         this.nodeId = nodeId;
+
         this.nodeLabel = nodeLabel;
+
         this.nodeType = nodeType;
+
         this.featureVector = featureVector;
-        this.riskScore = Math.max(0.0, Math.min(1.0, riskScore));
+
+        this.riskScore =
+                Math.max(
+                        0.0,
+                        Math.min(1.0, riskScore)
+                );
+
         this.x = x;
+
         this.y = y;
+
         this.weight = 1.0;
-        this.status = determineStatus(riskScore);
+
+        this.status =
+                determineStatus(this.riskScore);
     }
 
-    // ============== Xác định Trạng thái ==============
+    // =====================================================
+    // STATUS
+    // =====================================================
 
-    private NodeStatus determineStatus(double risk) {
-        if (risk < 0.33) return NodeStatus.NORMAL;
-        if (risk < 0.67) return NodeStatus.WARNING;
+    private NodeStatus determineStatus(
+            double risk
+    ) {
+
+        if (risk < 0.33) {
+            return NodeStatus.NORMAL;
+        }
+
+        if (risk < 0.67) {
+            return NodeStatus.WARNING;
+        }
+
         return NodeStatus.DANGEROUS;
     }
 
-    // ============== Phương thức KNN ==============
+    // =====================================================
+    // KNN
+    // =====================================================
 
-    /**
-     * Tính toán KNN neighbors dựa trên distance
-     * @param candidateNodes Danh sách các node ứng viên
-     * @param distanceMetric Thuật toán khoảng cách
-     */
-    public void computeKNNNeighbors(List<NodeVisualization> candidateNodes, 
-                                   DistanceMetric distanceMetric) {
-        if (candidateNodes == null || candidateNodes.isEmpty()) {
+    public void computeKNNNeighbors(
+            List<NodeVisualization> candidateNodes,
+            DistanceMetric distanceMetric
+    ) {
+
+        if (candidateNodes == null ||
+                candidateNodes.isEmpty()) {
+
             return;
         }
 
-        // Tính khoảng cách đến tất cả các node
-        List<NodeDistance> distances = new ArrayList<>();
-        for (NodeVisualization candidate : candidateNodes) {
+        List<NodeDistance> distances =
+                new ArrayList<>();
+
+        for (NodeVisualization candidate
+                : candidateNodes) {
+
             if (!candidate.equals(this)) {
-                double distance = distanceMetric.calculate(
-                    this.featureVector,
-                    candidate.featureVector
+
+                double distance =
+                        distanceMetric.calculate(
+                                this.featureVector,
+                                candidate.featureVector
+                        );
+
+                distances.add(
+                        new NodeDistance(
+                                candidate,
+                                distance
+                        )
                 );
-                distances.add(new NodeDistance(candidate, distance));
             }
         }
 
-        // Sắp xếp theo khoảng cách
-        distances.sort(Comparator.comparingDouble(d -> d.distance));
+        distances.sort(
+                Comparator.comparingDouble(
+                        d -> d.distance
+                )
+        );
 
-        // Lấy K neighbors gần nhất
         this.knnNeighbors.clear();
-        int limit = Math.min(k, distances.size());
+
+        int limit =
+                Math.min(k, distances.size());
+
         for (int i = 0; i < limit; i++) {
-            this.knnNeighbors.add(distances.get(i).node);
+
+            this.knnNeighbors.add(
+                    distances.get(i).node
+            );
         }
     }
 
-    /**
-     * Lớp hỗ trợ cho KNN
-     */
+    // =====================================================
+    // KNN VOTING
+    // =====================================================
+
+    public Map<RegionType, Double> analyzeKNNVoting() {
+
+        Map<RegionType, Integer> counts =
+                new HashMap<>();
+
+        for (NodeVisualization neighbor
+                : knnNeighbors) {
+
+            if (neighbor.getRegionType() != null) {
+
+                counts.put(
+                        neighbor.getRegionType(),
+                        counts.getOrDefault(
+                                neighbor.getRegionType(),
+                                0
+                        ) + 1
+                );
+            }
+        }
+
+        Map<RegionType, Double> percentages =
+                new HashMap<>();
+
+        for (Map.Entry<RegionType, Integer> entry
+                : counts.entrySet()) {
+
+            percentages.put(
+                    entry.getKey(),
+                    entry.getValue() * 100.0
+                            / knnNeighbors.size()
+            );
+        }
+
+        return percentages;
+    }
+
+    // =====================================================
+    // REGION DISTANCES
+    // =====================================================
+
+    public void calculateRegionDistances(
+            List<RegionVisualization> regions,
+            DistanceMetric metric
+    ) {
+
+        regionDistances.clear();
+
+        for (RegionVisualization region
+                : regions) {
+
+            double distance =
+                    metric.calculate(
+                            this.featureVector,
+                            region.getCenterVector()
+                    );
+
+            regionDistances.put(
+                    region.getRegionType(),
+                    distance
+            );
+        }
+    }
+
+    // =====================================================
+    // FIND NEAREST REGION
+    // =====================================================
+
+    public RegionType findNearestRegion() {
+
+        if (regionDistances.isEmpty()) {
+            return null;
+        }
+
+        return regionDistances.entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .get()
+                .getKey();
+    }
+
+    // =====================================================
+    // CENTER DISTANCE
+    // =====================================================
+
+    public void computeDistanceToCenterVector(
+            double[] centerVector,
+            DistanceMetric distanceMetric
+    ) {
+
+        this.distanceToCenterVector =
+                distanceMetric.calculate(
+                        this.featureVector,
+                        centerVector
+                );
+    }
+
+    // =====================================================
+    // CONFIDENCE
+    // =====================================================
+
+    public void calculateConfidenceScore() {
+
+        if (regionDistances.isEmpty()) {
+
+            confidenceScore = 0;
+
+            return;
+        }
+
+        double minDistance =
+                Collections.min(
+                        regionDistances.values()
+                );
+
+        confidenceScore =
+                1.0 / (1.0 + minDistance);
+    }
+
+    // =====================================================
+    // MOVEMENT
+    // =====================================================
+
+    public void moveTowardRegion(
+            RegionVisualization targetRegion
+    ) {
+
+        if (targetRegion == null) {
+            return;
+        }
+
+        double dx =
+                targetRegion.getCenterX() - this.x;
+
+        double dy =
+                targetRegion.getCenterY() - this.y;
+
+        velocityX += dx * attractionForce;
+
+        velocityY += dy * attractionForce;
+
+        velocityX *= damping;
+
+        velocityY *= damping;
+
+        this.x += velocityX;
+
+        this.y += velocityY;
+    }
+
+    // =====================================================
+    // SVG
+    // =====================================================
+
+    public String toSVG(
+            String nodeColor
+    ) {
+
+        double radius =
+                6 + (riskScore * 12);
+
+        String extraStyle = "";
+
+        if (status == NodeStatus.ANALYZING) {
+
+            extraStyle =
+                    """
+                    stroke="white"
+                    stroke-width="2"
+                    """;
+        }
+
+        if (status == NodeStatus.DANGEROUS) {
+
+            extraStyle =
+                    """
+                    stroke="#ff0000"
+                    stroke-width="2"
+                    filter="url(#glow)"
+                    """;
+        }
+
+        return String.format(
+                """
+                <g class="node-group">
+
+                    <circle
+                        cx="%f"
+                        cy="%f"
+                        r="%f"
+                        fill="%s"
+                        opacity="0.85"
+                        %s
+                    />
+
+                    <text
+                        x="%f"
+                        y="%f"
+                        font-size="10"
+                        text-anchor="middle"
+                        fill="#333"
+                    >
+                        %s
+                    </text>
+
+                    <title>
+                        Node: %s
+                        Type: %s
+                        Risk: %.2f%%
+                        Confidence: %.2f%%
+                    </title>
+
+                </g>
+                """,
+
+                x,
+                y,
+                radius,
+                nodeColor,
+                extraStyle,
+
+                x,
+                y - radius - 5,
+                nodeLabel,
+
+                nodeLabel,
+                nodeType,
+                riskScore * 100,
+                confidenceScore * 100
+        );
+    }
+
+    // =====================================================
+    // DESCRIPTION
+    // =====================================================
+
+    public String getDetailedDescription() {
+
+        StringBuilder desc =
+                new StringBuilder();
+
+        desc.append("""
+                ╔══════════════════════════════════════╗
+                """);
+
+        desc.append("\n");
+
+        desc.append("NODE: ")
+                .append(nodeLabel)
+                .append("\n");
+
+        desc.append("TYPE: ")
+                .append(nodeType)
+                .append("\n");
+
+        desc.append("REGION: ")
+                .append(regionType)
+                .append("\n");
+
+        desc.append("RISK SCORE: ")
+                .append(riskScore * 100)
+                .append("%\n");
+
+        desc.append("CONFIDENCE: ")
+                .append(confidenceScore * 100)
+                .append("%\n");
+
+        desc.append("POSITION: (")
+                .append(x)
+                .append(", ")
+                .append(y)
+                .append(")\n");
+
+        desc.append("DISTANCE TO CENTER: ")
+                .append(distanceToCenterVector)
+                .append("\n");
+
+        desc.append("KNN NEIGHBORS: ")
+                .append(knnNeighbors.size())
+                .append("\n");
+
+        desc.append("\nREGION DISTANCES:\n");
+
+        for (Map.Entry<RegionType, Double> entry
+                : regionDistances.entrySet()) {
+
+            desc.append("- ")
+                    .append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue())
+                    .append("\n");
+        }
+
+        desc.append("""
+                ╚══════════════════════════════════════╝
+                """);
+
+        return desc.toString();
+    }
+
+    // =====================================================
+    // NODE DISTANCE
+    // =====================================================
+
     private static class NodeDistance {
+
         NodeVisualization node;
+
         double distance;
 
-        NodeDistance(NodeVisualization node, double distance) {
+        NodeDistance(
+                NodeVisualization node,
+                double distance
+        ) {
+
             this.node = node;
             this.distance = distance;
         }
     }
 
-    // ============== Phương thức Khoảng cách ==============
+    // =====================================================
+    // GETTERS / SETTERS
+    // =====================================================
 
-    /**
-     * Tính khoảng cách đến center vector
-     * @param centerVector Vector tâm
-     * @param distanceMetric Thuật toán khoảng cách
-     */
-    public void computeDistanceToCenterVector(double[] centerVector,
-                                             DistanceMetric distanceMetric) {
-        this.distanceToCenterVector = distanceMetric.calculate(
-            this.featureVector,
-            centerVector
-        );
+    public String getNodeId() {
+        return nodeId;
     }
 
-    // ============== Hiển thị ==============
+    public String getNodeLabel() {
+        return nodeLabel;
+    }
 
-    /**
-     * Lấy SVG node
-     */
-    public String toSVG(String nodeColor) {
-        // Kích thước node phụ thuộc vào mức độ nguy hiểm
-        double radius = 5 + (riskScore * 10);
-        
-        String strokeStyle = "";
-        if (status == NodeStatus.ANALYZING) {
-            strokeStyle = String.format(" stroke=\"white\" stroke-width=\"2\"");
-        } else if (status == NodeStatus.DANGEROUS) {
-            strokeStyle = " filter=\"url(#glow)\"";
+    public double[] getFeatureVector() {
+        return featureVector;
+    }
+
+    public double getRiskScore() {
+        return riskScore;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    public RegionType getRegionType() {
+        return regionType;
+    }
+
+    public RegionVisualization getRegion() {
+        return region;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public List<NodeVisualization> getKnnNeighbors() {
+        return new ArrayList<>(knnNeighbors);
+    }
+
+    public double getDistanceToCenterVector() {
+        return distanceToCenterVector;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public NodeStatus getStatus() {
+        return status;
+    }
+
+    public double getConfidenceScore() {
+        return confidenceScore;
+    }
+
+    public Map<RegionType, Double> getRegionDistances() {
+        return regionDistances;
+    }
+
+    public void setAssignedRegion(RegionType regionType) {
+        this.regionType = regionType;
+    }
+
+    public void addRegionDistance(RegionType regionType, double distance) {
+        if (regionType == null) {
+            return;
         }
-
-        return String.format(
-            """
-            <circle cx="%f" cy="%f" r="%f" 
-                    fill="%s"%s opacity="0.8"/>
-            <title>%s (%s): Risk=%.2f%%</title>
-            """,
-            x, y, radius,
-            nodeColor,
-            strokeStyle,
-            nodeLabel, nodeType,
-            riskScore * 100
-        );
+        regionDistances.put(regionType, distance);
     }
 
-    /**
-     * Mô tả văn bản chi tiết
-     */
-    public String getDetailedDescription() {
-        StringBuilder desc = new StringBuilder();
-        
-        desc.append(String.format("""
-            ╔════════════════════════════════════════╗
-            ║  NODE: %s
-            ║  Type: %s
-            ║  
-            ║  Risk Score: %.2f%%
-            ║  Status: %s (%s)
-            ║  Region: %s
-            ║  Weight: %.2f
-            ║  
-            ║  Position: (%.2f, %.2f)
-            ║  Distance to Center: %.2f
-            ║  KNN Neighbors: %d
-            ║  
-            ║  Feature Vector (dim=%d):
-            """,
-            nodeLabel, nodeType,
-            riskScore * 100,
-            status.getLabel(), status.getDescription(),
-            regionType != null ? regionType.getLabel() : "UNKNOWN",
-            weight,
-            x, y,
-            distanceToCenterVector,
-            knnNeighbors.size(),
-            featureVector != null ? featureVector.length : 0
-        ));
+    public void setRegion(
+            RegionVisualization region
+    ) {
 
-        if (featureVector != null) {
-            for (int i = 0; i < Math.min(featureVector.length, 5); i++) {
-                desc.append(String.format("║      [%d] = %.4f%n", i, featureVector[i]));
-            }
-            if (featureVector.length > 5) {
-                desc.append(String.format("║      ... (%d more)%n", featureVector.length - 5));
-            }
-        }
-
-        desc.append(String.format("╚════════════════════════════════════════╝%n"));
-
-        return desc.toString();
-    }
-
-    // ============== Getters / Setters ==============
-
-    public String getNodeId() { return nodeId; }
-    public String getNodeLabel() { return nodeLabel; }
-    public double[] getFeatureVector() { return featureVector; }
-    public double getRiskScore() { return riskScore; }
-    public String getNodeType() { return nodeType; }
-    public RegionType getRegionType() { return regionType; }
-    public RegionVisualization getRegion() { return region; }
-    public double getX() { return x; }
-    public double getY() { return y; }
-    public List<NodeVisualization> getKnnNeighbors() { return new ArrayList<>(knnNeighbors); }
-    public double getDistanceToCenterVector() { return distanceToCenterVector; }
-    public double getWeight() { return weight; }
-    public NodeStatus getStatus() { return status; }
-
-    public void setRegion(RegionVisualization region) {
         this.region = region;
-        this.regionType = region.getRegionType();
+
+        this.regionType =
+                region.getRegionType();
     }
 
-    public void setX(double x) { this.x = x; }
-    public void setY(double y) { this.y = y; }
-    public void setWeight(double weight) { this.weight = weight; }
-    public void setStatus(NodeStatus status) { this.status = status; }
-    public void setK(int k) { this.k = k; }
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public void setStatus(NodeStatus status) {
+        this.status = status;
+    }
+
+    public void setK(int k) {
+        this.k = k;
+    }
 }
