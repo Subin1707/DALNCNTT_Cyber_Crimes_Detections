@@ -191,6 +191,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const distance = nodeFeatureDistance(sourceNode, targetNode);
         return distance == null ? "" : `d=${distance.toFixed(2)}`;
     };
+    const regionDistanceScore = (node, domain) => {
+        if (!node) return 1;
+        const centers = {
+            safe: [0.10, 0.00, 0.00, 0.00],
+            suspicious: [0.50, 0.50, 0.50, 0.20],
+            fraud: [0.90, 1.00, 1.00, 1.00]
+        };
+        const statusIndex = { valid: 0, suspicious: 0.5, fake: 1 };
+        const riskLevelIndex = { low: 0, medium: 0.5, high: 1 };
+        const vector = [
+            riskValue(node) / 100,
+            statusIndex[String(node.status || "valid").toLowerCase()] ?? 0,
+            riskLevelIndex[String(node.riskLevel || "low").toLowerCase()] ?? 0,
+            node.manualBlocked ? 1 : 0
+        ];
+        const center = centers[domain] || centers.safe;
+        const squared = vector.reduce((sum, value, index) => {
+            const diff = value - center[index];
+            return sum + diff * diff;
+        }, 0);
+        return Math.sqrt(squared);
+    };
+    const regionProbabilities = (node) => {
+        const raw = {};
+        DOMAIN_ORDER.forEach(domain => {
+            raw[domain] = Math.exp(-regionDistanceScore(node, domain) * 3.2);
+        });
+        const total = Object.values(raw).reduce((sum, value) => sum + value, 0) || 1;
+        return Object.fromEntries(
+            DOMAIN_ORDER.map(domain => [domain, (raw[domain] / total) * 100])
+        );
+    };
     const linkTypeLabel = (t) => ({
         HAS_EMAIL: "phiên → email",
         HAS_IP: "phiên → IP",
@@ -215,6 +247,18 @@ document.addEventListener("DOMContentLoaded", () => {
             .replaceAll("&", "&amp;")
             .replaceAll("<", "&lt;")
             .replaceAll(">", "&gt;");
+
+    const nodeDisplayValue = (node) => {
+        const value = node?.value ?? node?.id ?? "";
+        return value === "" ? "—" : String(value);
+    };
+
+    const riskClassName = (riskLevel) => {
+        const risk = String(riskLevel || "low").toLowerCase().trim();
+        if (risk === "high") return "node-fraud";
+        if (risk === "medium") return "node-suspicious";
+        return "node-safe";
+    };
 
     function ensureLinkLabelToggle() {
         const host = document.querySelector(".graph-controls") || document.querySelector(".toolbar");
@@ -437,6 +481,23 @@ window.fetchGraph = fetchGraph;
         clearInterval(autoRefreshTimer);
         autoRefreshTimer = null;
     }
+
+    function openNodeDetails(node) {
+        if (!node) return;
+        window.selectedNodeId = node.id || null;
+        window.__graphContext = {
+            ...(window.__graphContext || {}),
+            selectedNodeId: node.id || null
+        };
+
+        if (document.getElementById("nodeInfo") && typeof window.enhancedShowNodeInfo === "function") {
+            window.enhancedShowNodeInfo(node);
+            return;
+        }
+
+        showNodeInfo(node);
+    }
+    window.openNodeDetails = openNodeDetails;
 
     /* ================= VIEW SWITCH ================= */
 
@@ -1003,11 +1064,7 @@ window.fetchGraph = fetchGraph;
                 event?.stopPropagation?.();
                 selectedNodeId = d?.id || null;
                 applyRelationHighlight(selectedNodeId);
-                if (typeof window.enhancedShowNodeInfo === "function") {
-                    window.enhancedShowNodeInfo(d);
-                } else {
-                    showNodeInfo(d);
-                }
+                openNodeDetails(d);
             })
             .call(d3.drag()
                 .on("start", () => {
@@ -1171,11 +1228,7 @@ window.fetchGraph = fetchGraph;
                 .sort((a, b) => (b._newAt || 0) - (a._newAt || 0))[0];
             if (newest) {
                 setTimeout(() => {
-                    if (typeof window.enhancedShowNodeInfo === "function") {
-                        window.enhancedShowNodeInfo(newest);
-                    } else {
-                        showNodeInfo(newest);
-                    }
+                    openNodeDetails(newest);
                 }, 450);
             }
         }
@@ -1315,10 +1368,208 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
 
     /* ================= NODE POPUP ================= */
 
+    function buildNodeRelations(node, limit = 12) {
+        const nodeMap = new Map((allNodes || []).map(n => [n.id, n]));
+        return (allLinks || [])
+            .filter(l => safeId(l.source) === node.id || safeId(l.target) === node.id)
+            .slice(0, limit)
+            .map(l => {
+                const sourceId = safeId(l.source);
+                const targetId = safeId(l.target);
+                const otherId = sourceId === node.id ? targetId : sourceId;
+                const other = nodeMap.get(otherId);
+                const direction = sourceId === node.id ? "→" : "←";
+                const otherLabel = other
+                    ? `${other.type || "Node"}: ${nodeDisplayValue(other)}`
+                    : (otherId || "Unknown");
+                return {
+                    type: linkTypeLabel(l.type),
+                    direction,
+                    otherLabel,
+                    distance: nodeDistanceLabel(l, nodeMap)
+                };
+            });
+    }
+
+    function renderSideNodeDetails(node) {
+        const panel = document.getElementById("nodeDetailsPanel");
+        if (!panel || !node) return false;
+
+        const typeEl = document.getElementById("panelNodeType");
+        const body = panel.querySelector(".panel-body");
+        if (!body) return false;
+
+        const domain = node.domainAssignment || assignDomain(node);
+        const centerDistance = distanceToDomainCenter(node);
+        const indicators = Array.isArray(node.indicators)
+            ? node.indicators.filter(Boolean)
+            : (node.indicators ? [String(node.indicators)] : []);
+        const relations = buildNodeRelations(node);
+        const riskClass = riskClassName(node.riskLevel);
+        const score = Number(node.riskScore);
+        const scoreText = Number.isFinite(score) ? `${score}/100` : "—";
+        const centerText = centerDistance == null ? "—" : `d=${centerDistance.toFixed(2)}`;
+
+        if (typeEl) {
+            typeEl.textContent = `${node.type || "Unknown"} · ${node.id || "—"}`;
+        }
+
+        const indicatorHtml = indicators.length
+            ? indicators.map(ind => `<span class="detail-chip">${safeTextHtml(ind)}</span>`).join("")
+            : '<span class="detail-muted">Không có chỉ báo rủi ro</span>';
+
+        const relationsHtml = relations.length
+            ? relations.map(rel => `
+                <div class="detail-relation">
+                    <span class="detail-relation-type">${safeTextHtml(rel.type)}</span>
+                    <span>${safeTextHtml(rel.direction)} ${safeTextHtml(rel.otherLabel)}</span>
+                    ${rel.distance ? `<b>${safeTextHtml(rel.distance)}</b>` : ""}
+                </div>
+            `).join("")
+            : '<span class="detail-muted">Không có liên kết trong graph hiện tại</span>';
+
+        body.innerHTML = `
+            <div class="detail-hero ${riskClass}">
+                <div>
+                    <div class="detail-hero-type">${safeTextHtml(node.type || "Unknown")}</div>
+                    <div class="detail-hero-value">${safeTextHtml(nodeDisplayValue(node))}</div>
+                </div>
+                <div class="detail-risk-pill ${riskClass}">${safeTextHtml(String(node.riskLevel || "low").toUpperCase())}</div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="detail-metric">
+                    <span>Risk Score</span>
+                    <b class="${riskClass}">${safeTextHtml(scoreText)}</b>
+                </div>
+                <div class="detail-metric">
+                    <span>Verdict</span>
+                    <b>${safeTextHtml(node.verdict || "—")}</b>
+                </div>
+                <div class="detail-metric">
+                    <span>Status</span>
+                    <b>${safeTextHtml(node.status || "—")}</b>
+                </div>
+                <div class="detail-metric">
+                    <span>Miền</span>
+                    <b>${safeTextHtml((domain || "—").toUpperCase())}</b>
+                </div>
+                <div class="detail-metric">
+                    <span>Khoảng cách tới tâm miền</span>
+                    <b>${safeTextHtml(centerText)}</b>
+                </div>
+                <div class="detail-metric">
+                    <span>Manual block</span>
+                    <b>${node.manualBlocked ? "YES" : "NO"}</b>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-section-title">Indicators</div>
+                <div class="detail-chip-list">${indicatorHtml}</div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-section-title">Relations & khoảng cách node-node</div>
+                <div class="detail-relation-list">${relationsHtml}</div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-section-title">Node ID</div>
+                <code class="detail-code">${safeTextHtml(node.id || "—")}</code>
+            </div>
+        `;
+
+        panel.classList.add("open");
+        panel.setAttribute("aria-hidden", "false");
+        renderGraphExplanation(node, relations);
+        return true;
+    }
+
+    function renderGraphExplanation(node, relations = buildNodeRelations(node)) {
+        const panel = document.getElementById("graphExplanationPanel");
+        const body = document.getElementById("graphExplanationBody");
+        if (!panel || !body || !node) return;
+
+        const domain = node.domainAssignment || assignDomain(node) || "safe";
+        const probs = regionProbabilities(node);
+        const centerDistance = distanceToDomainCenter(node);
+        const centerText = centerDistance == null ? "—" : `d=${centerDistance.toFixed(2)}`;
+        const sortedRelations = [...relations].sort((a, b) => {
+            const da = Number(String(a.distance || "").replace("d=", "")) || Number.MAX_VALUE;
+            const db = Number(String(b.distance || "").replace("d=", "")) || Number.MAX_VALUE;
+            return da - db;
+        });
+        const nearest = sortedRelations.slice(0, 5);
+        const probabilityRows = DOMAIN_ORDER.map(key => {
+            const pct = probs[key] || 0;
+            const active = key === domain ? "active" : "";
+            return `
+                <div class="prob-row ${active}">
+                    <div class="prob-label">
+                        <span class="prob-dot ${key}"></span>
+                        <b>${safeTextHtml(DOMAIN_LABELS[key] || key)}</b>
+                    </div>
+                    <div class="prob-bar"><span style="width:${Math.max(2, Math.min(100, pct)).toFixed(2)}%"></span></div>
+                    <div class="prob-value">${pct.toFixed(2)}%</div>
+                </div>
+            `;
+        }).join("");
+
+        const relationRows = nearest.length
+            ? nearest.map(rel => `
+                <div class="explain-relation-row">
+                    <span>${safeTextHtml(rel.type)} ${safeTextHtml(rel.direction)} ${safeTextHtml(rel.otherLabel)}</span>
+                    <b>${safeTextHtml(rel.distance || "—")}</b>
+                </div>
+            `).join("")
+            : '<div class="explain-muted">Node này chưa có liên kết trực tiếp trong graph hiện tại.</div>';
+
+        const risk = riskValue(node);
+        const reason = domain === "fraud"
+            ? "Điểm rủi ro cao và các đặc trưng trạng thái kéo node về miền gian lận."
+            : domain === "suspicious"
+                ? "Các đặc trưng nằm giữa an toàn và gian lận nên node được xếp vào miền nghi ngờ."
+                : "Điểm rủi ro thấp và trạng thái ít bất thường nên node nằm gần miền an toàn.";
+
+        body.innerHTML = `
+            <div class="explain-grid">
+                <div class="explain-card">
+                    <div class="explain-k">Node đang xét</div>
+                    <div class="explain-v">${safeTextHtml(nodeDisplayValue(node))}</div>
+                    <div class="explain-meta">${safeTextHtml(node.type || "Unknown")} · risk ${risk}/100</div>
+                </div>
+                <div class="explain-card">
+                    <div class="explain-k">Miền được chọn</div>
+                    <div class="explain-v ${riskClassName(node.riskLevel)}">${safeTextHtml(DOMAIN_LABELS[domain] || domain)}</div>
+                    <div class="explain-meta">Khoảng cách tới tâm miền: ${safeTextHtml(centerText)}</div>
+                </div>
+                <div class="explain-card">
+                    <div class="explain-k">Lý do chính</div>
+                    <div class="explain-text">${safeTextHtml(reason)}</div>
+                </div>
+            </div>
+
+            <div class="explain-section">
+                <div class="explain-section-title">Xác suất thuộc từng miền</div>
+                <div class="prob-list">${probabilityRows}</div>
+            </div>
+
+            <div class="explain-section">
+                <div class="explain-section-title">Khoảng cách tới các node liên kết gần nhất</div>
+                <div class="explain-relation-list">${relationRows}</div>
+            </div>
+        `;
+        panel.classList.add("open");
+    }
+
     function showNodeInfo(d) {
 
         const box = document.getElementById("nodeInfo");
-        if (!box) return;
+        if (!box) {
+            renderSideNodeDetails(d);
+            return;
+        }
 
         box.style.display = "flex";
 
@@ -1639,11 +1890,9 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             const viewBtn = document.createElement("button");
             viewBtn.textContent = "Xem";
             viewBtn.onclick = () => {
-                if (typeof window.enhancedShowNodeInfo === "function") {
-                    window.enhancedShowNodeInfo(n);
-                } else {
-                    showNodeInfo(n);
-                }
+                selectedNodeId = n.id;
+                applyRelationHighlight(selectedNodeId);
+                openNodeDetails(n);
             };
             act.appendChild(viewBtn);
 

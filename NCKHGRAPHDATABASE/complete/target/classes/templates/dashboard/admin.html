@@ -168,6 +168,18 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="graphExplanationPanel" class="graph-explanation-panel" aria-live="polite">
+                    <div class="explain-head">
+                        <div>
+                            <div class="explain-title">Giải thích khoảng cách & xác suất miền</div>
+                            <div class="explain-sub">Chọn một node trên đồ thị để xem vì sao node thuộc miền hiện tại.</div>
+                        </div>
+                    </div>
+                    <div id="graphExplanationBody" class="explain-body">
+                        <div class="explain-empty">Chưa chọn node.</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Node details on right -->
@@ -287,7 +299,8 @@ document.getElementById('btnOpenDetails')?.addEventListener('click', () => {
         const nodes = (window.__graphContext && window.__graphContext.nodes) || [];
         const node = nodes.find(n => String(n.id) === String(id));
         if (node) {
-            if (typeof window.enhancedShowNodeInfo === 'function') window.enhancedShowNodeInfo(node);
+            if (typeof window.openNodeDetails === 'function') window.openNodeDetails(node);
+            else if (typeof window.enhancedShowNodeInfo === 'function') window.enhancedShowNodeInfo(node);
             else if (typeof showNodeInfo === 'function') showNodeInfo(node);
         } else {
             alert('Chưa chọn node. Vui lòng click vào node trên đồ thị hoặc bảng để chọn.');
@@ -350,7 +363,10 @@ window.addEventListener('nodeSelected', (e) => {
 
 document.getElementById('closeNodePanel')?.addEventListener('click', () => {
     const panel = document.getElementById('nodeDetailsPanel');
-    if (panel) panel.classList.remove('open');
+    if (panel) {
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+    }
 });
 </script>
 
