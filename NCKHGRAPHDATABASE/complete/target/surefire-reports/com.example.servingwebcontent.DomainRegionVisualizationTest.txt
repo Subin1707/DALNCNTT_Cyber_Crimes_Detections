@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.servingwebcontent.DomainRegionVisualizationTest
--------------------------------------------------------------------------------
-Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.256 s -- in com.example.servingwebcontent.DomainRegionVisualizationTest

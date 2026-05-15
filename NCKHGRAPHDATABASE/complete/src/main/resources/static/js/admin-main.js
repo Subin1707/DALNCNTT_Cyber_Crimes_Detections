@@ -224,7 +224,7 @@ async function fetchGraph(sessionId = null, options = {}) {
         try {
             showLoading(true);
             isFetchingGraph = true;
-            const res = await fetch(url, { signal: abortController.signal });
+            const res = await fetch(url, { signal: abortController.signal, credentials: 'include' });
             if (!res.ok) throw new Error(`Graph API failed: ${res.status}`);
             const data = await res.json();
             allNodes = Array.isArray(data.nodes) ? data.nodes : [];
@@ -267,7 +267,8 @@ async function fetchGraph(sessionId = null, options = {}) {
         const url = "/admin/graph/" + encodeURIComponent(currentSessionId);
 
         const res = await fetch(url, {
-            signal: abortController.signal
+            signal: abortController.signal,
+            credentials: 'include'
         });
 
         if (!res.ok)
@@ -621,17 +622,39 @@ window.fetchGraph = fetchGraph;
             })
             .call(d3.drag()
                 .on("start", e => {
-                    if (!e.active)
+                    if (!e.active) {
                         simulation.alphaTarget(0.3).restart();
+                    }
                 })
                 .on("drag", (e, d) => {
                     const t = d3.zoomTransform(svg.node());
-                    d.fx = (e.x - t.x) / t.k;
-                    d.fy = (e.y - t.y) / t.k;
+                    let newX = (e.x - t.x) / t.k;
+                    let newY = (e.y - t.y) / t.k;
+                    
+                    // Keep node inside its domain circle when dragging
+                    const domain = d.domainAssignment || assignDomain(d);
+                    const pos = domainPos[domain];
+                    const radius = domainRadii[domain];
+                    const dx = newX - pos.x;
+                    const dy = newY - pos.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const maxDist = radius - nodeRadius - 5;
+                    
+                    if (dist > maxDist) {
+                        const ratio = maxDist / Math.max(dist, 0.001);
+                        newX = pos.x + dx * ratio;
+                        newY = pos.y + dy * ratio;
+                    }
+                    
+                    d.fx = newX;
+                    d.fy = newY;
                 })
                 .on("end", e => {
-                    if (!e.active)
-                        simulation.alphaTarget(0);
+                    // Lock node at current position (don't let it drift)
+                    // fx and fy already set during drag, just ensure simulation stops
+                    if (!e.active) {
+                        simulation.alphaTarget(0).alpha(0);
+                    }
                 })
             );
 
@@ -680,19 +703,24 @@ window.fetchGraph = fetchGraph;
             }
 
             const elapsed = Date.now() - lockStart;
-            if (simulation.alpha() > 0.08 && elapsed < maxWaitMs) return;
+            const alpha = simulation.alpha();
+            const shouldLock = alpha < 0.08 || elapsed > maxWaitMs;
+            
+            if (!shouldLock) return;
 
             clearInterval(autoLockInterval);
             autoLockInterval = null;
 
+            // FORCE lock tất cả node vào vị trí hiện tại (không check null)
             nodes.forEach(n => {
-                if (n.fx == null && n.fy == null) {
-                    n.fx = n.x;
-                    n.fy = n.y;
-                }
+                n.fx = n.x;
+                n.fy = n.y;
             });
-            simulation.alphaTarget(0);
-        }, 200);
+            
+            // Tắt toàn bộ simulation
+            simulation.alphaTarget(0).alpha(0);
+            simulation.stop();
+        }, 150);
 
         // Focus view on newest nodes (if any)
         const newNodes = nodes.filter(n => n._isNew);

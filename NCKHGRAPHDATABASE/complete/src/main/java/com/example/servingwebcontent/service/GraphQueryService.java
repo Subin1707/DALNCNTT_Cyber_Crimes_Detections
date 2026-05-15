@@ -50,8 +50,9 @@ public class GraphQueryService {
                    coalesce(s.verdict,'AN TO�N') AS verdict,
                    coalesce(s.indicators,[]) AS indicators,
                    '' AS source,
-                   s.id AS sessionId,
-                   false AS manualBlocked,
+                   s.id AS sessionId,                   CASE WHEN coalesce(s.riskLevel,'low') = 'high' THEN 'fraud'
+                        WHEN coalesce(s.riskLevel,'low') = 'medium' THEN 'suspicious'
+                        ELSE 'safe' END AS domainAssignment,                   false AS manualBlocked,
                    '' AS manualBlockReason,
                    '' AS manualBlockedBy,
                    '' AS manualBlockedAt
@@ -78,6 +79,9 @@ public class GraphQueryService {
                    coalesce(n.indicators,[]) AS indicators,
                    coalesce(n.source,'') AS source,
                    '' AS sessionId,
+                   CASE WHEN coalesce(n.riskLevel,'low') = 'high' THEN 'fraud'
+                        WHEN coalesce(n.riskLevel,'low') = 'medium' THEN 'suspicious'
+                        ELSE 'safe' END AS domainAssignment,
                    coalesce(n.manualBlocked,false) AS manualBlocked,
                    coalesce(n.manualBlockReason,'') AS manualBlockReason,
                    coalesce(n.manualBlockedBy,'') AS manualBlockedBy,
@@ -195,6 +199,9 @@ public class GraphQueryService {
                    coalesce(n.indicators,[]) AS indicators,
                    coalesce(n.source,'') AS source,
                    s.id AS sessionId,
+                   CASE WHEN coalesce(n.riskLevel,'low') = 'high' THEN 'fraud'
+                        WHEN coalesce(n.riskLevel,'low') = 'medium' THEN 'suspicious'
+                        ELSE 'safe' END AS domainAssignment,
                    coalesce(n.manualBlocked,false) AS manualBlocked,
                    coalesce(n.manualBlockReason,'') AS manualBlockReason,
                    coalesce(n.manualBlockedBy,'') AS manualBlockedBy,
@@ -591,6 +598,7 @@ public class GraphQueryService {
                 safeStr(m.get("verdict")),
                 castToStringList(m.get("indicators")),
                 safeStr(m.get("source")),
+                safeStr(m.get("domainAssignment")),
                 safeBool(m.get("manualBlocked")),
                 safeStr(m.get("manualBlockReason")),
                 safeStr(m.get("manualBlockedBy")),

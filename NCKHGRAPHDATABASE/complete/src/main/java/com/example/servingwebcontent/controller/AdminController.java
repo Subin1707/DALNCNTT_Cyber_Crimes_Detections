@@ -461,7 +461,7 @@ public class AdminController {
         }
 
         User user = (User) session.getAttribute("user");
-        if (user == null || !"ADMIN".equalsIgnoreCase(user.getRole())) {
+        if (user == null || (!("ADMIN".equalsIgnoreCase(user.getRole()) || "CUSTOMER".equalsIgnoreCase(user.getRole())))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 

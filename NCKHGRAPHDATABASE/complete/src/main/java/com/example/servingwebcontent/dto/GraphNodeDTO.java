@@ -17,6 +17,7 @@ public class GraphNodeDTO {
     private String verdict;
     private List<String> indicators;
     private String source;
+    private String domainAssignment;  // "safe", "suspicious", "fraud"
 
     private boolean manualBlocked;
     private String manualBlockReason;
@@ -100,6 +101,27 @@ public class GraphNodeDTO {
         this.manualBlockReason = normalize(manualBlockReason);
         this.manualBlockedBy = normalize(manualBlockedBy);
         this.manualBlockedAt = normalize(manualBlockedAt);
+        this.domainAssignment = calculateDomainAssignment(this.riskLevel);
+    }
+
+    public GraphNodeDTO(String id,
+                        String sessionId,
+                        String type,
+                        String value,
+                        String status,
+                        String riskLevel,
+                        Integer riskScore,
+                        String verdict,
+                        List<String> indicators,
+                        String source,
+                        String domainAssignment,
+                        Boolean manualBlocked,
+                        String manualBlockReason,
+                        String manualBlockedBy,
+                        String manualBlockedAt) {
+
+        this(id, sessionId, type, value, status, riskLevel, riskScore, verdict, indicators, source, manualBlocked, manualBlockReason, manualBlockedBy, manualBlockedAt);
+        this.domainAssignment = normalize(domainAssignment);
     }
 
     /* ================= NORMALIZE ================= */
@@ -264,5 +286,19 @@ public class GraphNodeDTO {
 
     public String getManualBlockedAt() {
         return manualBlockedAt;
+    }
+
+    public String getDomainAssignment() {
+        return domainAssignment;
+    }
+
+    private static String calculateDomainAssignment(String riskLevel) {
+        if (riskLevel == null) return "safe";
+        String normalized = riskLevel.toLowerCase().trim();
+        return switch(normalized) {
+            case "high" -> "fraud";
+            case "medium" -> "suspicious";
+            default -> "safe";
+        };
     }
 }
