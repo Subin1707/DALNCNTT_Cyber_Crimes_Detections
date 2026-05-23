@@ -325,3 +325,12 @@ Pattern phát hiện: Clean
 
 Lý do node xuất hiện trong graph:
 - Hệ thống đã ghi nhận Domain `crl3.digicert.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Domain `crl3.digicert.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-23 15:08:02.179] 🎯 DETECTION | Node: 4:00bc1cfe-5f1e-4328-85c4-c8e6a4fba55a:8 (URL) | Value: https://www.google.com | Risk: low | Analysis: Loại node: URL
+Giá trị: https://www.google.com
+Mô tả: URL observed in messages, browsing activity, or network telemetry.
+Risk Score: 0/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận URL `https://www.google.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node URL `https://www.google.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []

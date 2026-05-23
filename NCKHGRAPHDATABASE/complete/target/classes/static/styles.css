@@ -15,7 +15,6 @@
     --chipBg2: rgba(255, 255, 255, 0.03);
     --btnBorder: rgba(232, 236, 255, 0.16);
     --btnBg: rgba(138, 180, 248, 0.18);
-    --btnHover: rgba(138, 180, 248, 0.26);
     --btnText: rgba(232, 236, 255, 0.96);
     --btn2Bg: rgba(255, 255, 255, 0.06);
     --btn2Hover: rgba(255, 255, 255, 0.10);
@@ -150,7 +149,7 @@ h1 {
 .btn:hover {
     background: var(--btnHover);
     transform: translateY(-2px);
-    box-shadow: 0 16px 40px rgba(2, 6, 23, 0.10);
+    /* box-shadow: 0 16px 40px rgba(2, 6, 23, 0.10); */
 }
 
 .btn:disabled {
@@ -237,6 +236,50 @@ h1 {
     box-shadow: 0 8px 24px rgba(2, 6, 23, 0.10);
     transform: translateY(-1px);
 }
+
+/* ================= GLOBAL HOVER NEUTRALIZATION ================= */
+/* Remove strong blue/primary hover highlights site-wide */
+
+/* Buttons: avoid blue background or blue glow on hover */
+.btn:hover,
+button:hover {
+    /* keep subtle lift but neutral background and shadow */
+    background: var(--btnBg) !important;
+    border-color: var(--btnBorder) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 28px rgba(2,6,23,0.06) !important;
+}
+
+/* Neutralize global button shine shadow that uses primary glow */
+button:hover::before { left: 140%; }
+button:hover { box-shadow: 0 10px 28px rgba(2,6,23,0.06) !important; }
+
+/* Nav buttons already lighter, ensure no blue border */
+.nav-buttons button:hover { border-color: rgba(15,23,42,0.06) !important; }
+
+/* Table row hover: remove blue-tinted gradient */
+tbody tr:hover, table tbody tr:hover {
+    background: rgba(0,0,0,0.02) !important;
+    transform: none !important;
+}
+
+/* Badge and summary active states: remove primary glow */
+.badge:hover {
+    box-shadow: 0 6px 20px rgba(2,6,23,0.06) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Card gradient glow on hover (disable strong colored glow) */
+.card::after { transition: opacity .2s ease !important; }
+.card:hover::after { opacity: 0 !important; }
+
+/* Any element using focused/active outline with primary tint: fallback to neutral */
+*:focus { box-shadow: 0 0 0 4px rgba(0,0,0,0.04) !important; }
+
+/* Specific: graph explanation active row border (prevent blue halo) */
+.graph-explanation-panel .prob-row.active { border-color: rgba(15,23,42,0.06) !important; box-shadow: 0 0 0 2px rgba(2,6,23,0.03) !important; }
+
+/* End neutralization */
 
 .card h2 {
     margin: 0 0 16px;
@@ -967,6 +1010,27 @@ tbody tr:hover {
 .sidebar-left .nav-buttons button:hover {
     background: var(--btnHover);
     transform: translateY(-1px);
+}
+
+/* Collapsed sidebar state (toggle by JS) */
+.sidebar-left.collapsed {
+    width: 64px !important;
+}
+.sidebar-left.collapsed .sidebar-title {
+    display: none;
+}
+.sidebar-left.collapsed .nav-buttons {
+    gap: 6px;
+}
+.sidebar-left.collapsed .nav-buttons button {
+    padding: 10px 6px !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+}
+@media (min-width: 1101px) {
+    .page-index .container.sidebar-collapsed {
+        padding-left: 100px; /* reduced space when sidebar collapsed */
+    }
 }
 
 /* give main container breathing room on large screens */

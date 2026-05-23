@@ -62,6 +62,17 @@ body::after {
     background: rgba(124, 58, 237, 0.18);
 }
 
+/* Neutralize strong blue hover highlights on login page */
+button:hover, .btn:hover {
+    background: rgba(255,255,255,0.06) !important;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.06) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Remove bright blue blob hover effects */
+.auth-blob { opacity: 0.85; }
+
+
 .auth-page {
     position: relative;
     min-height: 100vh;

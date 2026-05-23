@@ -5,10 +5,12 @@
     <title>IP Management</title>
 
     <link rel="stylesheet" th:href="@{/css/staff.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
-<body>
+<body class="page-index">
 
 <main class="container">
 
@@ -27,13 +29,7 @@
         <a th:href="@{/staff/logout}" class="logout-btn">Logout</a>
     </header>
 
-    <div class="nav-buttons">
-        <button type="button" onclick="window.location.href='/dashboard'">Dashboard</button>
-        <button type="button" onclick="window.location.href='/staff/staff-email'">Qu?n l? Email</button>
-        <button type="button" onclick="window.location.href='/staff/staff-ip'">Qu?n l? IP Address</button>
-        <button type="button" onclick="window.location.href='/staff/staff-url'">Qu?n l? URL</button>
-        <button type="button" onclick="window.location.href='/staff/about'">Gi?i thi?u Nh� ph�t tri?n</button>
-    </div>
+    <!-- Nav moved to left sidebar for dashboard-style layout -->
 
     <section class="card">
         <h2>Ph�n t�ch IP</h2>
@@ -117,6 +113,21 @@
 <script th:src="@{/js/role-enhanced-analysis.js}"></script>
 <script th:src="@{/js/staff-session.js}"></script>
 <script th:src="@{/js/staff-ip-analyze.js}"></script>
+
+<!-- Sidebar toggle script -->
+<script th:src="@{/js/sidebar-toggle.js}"></script>
+
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/staff/staff-email'">Quản lý Email</button>
+        <button onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
+        <button onclick="location.href='/staff/staff-url'">Quản lý URL</button>
+        <button onclick="location.href='/staff/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/staff/about'">Giới thiệu</button>
+    </div>
+</aside>
 
 <section class="card">
     <h2>B?ng Sessions</h2>

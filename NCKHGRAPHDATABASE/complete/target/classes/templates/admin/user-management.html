@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Quản lý Tài khoản</title>
 
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 
-<body>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
+</head>
+
+<body class="page-index">
 
 <main class="container">
 
@@ -29,19 +33,7 @@
         <a th:href="@{/admin/logout}" class="logout-btn">Logout</a>
     </header>
 
-    <!-- NAVIGATION BUTTONS (FIX ROUTE) -->
-    <div class="nav-buttons">
-        <button onclick="window.location.href='/dashboard'">Dashboard</button>
-        <button onclick="window.location.href='/admin/admin-email'">Quản lý Email</button>
-        <button onclick="window.location.href='/admin/admin-ip'">Quản lý IP Address</button>
-        <button onclick="window.location.href='/admin/admin-url'">Quản lý URL</button>
-        <button onclick="window.location.href='/admin/admin-domain'">Quản lý Domain</button>
-        <button onclick="window.location.href='/admin/admin-file'">Quản lý File name</button>
-        <button onclick="window.location.href='/admin/admin-filehash'">Quản lý File hash</button>
-        <button onclick="window.location.href='/admin/admin-victim'">Quản lý Victim account</button>
-        <button onclick="window.location.href='/admin/user-management'">Quản lý Tài khoản</button>
-        <button onclick="window.location.href='/admin/about'">Giới thiệu Nhà phát triển</button>
-    </div>
+    <!-- Nav moved to left sidebar for dashboard-style layout -->
 
     <!-- USER LIST -->
     <section class="card">
@@ -221,6 +213,25 @@
         </form>
     </div>
 </div>
+
+<!-- Sidebar toggle script -->
+<script th:src="@{/js/sidebar-toggle.js}"></script>
+
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/admin/admin-email'">Quản lý Email</button>
+        <button onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
+        <button onclick="location.href='/admin/admin-url'">Quản lý URL</button>
+        <button onclick="location.href='/admin/admin-domain'">Quản lý Domain</button>
+        <button onclick="location.href='/admin/admin-file'">Quản lý File name</button>
+        <button onclick="location.href='/admin/admin-filehash'">Quản lý File hash</button>
+        <button onclick="location.href='/admin/admin-victim'">Quản lý Victim account</button>
+        <button onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/admin/about'">Giới thiệu</button>
+    </div>
+</aside>
 
 </body>
 </html>

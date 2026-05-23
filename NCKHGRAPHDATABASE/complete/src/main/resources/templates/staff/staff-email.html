@@ -5,10 +5,12 @@
     <title>Staff - Qu?n l? Email</title>
 
     <link rel="stylesheet" th:href="@{/css/staff.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
-<body>
+<body class="page-index">
 <main class="container">
 
     <!-- HEADER -->
@@ -17,15 +19,7 @@
         <a th:href="@{/staff/logout}" class="logout-btn" title="��ng xu?t">Logout</a>
     </header>
 
-    <!-- NAV -->
-    <div class="nav-buttons">
-        <button onclick="window.location.href='/dashboard'">Dashboard</button>
-        <button onclick="window.location.href='/staff/staff-email'">Qu?n l? Email</button>
-        <button onclick="window.location.href='/staff/staff-ip'">Qu?n l? IP Address</button>
-        <button onclick="window.location.href='/staff/staff-url'">Qu?n l? URL</button>
-        <button onclick="window.location.href='/staff/user-management'">Qu?n l? T�i kho?n</button>
-        <button onclick="window.location.href='/staff/about'">Gi?i thi?u Nh� ph�t tri?n</button>
-    </div>
+    <!-- Nav moved to left sidebar for dashboard-style layout -->
 
     <!-- ANALYZE EMAIL -->
     <section class="card">
@@ -100,13 +94,28 @@
 <script>
     // ? staff-main.js s? �?c bi?n n�y �? filter ��ng lo?i node
     window.STAFF_VIEW_TYPE = "Email";
-</script>
+    </script>
 
-<!-- ? JS load order ��ng -->
-<script th:src="@{/js/staff-main.js}"></script>
-<script th:src="@{/js/role-enhanced-analysis.js}"></script>
-<script th:src="@{/js/staff-session.js}"></script>
-<script th:src="@{/js/staff-email-analyze.js}"></script>
+    <!-- JS load order -->
+    <script th:src="@{/js/staff-main.js}"></script>
+    <script th:src="@{/js/role-enhanced-analysis.js}"></script>
+    <script th:src="@{/js/staff-session.js}"></script>
+    <script th:src="@{/js/staff-email-analyze.js}"></script>
+
+    <!-- Sidebar toggle script -->
+    <script th:src="@{/js/sidebar-toggle.js}"></script>
+
+    <aside class="sidebar-left" aria-label="Thanh điều hướng">
+        <div class="sidebar-title">Điều hướng</div>
+        <div class="nav-buttons">
+            <button onclick="location.href='/dashboard'">Dashboard</button>
+            <button onclick="location.href='/staff/staff-email'">Quản lý Email</button>
+            <button onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
+            <button onclick="location.href='/staff/staff-url'">Quản lý URL</button>
+            <button onclick="location.href='/staff/user-management'">Quản lý Tài khoản</button>
+            <button onclick="location.href='/staff/about'">Giới thiệu</button>
+        </div>
+    </aside>
 
 <section class="card">
     <h2>B?ng Sessions</h2>

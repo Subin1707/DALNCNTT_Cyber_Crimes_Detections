@@ -5,9 +5,11 @@
     <title>Quản lý Email</title>
 
     <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
-<body>
+<body class="page-index">
 
 <main class="container">
 
@@ -28,18 +30,7 @@
         <a th:href="@{/admin/logout}" class="logout-btn" title="Đăng xuất">Logout</a>
     </header>
 
-    <div class="nav-buttons">
-        <button onclick="window.location.href='/dashboard'" title="Trang chính">Dashboard</button>
-        <button onclick="window.location.href='/admin/admin-email'" title="Quản lý Email">Quản lý Email</button>
-        <button onclick="window.location.href='/admin/admin-ip'" title="Quản lý IP">Quản lý IP Address</button>
-        <button onclick="window.location.href='/admin/admin-url'" title="Quản lý URL">Quản lý URL</button>
-        <button onclick="window.location.href='/admin/admin-domain'" title="Quản lý Domain">Quản lý Domain</button>
-        <button onclick="window.location.href='/admin/admin-file'" title="Quản lý File name">Quản lý File name</button>
-        <button onclick="window.location.href='/admin/admin-filehash'" title="Quản lý File hash">Quản lý File hash</button>
-        <button onclick="window.location.href='/admin/admin-victim'" title="Quản lý Victim account">Quản lý Victim account</button>
-        <button onclick="window.location.href='/admin/user-management'" title="Quản lý Tài khoản">Quản lý Tài khoản</button>
-        <button onclick="window.location.href='/admin/about'" title="Thông tin nhà phát triển">Giới thiệu Nhà phát triển</button>
-    </div>
+    <!-- Nav moved to left sidebar for dashboard-style layout -->
 
     <section class="card">
         <h2>Phân tích Email</h2>
@@ -141,6 +132,26 @@
         if (e.key === "Enter") document.getElementById("searchNodeBtn")?.click();
     });
 </script>
+</script>
+
+<!-- Sidebar toggle script -->
+<script th:src="@{/js/sidebar-toggle.js}"></script>
+
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/admin/admin-email'">Quản lý Email</button>
+        <button onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
+        <button onclick="location.href='/admin/admin-url'">Quản lý URL</button>
+        <button onclick="location.href='/admin/admin-domain'">Quản lý Domain</button>
+        <button onclick="location.href='/admin/admin-file'">Quản lý File name</button>
+        <button onclick="location.href='/admin/admin-filehash'">Quản lý File hash</button>
+        <button onclick="location.href='/admin/admin-victim'">Quản lý Victim account</button>
+        <button onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/admin/about'">Giới thiệu</button>
+    </div>
+</aside>
 
 </body>
 </html>
