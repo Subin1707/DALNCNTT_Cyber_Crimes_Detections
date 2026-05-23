@@ -10,17 +10,22 @@ com\example\servingwebcontent\service\SessionFeatureService$HistoricalSessionSam
 com\example\servingwebcontent\util\VerdictUtil.class
 com\example\servingwebcontent\controller\MultiRegionController$3$1.class
 com\example\servingwebcontent\service\EnhancedConsensusEngineService$ConvergenceAnalysis.class
+com\example\servingwebcontent\service\DomainRegionVisualizationService.class
 com\example\servingwebcontent\controller\MultiRegionController$1.class
 com\example\servingwebcontent\model\RegionVisualization$1.class
 com\example\servingwebcontent\dto\GraphResponseDTO.class
+com\example\servingwebcontent\service\distance\ManhattanDistance.class
 com\example\servingwebcontent\model\RegionType.class
 com\example\servingwebcontent\service\VisualizationService.class
+com\example\servingwebcontent\service\MultiRegionAnalysisService$LabeledBehaviorSample.class
 com\example\servingwebcontent\service\FraudAnalysisService$ManualBlockInfo.class
 com\example\servingwebcontent\dto\OutputDTO.class
 com\example\servingwebcontent\service\GraphQueryService.class
 com\example\servingwebcontent\controller\MultiRegionController$3$2.class
 com\example\servingwebcontent\controller\AuthController.class
 com\example\servingwebcontent\config\WebConfig.class
+com\example\servingwebcontent\service\MultiEntityGraphAnalysisService.class
+com\example\servingwebcontent\service\MultiRegionAnalysisService$KNNNeighbor.class
 com\example\servingwebcontent\model\User.class
 com\example\servingwebcontent\model\DistanceMetric.class
 com\example\servingwebcontent\model\Email.class
@@ -60,6 +65,7 @@ com\example\servingwebcontent\dto\FraudInputDTO.class
 com\example\servingwebcontent\service\ExcelImportService$HeaderSpec.class
 com\example\servingwebcontent\service\FeatureNormalizationUtility$NormalizationBounds.class
 com\example\servingwebcontent\service\AlertLoggingService.class
+com\example\servingwebcontent\service\MultiRegionAnalysisService$ClassMetrics.class
 com\example\servingwebcontent\repository\UserRepository.class
 com\example\servingwebcontent\service\GraphRiskService.class
 com\example\servingwebcontent\controller\AdminController.class
@@ -67,6 +73,7 @@ com\example\servingwebcontent\service\KNNVotingAndRecallService.class
 com\example\servingwebcontent\service\distance\MinkowskiDistance.class
 com\example\servingwebcontent\model\URL.class
 com\example\servingwebcontent\model\DistanceMetric$EuclideanDistance.class
+com\example\servingwebcontent\service\MultiRegionAnalysisService$EvaluationRow.class
 com\example\servingwebcontent\config\Neo4jConfig.class
 com\example\servingwebcontent\service\MultiRegionAnalysisService$RegionAnalysisResult.class
 com\example\servingwebcontent\controller\MultiRegionController$4$2$1.class
@@ -80,6 +87,7 @@ com\example\servingwebcontent\service\KNNEnhancedAnalysisService$Neighbor.class
 com\example\servingwebcontent\service\KNNEnhancedAnalysisService.class
 com\example\servingwebcontent\config\AuthInterceptor.class
 com\example\servingwebcontent\service\HybridFraudDetectionService.class
+com\example\servingwebcontent\controller\DomainRegionVisualizationController.class
 com\example\servingwebcontent\controller\VisualizationController.class
 com\example\servingwebcontent\service\KNNVotingAndRecallService$RecallMetrics.class
 com\example\servingwebcontent\dto\ThreatDangerDTO.class
@@ -115,6 +123,7 @@ com\example\servingwebcontent\dto\HybridRiskScoreDTO.class
 com\example\servingwebcontent\model\NodeVisualization.class
 com\example\servingwebcontent\dto\ChatbotResponseDTO.class
 com\example\servingwebcontent\service\FeatureWeightsService$FeatureImportance.class
+com\example\servingwebcontent\service\MultiRegionAnalysisService$KNNClassificationResult.class
 com\example\servingwebcontent\model\NodeVisualization$NodeStatus.class
 com\example\servingwebcontent\service\EnhancedChatbotService$ThreatPattern.class
 com\example\servingwebcontent\repository\VictimAccountRepository.class
@@ -135,6 +144,7 @@ com\example\servingwebcontent\service\HybridRiskScoringService.class
 com\example\servingwebcontent\config\TransactionConfig.class
 com\example\servingwebcontent\service\StatisticalProbabilityService.class
 com\example\servingwebcontent\service\GraphUpdateBroadcaster.class
+com\example\servingwebcontent\service\MultiRegionAnalysisService$EvaluationResult.class
 com\example\servingwebcontent\dto\GraphLinkDTO.class
 com\example\servingwebcontent\util\HashGen.class
 com\example\servingwebcontent\model\IPAddress.class

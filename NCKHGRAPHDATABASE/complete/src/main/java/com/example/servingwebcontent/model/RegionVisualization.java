@@ -15,23 +15,23 @@ public class RegionVisualization {
     public enum RegionColorScheme {
 
         SAFE(
-                "#22c55e",
-                "rgba(34,197,94,0.12)",
-                "#16a34a",
+                "#1E90FF",
+                "#90EE90",
+                "#228B22",
                 "Miền an toàn"
         ),
 
         SUSPICIOUS(
-                "#f59e0b",
-                "rgba(245,158,11,0.15)",
-                "#d97706",
+                "#FFA500",
+                "#FFF4B3",
+                "#FF8C00",
                 "Miền nghi ngờ"
         ),
 
         FRAUD(
-                "#ef4444",
-                "rgba(239,68,68,0.15)",
-                "#dc2626",
+                "#8B0000",
+                "#FFB6C1",
+                "#DC143C",
                 "Miền gian lận"
         );
 
@@ -316,7 +316,7 @@ public class RegionVisualization {
                 centerX,
                 centerY - radius - 20,
                 colorScheme.getBorderColor(),
-                regionType.getLabel()
+                regionType.getLabel() + " REGION"
         ));
 
         // ========================

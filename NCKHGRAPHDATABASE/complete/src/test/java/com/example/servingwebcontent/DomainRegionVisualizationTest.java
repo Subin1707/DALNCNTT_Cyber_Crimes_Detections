@@ -152,6 +152,26 @@ public class DomainRegionVisualizationTest {
         assertEquals(RegionType.FRAUD, node.getRegionType(), "Node should belong to FRAUD region");
     }
 
+    @Test
+    @DisplayName("Should keep far node outside without creating a new region")
+    public void testOutsideNodeDoesNotCreateNewRegion() {
+        NodeVisualization outsideNode = visualizationService.createNode(
+            "outside_1", "OutsideNode", "User",
+            new double[]{1000, 1000, 1000},
+            0.20,
+            100.0, 150.0
+        );
+
+        visualizationService.addNodeToAppropriateRegion(outsideNode);
+
+        assertEquals(3, visualizationService.getRegions().size(),
+                   "OUTSIDE should not be created as a fourth region");
+        assertNull(outsideNode.getRegionType(), "Outside node should not be assigned to a RegionType");
+        assertEquals("OUTSIDE", outsideNode.getMembershipStatus());
+        assertEquals(1, visualizationService.getOutsideNodes().size(),
+                   "Outside node should be tracked separately from standard regions");
+    }
+
     // ============== Test 3: Distance Metrics ==============
 
     @Test

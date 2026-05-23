@@ -3,6 +3,7 @@ package com.example.servingwebcontent;
 import com.example.servingwebcontent.dto.BehaviorFeatureVector;
 import com.example.servingwebcontent.service.MultiRegionAnalysisService;
 import com.example.servingwebcontent.service.distance.EuclideanDistance;
+import com.example.servingwebcontent.service.distance.ManhattanDistance;
 import com.example.servingwebcontent.service.distance.MinkowskiDistance;
 import com.example.servingwebcontent.service.distance.HammingDistance;
 import com.example.servingwebcontent.model.RegionType;
@@ -23,6 +24,7 @@ public class MultiRegionAnalysisUnitTest {
 
     private MultiRegionAnalysisService multiRegionService;
     private EuclideanDistance euclideanDistance;
+    private ManhattanDistance manhattanDistance;
     private MinkowskiDistance minkowskiDistance;
     private HammingDistance hammingDistance;
 
@@ -30,13 +32,14 @@ public class MultiRegionAnalysisUnitTest {
     public void setUp() {
         // Create distance metrics
         euclideanDistance = new EuclideanDistance();
+        manhattanDistance = new ManhattanDistance();
         minkowskiDistance = new MinkowskiDistance();
         hammingDistance = new HammingDistance();
         
         // Create service with injected dependencies
         multiRegionService = new MultiRegionAnalysisService(
             euclideanDistance,
-            null, minkowskiDistance,
+            manhattanDistance, minkowskiDistance,
             hammingDistance, null, null
         );
     }
@@ -235,5 +238,23 @@ public class MultiRegionAnalysisUnitTest {
         assertNotNull(result);
         assertEquals(RegionType.FRAUD, result.getPrimaryRegion(),
                      "All-max node should classify as FRAUD");
+    }
+
+    @Test
+    @DisplayName("Should mark far node as outside without creating a new region")
+    public void testOutsideMembershipDoesNotCreateNewRegion() {
+        BehaviorFeatureVector outsideNode = new BehaviorFeatureVector(
+                1000, 1000, 1000, 1000, 1000, 1000.0,
+                false, false, false, false, false, false
+        );
+
+        MultiRegionAnalysisService.RegionAnalysisResult result =
+            multiRegionService.analyzeAgainstRegions(outsideNode);
+
+        assertNotNull(result.getPrimaryRegion(), "Nearest region should still be available for explanation");
+        assertTrue(result.isOutsideAnyRegion(), "Far node should be marked as OUTSIDE membership");
+        assertEquals(MultiRegionAnalysisService.MEMBERSHIP_OUTSIDE, result.getMembershipStatus());
+        assertEquals(3, result.getRegionProbabilities().size(),
+                     "OUTSIDE must be metadata, not a fourth RegionType");
     }
 }

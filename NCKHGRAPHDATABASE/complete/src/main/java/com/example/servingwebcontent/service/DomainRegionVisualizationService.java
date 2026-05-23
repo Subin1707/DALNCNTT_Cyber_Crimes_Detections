@@ -26,11 +26,16 @@ import java.util.*;
 @Service
 public class DomainRegionVisualizationService {
 
+    private static final double OUTSIDE_REGION_DISTANCE_THRESHOLD = 30.0;
+
     // ============================================================
     // FIELDS
     // ============================================================
 
     private final List<RegionVisualization> regions =
+            new ArrayList<>();
+
+    private final List<NodeVisualization> outsideNodes =
             new ArrayList<>();
 
     private DistanceMetric distanceMetric =
@@ -45,6 +50,7 @@ public class DomainRegionVisualizationService {
     public void initializeStandardRegions() {
 
         regions.clear();
+        outsideNodes.clear();
 
         // =====================================================
         // SAFE REGION
@@ -135,12 +141,25 @@ public class DomainRegionVisualizationService {
         RegionVisualization nearestRegion =
                 findNearestRegion(node);
 
+        node.setNearestRegionType(nearestRegion.getRegionType());
+
+        if (isOutsideAllRegions(node, nearestRegion)) {
+            node.setAssignedRegion(null);
+            node.setMembershipStatus(MultiRegionAnalysisService.MEMBERSHIP_OUTSIDE);
+            placeOutsideRegions(node);
+            outsideNodes.add(node);
+            return node;
+        }
+
         // =====================================================
         // GÁN REGION
         // =====================================================
 
+        RegionVisualization assignedRegion =
+                getRegion(RegionType.fromScore(node.getRiskScore()));
+
         node.setAssignedRegion(
-                nearestRegion.getRegionType()
+                assignedRegion.getRegionType()
         );
 
         // =====================================================
@@ -149,14 +168,14 @@ public class DomainRegionVisualizationService {
 
         calculateNodePosition(
                 node,
-                nearestRegion
+                assignedRegion
         );
 
         // =====================================================
         // THÊM NODE VÀO REGION
         // =====================================================
 
-        nearestRegion.addNode(node);
+        assignedRegion.addNode(node);
 
         return node;
     }
@@ -199,11 +218,23 @@ public class DomainRegionVisualizationService {
             return;
         }
 
+        node.setNearestRegionType(nearestRegion.getRegionType());
+
+        if (isOutsideAllRegions(node, nearestRegion)) {
+            node.setAssignedRegion(null);
+            node.setMembershipStatus(MultiRegionAnalysisService.MEMBERSHIP_OUTSIDE);
+            outsideNodes.add(node);
+            return;
+        }
+
+        RegionVisualization assignedRegion =
+                getRegion(RegionType.fromScore(node.getRiskScore()));
+
         node.setAssignedRegion(
-                nearestRegion.getRegionType()
+                assignedRegion.getRegionType()
         );
 
-        nearestRegion.addNode(node);
+        assignedRegion.addNode(node);
     }
 
     // ============================================================
@@ -225,7 +256,7 @@ public class DomainRegionVisualizationService {
         for (RegionVisualization region : regions) {
 
             double distance =
-                    distanceMetric.calculate(
+                    calculateComparableDistance(
                             node.getFeatureVector(),
                             region.getCenterVector()
                     );
@@ -252,6 +283,37 @@ public class DomainRegionVisualizationService {
         }
 
         return nearestRegion;
+    }
+
+    private double calculateComparableDistance(double[] nodeVector, double[] centerVector) {
+        if (nodeVector == null || centerVector == null || nodeVector.length == 0 || centerVector.length == 0) {
+            return Double.MAX_VALUE;
+        }
+
+        if (nodeVector.length == centerVector.length) {
+            return distanceMetric.calculate(nodeVector, centerVector);
+        }
+
+        int comparableLength = Math.min(nodeVector.length, centerVector.length);
+        return distanceMetric.calculate(
+                Arrays.copyOf(nodeVector, comparableLength),
+                Arrays.copyOf(centerVector, comparableLength)
+        );
+    }
+
+    private boolean isOutsideAllRegions(NodeVisualization node, RegionVisualization nearestRegion) {
+        if (node == null || nearestRegion == null) {
+            return true;
+        }
+
+        Double distance = node.getRegionDistances().get(nearestRegion.getRegionType());
+        return distance == null || distance > OUTSIDE_REGION_DISTANCE_THRESHOLD;
+    }
+
+    private void placeOutsideRegions(NodeVisualization node) {
+        double offset = outsideNodes.size() * 24.0;
+        node.setX(880.0);
+        node.setY(80.0 + offset);
     }
 
     // ============================================================
@@ -327,6 +389,7 @@ public class DomainRegionVisualizationService {
                 );
             }
         }
+
     }
 
     // ============================================================
@@ -415,6 +478,13 @@ public class DomainRegionVisualizationService {
                 }
             }
         }
+
+        for (NodeVisualization node : outsideNodes) {
+            node.computeKNNNeighbors(
+                    allNodes,
+                    distanceMetric
+            );
+        }
     }
 
     // ============================================================
@@ -473,6 +543,7 @@ public class DomainRegionVisualizationService {
 
         StringBuilder html = new StringBuilder();
         html.append("""
+                <!DOCTYPE html>
                 <div class="domain-region-visualization">
                     <svg width="960" height="560" viewBox="0 0 960 560" xmlns="http://www.w3.org/2000/svg">
                         <defs>
@@ -490,6 +561,8 @@ public class DomainRegionVisualizationService {
         for (RegionVisualization region : regions) {
             html.append(region.toSVG(svgWidth, svgHeight));
         }
+
+        html.append(drawOutsideNodes());
 
         html.append("""
                     </svg>
@@ -523,7 +596,42 @@ public class DomainRegionVisualizationService {
             }
         }
 
+        if (!outsideNodes.isEmpty()) {
+            report.append("OUTSIDE NODES:\n");
+            for (NodeVisualization node : outsideNodes) {
+                report.append(node.getDetailedDescription())
+                        .append("\n");
+            }
+        }
+
         return report.toString();
+    }
+
+    private String drawOutsideNodes() {
+        if (outsideNodes.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder svg = new StringBuilder();
+        svg.append("""
+            <g class="outside-nodes">
+                <text
+                    x="880"
+                    y="45"
+                    text-anchor="middle"
+                    font-size="16"
+                    font-weight="bold"
+                    fill="#64748b">
+                    OUTSIDE
+                </text>
+            """);
+
+        for (NodeVisualization node : outsideNodes) {
+            svg.append(node.toSVG("#64748b"));
+        }
+
+        svg.append("</g>");
+        return svg.toString();
     }
 
     // ============================================================
@@ -539,6 +647,8 @@ public class DomainRegionVisualizationService {
 
             allNodes.addAll(region.getNodes());
         }
+
+        allNodes.addAll(outsideNodes);
 
         return allNodes;
     }
@@ -571,6 +681,11 @@ public class DomainRegionVisualizationService {
     public List<RegionVisualization> getRegions() {
 
         return new ArrayList<>(regions);
+    }
+
+    public List<NodeVisualization> getOutsideNodes() {
+
+        return new ArrayList<>(outsideNodes);
     }
 
     public RegionVisualization getRegion(

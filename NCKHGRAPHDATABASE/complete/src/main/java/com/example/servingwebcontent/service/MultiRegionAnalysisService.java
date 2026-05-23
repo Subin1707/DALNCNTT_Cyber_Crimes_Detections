@@ -46,6 +46,15 @@ import java.util.*;
 @Service
 public class MultiRegionAnalysisService {
 
+    public static final String MEMBERSHIP_IN_REGION = "IN_REGION";
+    public static final String MEMBERSHIP_BOUNDARY = "BOUNDARY";
+    public static final String MEMBERSHIP_OUTSIDE = "OUTSIDE";
+
+    private static final double OUTSIDE_DISTANCE_THRESHOLD = 30.0;
+    private static final double BOUNDARY_DISTANCE_THRESHOLD = 18.0;
+    private static final double MIN_CONFIDENCE_THRESHOLD = 0.45;
+    private static final double BOUNDARY_CONFIDENCE_GAP = 0.12;
+
     private final EuclideanDistance euclideanDistance;
     private final ManhattanDistance manhattanDistance;
     private final MinkowskiDistance minkowskiDistance;
@@ -153,9 +162,9 @@ public class MultiRegionAnalysisService {
         // Step 3: Apply weighted feature penalties for dangerous features
         applyWeightedFeaturePenalties(node, result);
 
-        // Step 4: Determine primary region
-        RegionType primaryRegion = result.getPrimaryRegion();
-        result.setPrimaryRegion(primaryRegion);
+        // Step 4: Determine nearest region and membership status.
+        // OUTSIDE is metadata, not a new RegionType, so existing region logic stays stable.
+        updatePrimaryRegionAndMembership(result);
 
         // Step 5: Detect anomalies (large probability divergence)
         double maxProb = Collections.max(result.getRegionProbabilities().values());
@@ -164,6 +173,45 @@ public class MultiRegionAnalysisService {
         result.setAnomalyScore(divergence);
 
         return result;
+    }
+
+    private void updatePrimaryRegionAndMembership(RegionAnalysisResult result) {
+        if (result == null || result.getRegionProbabilities().isEmpty()) {
+            return;
+        }
+
+        RegionType primaryRegion = result.getPrimaryRegion();
+        result.setPrimaryRegion(primaryRegion);
+
+        double nearestDistance = result.getRegionDistance(primaryRegion);
+        double primaryProbability = result.getRegionProbability(primaryRegion);
+        double secondProbability = result.getRegionProbabilities().entrySet().stream()
+                .filter(entry -> entry.getKey() != primaryRegion)
+                .mapToDouble(Map.Entry::getValue)
+                .max()
+                .orElse(0.0);
+        double confidenceGap = primaryProbability - secondProbability;
+
+        result.setConfidenceScore(primaryProbability);
+        result.setNearestRegion(primaryRegion);
+        result.setDistanceToNearestRegion(nearestDistance);
+
+        if (nearestDistance > OUTSIDE_DISTANCE_THRESHOLD || primaryProbability < MIN_CONFIDENCE_THRESHOLD) {
+            result.setMembershipStatus(MEMBERSHIP_OUTSIDE);
+            result.setRecommendedAction("log_only");
+            result.addDetail("OUTSIDE: Node is too far from all existing regions or confidence is too low");
+            return;
+        }
+
+        if (nearestDistance > BOUNDARY_DISTANCE_THRESHOLD || confidenceGap < BOUNDARY_CONFIDENCE_GAP) {
+            result.setMembershipStatus(MEMBERSHIP_BOUNDARY);
+            result.setRecommendedAction("manual_review");
+            result.addDetail("BOUNDARY: Node is near a region border, keep primary region as nearest reference only");
+            return;
+        }
+
+        result.setMembershipStatus(MEMBERSHIP_IN_REGION);
+        result.setRecommendedAction("monitor");
     }
 
     /**
@@ -201,16 +249,16 @@ public class MultiRegionAnalysisService {
         
         // 1. Blacklist (weight = 10.0)
         if (node.isBlacklist()) {
-            fraudDistance *= 0.3;  // Severe penalty: reduce by 70%
-            safeDistance *= 1.5;   // Increase distance from SAFE
-            appliedPenalties.add("⚠️ BLACKLIST (weight=10): Severe penalty - significantly closer to FRAUD");
+            fraudDistance *= 0.15;  // Ultra-severe penalty: reduce by 85%
+            safeDistance *= 2.0;    // Increase distance from SAFE
+            appliedPenalties.add("⚠️ BLACKLIST (weight=10): Ultra-severe penalty - extremely close to FRAUD");
         }
 
         // 2. TOR Network (weight = 12.0)
         if (node.isTorNetwork()) {
-            fraudDistance *= 0.4;  // Severe penalty: reduce by 60%
-            safeDistance *= 2.0;   // Double distance from SAFE
-            appliedPenalties.add("⚠️ TOR NETWORK (weight=12): Severe penalty - strongly suggests FRAUD");
+            fraudDistance *= 0.15;  // Ultra-severe penalty: reduce by 85%
+            safeDistance *= 2.5;    // Increase distance from SAFE significantly
+            appliedPenalties.add("⚠️ TOR NETWORK (weight=12): Ultra-severe penalty - extreme FRAUD likelihood");
         }
 
         // ============ HIGH-RISK FEATURES ============
@@ -315,6 +363,7 @@ public class MultiRegionAnalysisService {
             result.addDetail(penalty);
         }
         result.setPenaltiesApplied(true);
+        updatePrimaryRegionAndMembership(result);
     }
 
     /**
@@ -536,6 +585,8 @@ public class MultiRegionAnalysisService {
         report.append(String.format("  Region: %s\n", result.getPrimaryRegion()));
         report.append(String.format("  Confidence: %.2f%%\n", 
             result.getRegionProbability(result.getPrimaryRegion()) * 100));
+        report.append(String.format("  Membership Status: %s\n", result.getMembershipStatus()));
+        report.append(String.format("  Recommended Action: %s\n", result.getRecommendedAction()));
 
         // Section 4: Metric Distances
         report.append("\nDISTANCE METRICS BREAKDOWN:\n");
@@ -796,6 +847,11 @@ public class MultiRegionAnalysisService {
         private final Map<RegionType, Double> regionProbabilities = new HashMap<>();
         private final Map<String, Map<String, Double>> metricDistances = new HashMap<>();
         private RegionType primaryRegion;
+        private RegionType nearestRegion;
+        private String membershipStatus = MEMBERSHIP_IN_REGION;
+        private String recommendedAction = "monitor";
+        private double confidenceScore;
+        private double distanceToNearestRegion;
         private double anomalyScore;
         private boolean penaltiesApplied;
         private final List<String> details = new ArrayList<>();
@@ -835,6 +891,58 @@ public class MultiRegionAnalysisService {
                     .max(Map.Entry.comparingByValue())
                     .map(Map.Entry::getKey)
                     .orElse(RegionType.SAFE);
+        }
+
+        public void setNearestRegion(RegionType nearestRegion) {
+            this.nearestRegion = nearestRegion;
+        }
+
+        public RegionType getNearestRegion() {
+            return nearestRegion != null ? nearestRegion : getPrimaryRegion();
+        }
+
+        public void setMembershipStatus(String membershipStatus) {
+            if (membershipStatus == null || membershipStatus.isBlank()) {
+                this.membershipStatus = MEMBERSHIP_IN_REGION;
+                return;
+            }
+            this.membershipStatus = membershipStatus;
+        }
+
+        public String getMembershipStatus() {
+            return membershipStatus;
+        }
+
+        public boolean isOutsideAnyRegion() {
+            return MEMBERSHIP_OUTSIDE.equals(membershipStatus);
+        }
+
+        public void setRecommendedAction(String recommendedAction) {
+            if (recommendedAction == null || recommendedAction.isBlank()) {
+                this.recommendedAction = "monitor";
+                return;
+            }
+            this.recommendedAction = recommendedAction;
+        }
+
+        public String getRecommendedAction() {
+            return recommendedAction;
+        }
+
+        public void setConfidenceScore(double confidenceScore) {
+            this.confidenceScore = confidenceScore;
+        }
+
+        public double getConfidenceScore() {
+            return confidenceScore;
+        }
+
+        public void setDistanceToNearestRegion(double distanceToNearestRegion) {
+            this.distanceToNearestRegion = distanceToNearestRegion;
+        }
+
+        public double getDistanceToNearestRegion() {
+            return distanceToNearestRegion;
         }
 
         public double getRegionDistance(RegionType type) {
@@ -890,6 +998,7 @@ public class MultiRegionAnalysisService {
         public String toString() {
             return "RegionAnalysisResult{" +
                     "primary=" + primaryRegion +
+                    ", membershipStatus='" + membershipStatus + '\'' +
                     ", anomalyScore=" + String.format("%.2f", anomalyScore) +
                     ", probabilities=" + regionProbabilities +
                     '}';

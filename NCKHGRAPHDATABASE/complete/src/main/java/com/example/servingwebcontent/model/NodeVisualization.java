@@ -41,6 +41,10 @@ public class NodeVisualization {
 
     private RegionVisualization region;
 
+    private RegionType nearestRegionType;
+
+    private String membershipStatus = "IN_REGION";
+
     // =====================================================
     // POSITION
     // =====================================================
@@ -517,6 +521,16 @@ public class NodeVisualization {
                 .append(regionType)
                 .append("\n");
 
+        desc.append("MEMBERSHIP: ")
+                .append(membershipStatus)
+                .append("\n");
+
+        if (nearestRegionType != null) {
+            desc.append("NEAREST REGION: ")
+                    .append(nearestRegionType)
+                    .append("\n");
+        }
+
         desc.append("RISK SCORE: ")
                 .append(riskScore * 100)
                 .append("%\n");
@@ -610,6 +624,18 @@ public class NodeVisualization {
         return region;
     }
 
+    public RegionType getNearestRegionType() {
+        return nearestRegionType;
+    }
+
+    public String getMembershipStatus() {
+        return membershipStatus;
+    }
+
+    public boolean isOutsideAnyRegion() {
+        return "OUTSIDE".equals(membershipStatus);
+    }
+
     public double getX() {
         return x;
     }
@@ -652,6 +678,22 @@ public class NodeVisualization {
 
     public void setAssignedRegion(RegionType regionType) {
         this.regionType = regionType;
+        if (regionType != null) {
+            this.nearestRegionType = regionType;
+        }
+        this.membershipStatus = regionType == null ? "OUTSIDE" : "IN_REGION";
+    }
+
+    public void setNearestRegionType(RegionType nearestRegionType) {
+        this.nearestRegionType = nearestRegionType;
+    }
+
+    public void setMembershipStatus(String membershipStatus) {
+        if (membershipStatus == null || membershipStatus.isBlank()) {
+            this.membershipStatus = "IN_REGION";
+            return;
+        }
+        this.membershipStatus = membershipStatus;
     }
 
     public void addRegionDistance(RegionType regionType, double distance) {
@@ -669,6 +711,11 @@ public class NodeVisualization {
 
         this.regionType =
                 region.getRegionType();
+
+        this.nearestRegionType =
+                region.getRegionType();
+
+        this.membershipStatus = "IN_REGION";
     }
 
     public void setX(double x) {

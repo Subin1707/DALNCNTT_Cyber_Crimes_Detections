@@ -24,6 +24,19 @@ public class GraphNodeDTO {
     private String manualBlockedBy;
     private String manualBlockedAt;
 
+    private int degree;
+    private double centerDistance;
+    private double relationStrength;
+    private double clusterDensity;
+    private boolean superNode;
+    private boolean missingData;
+    private double propagationScore;
+    private double graphRiskScore;
+    private double confidence;
+    private String membershipStatus;
+    private String recommendedAction;
+    private List<String> graphReasons;
+
     public GraphNodeDTO() {
         this.status = "valid";
         this.riskLevel = "low";
@@ -31,6 +44,9 @@ public class GraphNodeDTO {
         this.verdict = "AN TOÀN";
         this.indicators = new ArrayList<>();
         this.manualBlocked = false;
+        this.membershipStatus = "IN_REGION";
+        this.recommendedAction = "monitor";
+        this.graphReasons = new ArrayList<>();
     }
 
     public GraphNodeDTO(String id,
@@ -78,6 +94,9 @@ public class GraphNodeDTO {
         this.manualBlockReason = null;
         this.manualBlockedBy = null;
         this.manualBlockedAt = null;
+        this.membershipStatus = "IN_REGION";
+        this.recommendedAction = "monitor";
+        this.graphReasons = new ArrayList<>();
     }
 
     public GraphNodeDTO(String id,
@@ -292,6 +311,102 @@ public class GraphNodeDTO {
         return domainAssignment;
     }
 
+    public int getDegree() {
+        return degree;
+    }
+
+    public void setDegree(int degree) {
+        this.degree = Math.max(0, degree);
+    }
+
+    public double getCenterDistance() {
+        return centerDistance;
+    }
+
+    public void setCenterDistance(double centerDistance) {
+        this.centerDistance = centerDistance;
+    }
+
+    public double getRelationStrength() {
+        return relationStrength;
+    }
+
+    public void setRelationStrength(double relationStrength) {
+        this.relationStrength = relationStrength;
+    }
+
+    public double getClusterDensity() {
+        return clusterDensity;
+    }
+
+    public void setClusterDensity(double clusterDensity) {
+        this.clusterDensity = clusterDensity;
+    }
+
+    public boolean isSuperNode() {
+        return superNode;
+    }
+
+    public void setSuperNode(boolean superNode) {
+        this.superNode = superNode;
+    }
+
+    public boolean isMissingData() {
+        return missingData;
+    }
+
+    public void setMissingData(boolean missingData) {
+        this.missingData = missingData;
+    }
+
+    public double getPropagationScore() {
+        return propagationScore;
+    }
+
+    public void setPropagationScore(double propagationScore) {
+        this.propagationScore = propagationScore;
+    }
+
+    public double getGraphRiskScore() {
+        return graphRiskScore;
+    }
+
+    public void setGraphRiskScore(double graphRiskScore) {
+        this.graphRiskScore = graphRiskScore;
+    }
+
+    public double getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(double confidence) {
+        this.confidence = confidence;
+    }
+
+    public String getMembershipStatus() {
+        return membershipStatus;
+    }
+
+    public void setMembershipStatus(String membershipStatus) {
+        this.membershipStatus = normalize(membershipStatus);
+    }
+
+    public String getRecommendedAction() {
+        return recommendedAction;
+    }
+
+    public void setRecommendedAction(String recommendedAction) {
+        this.recommendedAction = normalize(recommendedAction);
+    }
+
+    public List<String> getGraphReasons() {
+        return graphReasons;
+    }
+
+    public void setGraphReasons(List<String> graphReasons) {
+        this.graphReasons = graphReasons != null ? new ArrayList<>(graphReasons) : new ArrayList<>();
+    }
+
     private static String calculateDomainAssignment(String riskLevel) {
         if (riskLevel == null) return "safe";
         String normalized = riskLevel.toLowerCase().trim();
@@ -300,5 +415,10 @@ public class GraphNodeDTO {
             case "medium" -> "suspicious";
             default -> "safe";
         };
+    }
+
+    public void setDegree(int degree2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDegree'");
     }
 }
