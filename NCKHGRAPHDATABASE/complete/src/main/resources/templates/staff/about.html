@@ -5,17 +5,19 @@
     <title>About | Gi?i thi?u nh�m ph�t tri?n</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS T�CH RI�NG -->
+    <!-- CSS TÁCH RIÊNG -->
     <link rel="stylesheet" href="/css/about.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script th:src="@{/theme.js}"></script>
 </head>
-<body>
+<body class="page-index">
 
 <header>
     <h1>Gi?i thi?u nh�m ph�t tri?n</h1>
     <p>H? th?ng ph�n t�ch v� ph�t hi?n h�nh vi l?a �?o d?a tr�n Graph Database</p>
 </header>
 
-<main>
+<main class="container">
     <!-- NAVIGATION BUTTONS -->
     <div class="nav-buttons">
         <button onclick="window.location.href='/dashboard'">Dashboard</button>
@@ -66,11 +68,11 @@
         </p>
     </div>
 
+    <footer>
+        @ 2026 | Fraud & Scam Detection System
+    </footer>
+
+    <script th:src="@{/js/sidebar-toggle.js}"></script>
 </main>
-
-<footer>
-    @ 2026 | Fraud & Scam Detection System
-</footer>
-
 </body>
 </html>

@@ -3,7 +3,54 @@
    Bright Intelligence / Glass / Neon Accent
 ========================================================= */
 
+
 @import 'common.css';
+
+/* --- Align admin theme with global dashboard variables and neutralize strong blue accents --- */
+:root{
+    --primary: var(--headingText);
+    --primary-glow: rgba(2,6,23,0.06);
+    --safe: var(--safe);
+    --warn: var(--suspicious);
+    --danger: var(--fraud);
+    --safe-glow: rgba(0,0,0,0.06);
+    --warn-glow: rgba(0,0,0,0.06);
+    --danger-glow: rgba(0,0,0,0.06);
+}
+
+/* Prefer global `.btn` styling and neutral backgrounds to avoid bright blue gradients */
+button,
+.container button,
+.btn-primary,
+.btn-warning,
+.btn-danger {
+    background: var(--btnBg) !important;
+    color: var(--btnText) !important;
+    border: 1px solid var(--btnBorder) !important;
+    box-shadow: 0 8px 22px rgba(2,6,23,0.06) !important;
+}
+
+button:hover, .container button:hover, .btn-primary:hover, .btn-warning:hover, .btn-danger:hover {
+    background: var(--btnHover) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 28px rgba(2,6,23,0.06) !important;
+}
+
+/* Replace bright progress/gradients with subtle neutral fills */
+.progress-fill,
+.graph-explanation-panel .prob-bar span,
+.indicator .progress-fill {
+    background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)) !important;
+}
+
+/* Disable neon text-shadow when using primary color to avoid blue glow */
+.dashboard-header h1,
+.card h2,
+.card h3 { text-shadow: none !important; color: var(--headingText) !important; }
+
+/* Neutralize table hover and active states */
+tbody tr:hover { background: rgba(0,0,0,0.02) !important; transform: none !important; }
+
 
 /* Project: Fraud Intelligence Dashboard — admin styles */
 

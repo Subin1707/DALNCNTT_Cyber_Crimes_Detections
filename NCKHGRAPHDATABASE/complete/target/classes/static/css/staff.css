@@ -1,5 +1,34 @@
 @import 'common.css';
 
+/* --- Align staff styles with global theme and neutralize bright blue accents --- */
+:root{
+    --primary: var(--headingText);
+    --primary-glow: rgba(2,6,23,0.06);
+    --safe: var(--safe);
+    --warn: var(--suspicious);
+    --danger: var(--fraud);
+}
+
+/* Buttons and nav neutral defaults */
+.nav-buttons button,
+.container button,
+.btn-primary,
+.btn-warning,
+.btn-danger {
+    background: var(--btnBg) !important;
+    color: var(--btnText) !important;
+    border: 1px solid var(--btnBorder) !important;
+    box-shadow: 0 8px 22px rgba(2,6,23,0.06) !important;
+}
+
+.nav-buttons button:hover, .container button:hover { background: var(--btnHover) !important; transform: translateY(-2px) !important; }
+
+/* Input focus neutralization */
+.form-inline input:focus, .table-search input:focus { box-shadow: 0 0 0 4px rgba(0,0,0,0.04) !important; border-color: var(--btnBorder) !important; }
+
+/* Table hover neutralization */
+tbody tr:hover { background: rgba(0,0,0,0.02) !important; }
+
 /* ================= RESET ================= */
 * {
     box-sizing: border-box;

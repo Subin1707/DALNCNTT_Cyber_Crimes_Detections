@@ -7,9 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/customer.css}">
     <link rel="stylesheet" th:href="@{/styles.css}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script th:src="@{/theme.js}"></script>
 </head>
 
-<body>
+<body class="page-index">
 
 <main class="container">
 
@@ -31,14 +32,6 @@
         <a th:href="@{/customer/logout}" class="logout-btn">Logout</a>
     </header>
 
-    <!-- NAV -->
-    <div class="nav-buttons">
-        <button type="button" onclick="window.location.href='/dashboard'">Dashboard</button>
-        <button type="button" onclick="window.location.href='/customer/customer-email'">Qu?n l? Email</button>
-        <button type="button" onclick="window.location.href='/customer/customer-ip'">Qu?n l? IP Address</button>
-        <button type="button" onclick="window.location.href='/customer/customer-url'">Qu?n l? URL</button>
-        <button type="button" onclick="window.location.href='/customer/about'">Gi?i thi?u Nh� ph�t tri?n</button>
-    </div>
     <!-- Nav moved to left sidebar for dashboard-style layout -->
 
     <!-- ANALYZE -->

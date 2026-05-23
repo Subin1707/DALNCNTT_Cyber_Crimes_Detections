@@ -88,12 +88,34 @@
             </table>
         </div>
     </section>
+    </section>
 
-</main>
+    <!-- Sessions table (move inside main for layout consistency) -->
+    <section class="card">
+        <h2>Bảng Sessions</h2>
+        <div class="table-wrapper">
+            <table id="finalTable">
+                <thead>
+                <tr>
+                    <th>SessionId</th>
+                    <th>Emails</th>
+                    <th>IPs</th>
+                    <th>URLs</th>
+                    <th>Max Risk</th>
+                    <th>Max Score</th>
+                    <th>Verdict</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
 
-<script>
-    // ? staff-main.js s? �?c bi?n n�y �? filter ��ng lo?i node
-    window.STAFF_VIEW_TYPE = "Email";
+    </main>
+
+    <script>
+        // staff-main.js will use this to tune behavior
+        window.STAFF_VIEW_TYPE = "Email";
     </script>
 
     <!-- JS load order -->
@@ -117,36 +139,14 @@
         </div>
     </aside>
 
-<section class="card">
-    <h2>B?ng Sessions</h2>
-    <div class="table-wrapper">
-        <table id="finalTable">
-            <thead>
-            <tr>
-                <th>SessionId</th>
-                <th>Emails</th>
-                <th>IPs</th>
-                <th>URLs</th>
-                <th>Max Risk</th>
-                <th>Max Score</th>
-                <th>Verdict</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-</section>
+    <script>
+        // Enter to search
+        document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") document.getElementById("searchNodeBtn")?.click();
+        });
 
-<script>
-    // Enter �? search
-    document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-            document.getElementById("searchNodeBtn")?.click();
-        }
-    });
+        // Initial graph load is handled by staff-session.js
+    </script>
 
-    // Initial graph load is handled by staff-session.js (select latest session by default)
-</script>
-
-</body>
-</html>
+    </body>
+    </html>

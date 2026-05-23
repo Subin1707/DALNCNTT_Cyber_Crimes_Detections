@@ -21,20 +21,24 @@
     }
 
     document.addEventListener('DOMContentLoaded', ()=>{
-        // inject toggle button into header (dashboard-header or .header)
-        const header = document.querySelector('.dashboard-header') || document.querySelector('.header');
-        if(header){
+        const sidebar = document.querySelector('.sidebar-left');
+        if(sidebar){
             const btn = document.createElement('button');
             btn.id = 'btnToggleNav';
-            btn.className = 'btn btn-small';
+            btn.className = 'btn btn-small sidebar-toggle-btn';
             btn.type = 'button';
             btn.title = 'Thu/Ẩn thanh điều hướng';
-            btn.style.marginRight = '8px';
             btn.textContent = '☰';
-            // Insert at start of header actions if present
-            const headerActions = header.querySelector('.header-actions');
-            if(headerActions){ headerActions.insertBefore(btn, headerActions.firstChild); }
-            else { header.appendChild(btn); }
+            const title = sidebar.querySelector('.sidebar-title');
+            if(title){
+                const topbar = document.createElement('div');
+                topbar.className = 'sidebar-topbar';
+                sidebar.insertBefore(topbar, title);
+                topbar.appendChild(title);
+                topbar.appendChild(btn);
+            } else {
+                sidebar.insertBefore(btn, sidebar.firstChild);
+            }
             btn.addEventListener('click', toggle);
         }
 

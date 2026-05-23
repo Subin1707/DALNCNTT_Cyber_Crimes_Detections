@@ -101,6 +101,77 @@ h1 {
     letter-spacing: 0.2px;
 }
 
+/* ===== Post-login header / nav / forms helpers ======
+   Apply dashboard look & spacing to pages that haven't been refactored.
+   These rules won't change markup, only visual polishing. */
+
+.dashboard-header,
+.page-index .dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--headingText);
+}
+
+.logout-btn,
+.page-index .logout-btn {
+    appearance: none;
+    border: 1px solid var(--btnBorder);
+    background: var(--btn2Bg);
+    color: var(--btnText);
+    padding: 8px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ensure nav-buttons behave like dashboard even outside page-index */
+.nav-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    margin: 12px 0 18px;
+}
+
+.nav-buttons button {
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+/* Compact card & form helpers for consistency */
+.card { padding: 18px; border-radius: 14px; }
+.card .form-inline { gap: 10px; }
+.card input, .card select, .card button, .card textarea { height: 36px; padding: 8px 10px; border-radius: 8px; }
+
+/* file input visual: make it match other inputs */
+input[type="file"] {
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    border-radius: 8px;
+}
+
+/* subtle focus across pages */
+input:focus, select:focus, textarea:focus, button:focus { box-shadow: 0 0 0 4px rgba(0,0,0,0.04); outline: none; }
+
+/* keep dashboard styles intact */
+@media (max-width: 980px) {
+    .nav-buttons { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+
 .pill, .tag {
     display: inline-flex;
     align-items: center;
@@ -986,7 +1057,33 @@ tbody tr:hover {
     font-weight: 900;
     color: var(--headingText);
     font-size: 14px;
-    margin-bottom: 6px;
+    margin: 0;
+}
+
+.sidebar-left .sidebar-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.sidebar-left .sidebar-toggle-btn {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1;
+    flex: 0 0 auto;
+}
+
+.sidebar-left .sidebar-toggle-btn:hover {
+    transform: translateY(-1px);
 }
 
 .sidebar-left .nav-buttons {
@@ -1018,6 +1115,14 @@ tbody tr:hover {
 }
 .sidebar-left.collapsed .sidebar-title {
     display: none;
+}
+.sidebar-left.collapsed .sidebar-topbar {
+    justify-content: center;
+}
+.sidebar-left.collapsed .sidebar-toggle-btn {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
 }
 .sidebar-left.collapsed .nav-buttons {
     gap: 6px;
@@ -1234,3 +1339,160 @@ tbody tr:hover {
     }
     #nodeDetailsPanel { display:none !important; }
 }
+
+/* =================== Global polish: cybersecurity-themed tweaks =================== */
+/* Apply clean, compact, security dashboard feel while preserving dark/light theme */
+
+body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+.container { padding-top: 18px; padding-bottom: 28px; }
+
+/* Cards: softer radius, gentle border, subtle inner gradient */
+.card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+    border: 1px solid var(--sectionBorder);
+    padding: 18px;
+    border-radius: 14px;
+    transition: transform .14s ease, box-shadow .14s ease;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 18px 44px rgba(2,6,23,0.08); }
+
+/* Headings */
+.card h2 { font-size: 18px; color: var(--headingText); margin-bottom: 12px; }
+.card h3 { font-size: 15px; color: var(--headingText); }
+
+/* Buttons unified */
+.btn, button, .logout-btn { border-radius: 12px; padding: 8px 14px; font-weight:700; }
+.btn { background: var(--btnBg); color: var(--btnText); border:1px solid var(--btnBorder); }
+.btn:hover { transform: translateY(-1px); }
+.btn-secondary { background: transparent; border:1px solid var(--btnBorder); }
+
+/* Tones and accents */
+.pill { font-weight:600; }
+
+/* Tables: clean lines */
+table { border-collapse: collapse; width:100%; }
+thead th { background: transparent; color: var(--muted); font-size:13px; text-align:left; padding:10px 12px; }
+tbody td { padding:10px 12px; border-top:1px solid var(--sectionBorder); color:var(--text); }
+
+/* Inputs: consistent look */
+input, select, textarea { border:1px solid var(--border); background: var(--card); color:var(--text); }
+input::placeholder, textarea::placeholder { color: var(--muted); }
+
+/* Reduce visual noise for focus (no blue glow) */
+input:focus, select:focus, textarea:focus, button:focus { box-shadow: 0 0 0 3px rgba(11,16,32,0.06) !important; outline: none; }
+
+/* Neutralize any inline/JS primary color artifacts by adding subtle neutral overlay */
+[style*="#2563eb"], [style*="#4f46e5"] { filter: saturate(0.06) brightness(0.95); }
+
+/* Sidebar: slightly frosted */
+.sidebar-left { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-right:1px solid var(--sectionBorder); }
+
+/* Small helpers */
+.section-title { font-weight:700; color:var(--headingText); margin-bottom:8px; }
+.note { color:var(--muted); }
+
+@media (max-width: 980px) {
+    .card { padding: 12px; }
+    .container { padding: 12px; }
+}
+
+/* end polish block */
+
+/* Hide legacy top navigation blocks that exist in some templates
+   We rely on `.sidebar-left` for desktop. On small screens show them. */
+.container > .nav-buttons {
+    display: none;
+}
+
+@media (max-width: 1100px) {
+    /* on small screens, sidebar is hidden — show the inline nav if present */
+    .sidebar-left { display: none !important; }
+    .container > .nav-buttons { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; margin:12px 0 18px; }
+}
+
+/* ================= COMPACT UI ADJUSTMENTS ================= */
+html, body { font-size: 14px; }
+
+/* Slightly narrower content to feel denser and more dashboard-like */
+.container { max-width: 1100px; padding: 12px; }
+.page-index .container { width: calc(100vw - 24px); padding: 12px; }
+
+/* Cards and headers smaller */
+.card { padding: 12px !important; border-radius: 12px !important; margin-bottom: 12px !important; }
+.card h2 { font-size: 16px !important; }
+.card h3 { font-size: 14px !important; }
+.dashboard-header { padding: 12px 16px !important; border-radius: 12px !important; }
+.dashboard-header h1 { font-size: 18px !important; }
+
+/* Buttons, inputs and nav compact */
+.btn, button, .logout-btn { padding: 6px 10px !important; font-size: 13px !important; border-radius: 10px !important; }
+.page-index .nav-buttons button { min-height: 36px !important; padding: 8px 10px !important; font-size: 13px !important; }
+.nav-buttons { gap: 8px !important; }
+.form-inline input, .form-inline select, .form-inline button, input[type="text"], input[type="email"], input[type="password"], input[type="file"] { padding: 8px 10px !important; font-size: 13px !important; border-radius: 8px !important; }
+
+/* Tables more compact */
+
+table { font-size: 13px !important; }
+thead th { padding: 10px 12px !important; font-size: 12px !important; }
+tbody td { padding: 8px 10px !important; }
+
+/* Graphs smaller to avoid excessive vertical space */
+#graphSVG, #network, .graph-row .graph-column svg { height: 50vh !important; min-height: 320px !important; }
+
+/* Sidebar slightly narrower */
+.sidebar-left { width: 220px !important; padding: 10px !important; }
+.sidebar-left .sidebar-title { font-size: 13px !important; }
+.page-index .container { padding-left: 260px; }
+
+/* Node detail panel narrower */
+#nodeDetailsPanel { width: 320px !important; padding: 12px !important; }
+
+@media (max-width: 1100px) {
+    .page-index .container { padding-left: 18px !important; }
+    #graphSVG, #network, .graph-row .graph-column svg { height: 44vh !important; }
+}
+
+@media (max-width: 760px) {
+    html, body { font-size: 13px; }
+    .page-index .nav-buttons button { font-size: 12px; padding: 8px 8px; }
+    .container { padding: 10px; }
+}
+
+/* End compact adjustments */
+
+/* ================= Compact: Analyze & Excel Upload tweaks ================= */
+/* Reduce heights, paddings and inner controls specifically for analysis and upload cards */
+.analyze-result, #analyzeResult, #excelResult, #uploadResult {
+    padding: 10px 12px !important;
+    border-left-width: 4px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+}
+
+.card .form-inline { gap: 8px !important; }
+.card .form-inline input,
+.card .form-inline select { padding: 6px 8px !important; height: 34px !important; font-size: 13px !important; border-radius: 8px !important; }
+.card .form-inline button { padding: 6px 10px !important; height: 34px !important; font-size: 13px !important; border-radius: 8px !important; }
+
+.import-controls { gap: 8px !important; align-items: center !important; }
+.import-controls input[type="file"] { padding: 6px 8px !important; height: 36px !important; font-size: 13px !important; border-radius: 8px !important; }
+
+.progress-bar { height: 6px !important; border-radius: 6px !important; }
+.progress-fill { height: 6px !important; border-radius: 6px !important; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)) !important; }
+
+.table-wrapper.excel-result-table { max-height: 220px !important; overflow: auto !important; }
+.table-wrapper.excel-result-table table td { padding: 8px 10px !important; font-size: 13px !important; }
+
+/* make file-select button less tall */
+.container input[type="file"]::-webkit-file-upload-button { padding: 6px 10px !important; font-size: 13px !important; }
+
+@media (max-width: 760px) {
+    .analyze-result, #analyzeResult, #excelResult, #uploadResult { padding: 8px 10px !important; font-size: 12px !important; }
+    .card .form-inline input, .card .form-inline button { height: 32px !important; font-size: 12px !important; }
+}
+
+
+
+

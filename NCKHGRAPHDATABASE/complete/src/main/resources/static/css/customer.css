@@ -1,5 +1,38 @@
 @import 'common.css';
 
+/* --- Align customer styles with global theme and remove strong blue highlights --- */
+:root{
+    --primary: var(--headingText);
+    --primary-glow: rgba(2,6,23,0.06);
+    --safe: var(--safe);
+    --warn: var(--suspicious);
+    --danger: var(--fraud);
+}
+
+/* Ensure buttons and nav use neutral backgrounds from global theme */
+.nav-buttons button,
+.container button,
+.btn-primary,
+.btn-warning,
+.btn-danger {
+    background: var(--btnBg) !important;
+    color: var(--btnText) !important;
+    border: 1px solid var(--btnBorder) !important;
+    box-shadow: 0 8px 22px rgba(2,6,23,0.06) !important;
+}
+
+.nav-buttons button:hover,
+.container button:hover { background: var(--btnHover) !important; transform: translateY(-2px) !important; }
+
+/* Neutralize focus glow on inputs */
+.form-inline input:focus, .table-search input:focus { box-shadow: 0 0 0 4px rgba(0,0,0,0.04) !important; border-color: var(--btnBorder) !important; }
+
+/* Table hover neutralization */
+tbody tr:hover { background: rgba(0,0,0,0.02) !important; }
+
+/* Replace bright analyze/result borders */
+#analyzeResult, .analyze-result { border-left-color: rgba(0,0,0,0.06) !important; background: rgba(255,255,255,0.04) !important; }
+
 /* ================= RESET ================= */
 * {
     box-sizing: border-box;
