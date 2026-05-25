@@ -285,6 +285,48 @@ public class DomainRegionVisualizationTest {
     }
 
     @Test
+    @DisplayName("Should not count outside nodes in KNN neighbors")
+    public void testKnnShouldIgnoreOutsideNodes() {
+        visualizationService.setDistanceMetric("euclidean");
+
+        NodeVisualization node1 = visualizationService.createNode(
+            "in_1", "InRegion1", "User",
+            new double[]{0.0, 0.0},
+            0.10, 100.0, 100.0
+        );
+        visualizationService.addNodeToAppropriateRegion(node1);
+
+        NodeVisualization node2 = visualizationService.createNode(
+            "in_2", "InRegion2", "User",
+            new double[]{1.0, 1.0},
+            0.15, 110.0, 110.0
+        );
+        visualizationService.addNodeToAppropriateRegion(node2);
+
+        NodeVisualization node3 = visualizationService.createNode(
+            "in_3", "InRegion3", "User",
+            new double[]{2.0, 2.0},
+            0.20, 120.0, 120.0
+        );
+        visualizationService.addNodeToAppropriateRegion(node3);
+
+        NodeVisualization outsideNode = visualizationService.createNode(
+            "outside_knn", "OutsideKnn", "User",
+            new double[]{1000.0, 1000.0},
+            0.10, 130.0, 130.0
+        );
+        visualizationService.addNodeToAppropriateRegion(outsideNode);
+
+        visualizationService.computeKNNForAllNodes();
+
+        assertEquals("OUTSIDE", outsideNode.getMembershipStatus());
+        assertEquals(2, node1.getKnnNeighbors().size(),
+                   "K should count only valid in-region neighbors");
+        assertFalse(node1.getKnnNeighbors().contains(outsideNode),
+                   "OUTSIDE node should not be used as a KNN neighbor");
+    }
+
+    @Test
     @DisplayName("Should compute distance to center vector")
     public void testDistanceToCenterVector() {
         visualizationService.setDistanceMetric("euclidean");

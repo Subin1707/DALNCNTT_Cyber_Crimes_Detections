@@ -9,7 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const width = 1000;
     const height = 600;
     const nodeRadius = 18;
-    const MIN_NODE_GAP = 14;
+    const MIN_NODE_GAP = 18;
+    const NODE_PACKING_STEP = (nodeRadius * 2) + MIN_NODE_GAP + 8;
+    const NEAREST_K_MIN = 6;
+    const NEAREST_K_MAX = 18;
+    const DETAIL_LABEL_NODE_LIMIT = 120;
+    const DETAIL_LABEL_LINK_LIMIT = 260;
+    const DENSE_GRAPH_NODE_THRESHOLD = 180;
+    const DENSE_GRAPH_LINK_THRESHOLD = 420;
+    const MAX_RENDERED_OVERLAP_LINKS_DENSE = 180;
 
     const svg = d3.select("#graphSVG")
         .attr("width", width)
@@ -22,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let abortController = null;
     const graphCache = new Map();
+    const graphSignatureCache = new Map();
     // SSE will trigger instant updates; keep polling only as a fallback.
     const AUTO_REFRESH_MS = 10000;
     let autoRefreshTimer = null;
@@ -49,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let domainPos = {};
     let domainRadii = {};
     let lastLayoutKey = null;
+    let zoomFitTimer = null;
 
     const DOMAIN_ORDER = ["safe", "suspicious", "fraud"];
     const DOMAIN_COLORS = {
@@ -61,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         suspicious: "MIEN NGHI NGO",
         fraud: "MIEN GIAN LAN"
     };
+    const VISUAL_DOMAIN_BOUNDARY_DISTANCE = 0.55;
     let neutralSessionPos = { x: width * 0.50, y: height * 0.08 };
 
     /* ================= UTIL ================= */
@@ -79,11 +90,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const normalizeLinks = links =>
         (links || [])
             .map(l => ({
+                ...l,
                 source: safeId(l.source),
                 target: safeId(l.target),
                 type: l.type || ""
             }))
             .filter(l => l.source && l.target);
+
+    const graphSignature = (nodes, links) => {
+        const nodePart = (nodes || [])
+            .map(n => [
+                n.id,
+                n.type,
+                n.value,
+                n.riskLevel,
+                n.riskScore,
+                n.status,
+                n.membershipStatus,
+                n.domainAssignment
+            ].join("|"))
+            .sort()
+            .join(";");
+        const linkPart = (links || [])
+            .map(l => `${safeId(l.source)}>${safeId(l.target)}>${l.type || ""}>${l.overlapScore || ""}>${l.riskScore || ""}`)
+            .sort()
+            .join(";");
+        return `${nodePart}#${linkPart}`;
+    };
+
+    const visibleLinksForLayout = (nodes, links) => {
+        const safeNodes = Array.isArray(nodes) ? nodes : [];
+        const safeLinks = Array.isArray(links) ? links : [];
+        const dense = safeNodes.length > DENSE_GRAPH_NODE_THRESHOLD || safeLinks.length > DENSE_GRAPH_LINK_THRESHOLD;
+        if (!dense) return safeLinks;
+
+        let overlapCount = 0;
+        return safeLinks.filter(link => {
+            if (String(link.type || "").toUpperCase() !== "OVERLAP") return true;
+            if (overlapCount >= MAX_RENDERED_OVERLAP_LINKS_DENSE) return false;
+            overlapCount++;
+            return true;
+        });
+    };
 
     const filterLinks = (nodes, links) => {
         const ids = new Set(nodes.map(n => n.id));
@@ -108,6 +156,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return null;
         }
 
+        const nearest = nearestDomainFromBackend(node);
+        if (nearest) {
+            return nearest;
+        }
+
         const backendDomain = String(node?.domainAssignment || "").toLowerCase().trim();
         if (["safe", "suspicious", "fraud"].includes(backendDomain)) {
             return backendDomain;
@@ -119,10 +172,31 @@ document.addEventListener("DOMContentLoaded", () => {
         return "safe";
     };
 
+    const nearestDomainFromBackend = (node) => {
+        const distances = node?.domainDistances;
+        if (!distances || typeof distances !== "object") return null;
+
+        let bestDomain = null;
+        let bestDistance = Number.POSITIVE_INFINITY;
+        DOMAIN_ORDER.forEach(domain => {
+            const value = Number(distances[domain]);
+            if (Number.isFinite(value) && value < bestDistance) {
+                bestDomain = domain;
+                bestDistance = value;
+            }
+        });
+        return bestDomain;
+    };
+
     const riskValue = (node) => Math.max(0, Math.min(100, Number(node?.riskScore) || 0));
     const clamp01 = (v) => Math.max(0, Math.min(1, v));
     const domainStrength = (node) => {
         const domain = node?.domainAssignment || assignDomain(node);
+        const backendDistance = Number(node?.domainDistances?.[domain]);
+        if (Number.isFinite(backendDistance)) {
+            return clamp01(1 - (backendDistance / VISUAL_DOMAIN_BOUNDARY_DISTANCE));
+        }
+
         const risk = riskValue(node);
 
         if (domain === "safe") {
@@ -223,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
             DOMAIN_ORDER.map(domain => [domain, (raw[domain] / total) * 100])
         );
     };
-    const linkTypeLabel = (t) => ({
+    const linkTypeLabel = (t, d = null) => ({
         HAS_EMAIL: "phiên → email",
         HAS_IP: "phiên → IP",
         HAS_URL: "phiên → URL",
@@ -240,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
         HAS_HASH: "có hash",
         RECEIVED: "nhận",
         CONNECTS_TO: "kết nối"
+        ,OVERLAP: d && Number(d.overlapScore) ? `overlap ${formatNumber(d.overlapScore)}` : "overlap"
     }[String(t || "").toUpperCase()] || String(t || ""));
 
     const safeTextHtml = (s) =>
@@ -247,6 +322,75 @@ document.addEventListener("DOMContentLoaded", () => {
             .replaceAll("&", "&amp;")
             .replaceAll("<", "&lt;")
             .replaceAll(">", "&gt;");
+
+    const formatNumber = (value) => {
+        const n = Number(value);
+        return Number.isFinite(n) ? n.toFixed(2) : "0.00";
+    };
+
+    const nodeFill = (d) => {
+        if (isSessionNode(d)) return "#64748b";
+        if (d.membershipStatus === "OUTSIDE") return "#94a3b8";
+        return d.riskLevel === "high" ? "#c62828" :
+            d.riskLevel === "medium" ? "#f9a825" : "#1e88e5";
+    };
+
+    const nodeStroke = (d) => {
+        if (isSessionNode(d)) return "#334155";
+        if (isBalancedInfluenceNode(d)) return "#111827";
+        if (d.multiDomainOverlap) return "#7c3aed";
+        if ((Number(d.adjustedOverlapScore) || 0) >= 0.3) return "#7c3aed";
+        if (d.membershipStatus === "OUTSIDE") return "#64748b";
+        if (d._isNew) return "#000";
+        if (d.source === "WIRESHARK") return "#00acc1";
+        return "#fff";
+    };
+
+    const nodeStrokeWidth = (d) => {
+        if (isSessionNode(d)) return 2.4;
+        if (isBalancedInfluenceNode(d)) return 4;
+        if (d.multiDomainOverlap) return 4;
+        if ((Number(d.adjustedOverlapScore) || 0) >= 0.3) return 3;
+        if (d.membershipStatus === "OUTSIDE") return 2.5;
+        return d._isNew || d.source === "WIRESHARK" ? 3 : 1.2;
+    };
+
+    const linkStrokeWidth = (d) => {
+        if (d.type !== "OVERLAP") return 1.25;
+        return 0.65 + Math.min(2.8, (Number(d.overlapScore) || 0) * 2.2);
+    };
+
+    const linkOpacity = (d) => d.type === "OVERLAP" ? 0.22 : 0.18;
+
+    const isOverlapNode = (node) => !!node?.multiDomainOverlap;
+    const isBalancedInfluenceNode = (node) => {
+        if (!node || isSessionNode(node)) return false;
+
+        const zone = String(node.influenceZone || node.nodeClassification || "").toUpperCase();
+        const explicitOverlap = node.multiDomainOverlap
+            || node.bridgeNode
+            || ["BRIDGE", "OVERLAP", "OUTSIDE_INFLUENCE"].includes(zone);
+        if (!explicitOverlap) return false;
+
+        const influence = node?.domainInfluence || node?.softMemberships;
+        if (!influence || typeof influence !== "object") return false;
+        const values = DOMAIN_ORDER
+            .map(domain => Number(influence[domain]) || 0)
+            .filter(value => value > 0);
+        if (values.length < 2) return false;
+        const max = Math.max(...values);
+        const min = Math.min(...values);
+        return max >= 0.30 && (max - min) <= 0.18;
+    };
+
+    const formatDomainDistances = (distances) => {
+        if (!distances || typeof distances !== "object") return "none";
+        const ordered = DOMAIN_ORDER.filter(domain => distances[domain] !== undefined);
+        const keys = ordered.length ? ordered : Object.keys(distances);
+        return keys
+            .map(key => `${key}=${formatNumber(distances[key])}`)
+            .join(", ") || "none";
+    };
 
     const nodeDisplayValue = (node) => {
         const value = node?.value ?? node?.id ?? "";
@@ -387,6 +531,14 @@ async function fetchGraph(sessionId = null, options = {}) {
             const data = await res.json();
             allNodes = Array.isArray(data.nodes) ? data.nodes : [];
             allLinks = normalizeLinks(data.links);
+            const signature = graphSignature(allNodes, allLinks);
+            if (!force && graphSignatureCache.get(currentSessionId) === signature) {
+                return;
+            }
+            if (force && graphSignatureCache.get(currentSessionId) === signature) {
+                return;
+            }
+            graphSignatureCache.set(currentSessionId, signature);
             markNewNodes();
 
             graphCache.set(currentSessionId, {
@@ -436,6 +588,11 @@ async function fetchGraph(sessionId = null, options = {}) {
 
         allNodes = Array.isArray(data.nodes) ? data.nodes : [];
         allLinks = normalizeLinks(data.links);
+        const signature = graphSignature(allNodes, allLinks);
+        if (graphSignatureCache.get(currentSessionId) === signature) {
+            return;
+        }
+        graphSignatureCache.set(currentSessionId, signature);
         markNewNodes();
 
         graphCache.set(currentSessionId, {
@@ -524,9 +681,14 @@ window.fetchGraph = fetchGraph;
     /* ================= GRAPH ================= */
 
     function renderGraph(nodes, links) {
+        links = visibleLinksForLayout(nodes, links);
         publishGraphContext(nodes, links);
 
         ensureLinkLabelToggle();
+        if (zoomFitTimer) {
+            clearTimeout(zoomFitTimer);
+            zoomFitTimer = null;
+        }
 
         const layoutKey = `${currentSessionId || "ALL"}::${window.ADMIN_VIEW_TYPE || "ALL"}`;
         const isNewLayoutContext = layoutKey !== lastLayoutKey;
@@ -541,10 +703,27 @@ window.fetchGraph = fetchGraph;
                 domainCounts[n.domainAssignment] = (domainCounts[n.domainAssignment] || 0) + 1;
             }
         });
+        const domainVisualOffsets = { safe: 0, suspicious: 0, fraud: 0 };
+        const balanceVisualNodes = [];
+        nodes.forEach(n => {
+            if (!n || isSessionNode(n)) return;
+            if (isBalancedInfluenceNode(n)) {
+                n._balanceVisualIndex = balanceVisualNodes.length;
+                balanceVisualNodes.push(n);
+                return;
+            }
+            const domain = n.domainAssignment || assignDomain(n);
+            if (!domain) return;
+            n._domainVisualIndex = domainVisualOffsets[domain]++;
+            n._domainVisualCount = domainCounts[domain] || 1;
+        });
+        balanceVisualNodes.forEach(n => {
+            n._balanceVisualCount = balanceVisualNodes.length || 1;
+        });
 
         const radiusForCount = (count) => {
             const c = Math.max(0, count || 0);
-            return 230 + (18 * Math.sqrt(c)) + (4.5 * Math.pow(c, 0.72));
+            return 250 + (26 * Math.sqrt(c)) + (6.5 * Math.pow(c, 0.72));
         };
         DOMAIN_ORDER.forEach(domain => {
             domainRadii[domain] = radiusForCount(domainCounts[domain]);
@@ -588,6 +767,11 @@ window.fetchGraph = fetchGraph;
         const clamp01 = (v) => Math.max(0, Math.min(1, v));
         const domainStrength = (node) => {
             const domain = node?.domainAssignment || assignDomain(node);
+            const backendDistance = Number(node?.domainDistances?.[domain]);
+            if (Number.isFinite(backendDistance)) {
+                return clamp01(1 - (backendDistance / VISUAL_DOMAIN_BOUNDARY_DISTANCE));
+            }
+
             const risk = riskValue(node);
 
             if (domain === "safe") {
@@ -610,7 +794,42 @@ window.fetchGraph = fetchGraph;
             const normalized = Math.abs(hash % 360);
             return normalized * Math.PI / 180;
         };
+        const influenceBalanceTarget = (node) => {
+            const weights = node?.domainInfluence || node?.softMemberships || {};
+            let total = 0;
+            let x = 0;
+            let y = 0;
+
+            DOMAIN_ORDER.forEach(domain => {
+                const pos = domainPos[domain];
+                const weight = Math.max(0, Number(weights[domain]) || 0);
+                if (!pos || weight <= 0) return;
+                total += weight;
+                x += pos.x * weight;
+                y += pos.y * weight;
+            });
+
+            if (total <= 0) {
+                return { x: neutralSessionPos.x, y: neutralSessionPos.y };
+            }
+
+            const index = Number.isFinite(node?._balanceVisualIndex) ? node._balanceVisualIndex : 0;
+            const count = Math.max(1, Number(node?._balanceVisualCount) || 1);
+            const angle = stableAngle(node) + (index * Math.PI * (3 - Math.sqrt(5)));
+            const spread = Math.min(
+                Math.max(44, NODE_PACKING_STEP * Math.sqrt(count) * 0.42),
+                maxDomainRadius * 0.22
+            );
+            const radius = Math.min(spread, 18 + NODE_PACKING_STEP * Math.sqrt(index + 0.5) * 0.40);
+            return {
+                x: (x / total) + Math.cos(angle) * radius,
+                y: (y / total) + Math.sin(angle) * radius
+            };
+        };
         const domainTargetForNode = (node, fallbackIndex = 0) => {
+            if (isBalancedInfluenceNode(node)) {
+                return influenceBalanceTarget(node);
+            }
             const domain = node?.domainAssignment || assignDomain(node);
             const pos = domainPos[domain];
             const radius = domainRadii[domain];
@@ -621,8 +840,18 @@ window.fetchGraph = fetchGraph;
             const strength = domainStrength(node);
             const usableRadius = Math.max(20, radius - nodeRadius - 30);
             const minRadius = 12;
-            const radialDistance = minRadius + (1 - strength) * (usableRadius - minRadius);
-            const angle = stableAngle(node) + (fallbackIndex * 0.21);
+            const baseRadialDistance = minRadius + (1 - strength) * (usableRadius - minRadius);
+            const index = Number.isFinite(node?._domainVisualIndex) ? node._domainVisualIndex : fallbackIndex;
+            const count = Math.max(1, Number(node?._domainVisualCount) || domainCounts[domain] || 1);
+            const packedRadialDistance = NODE_PACKING_STEP * Math.sqrt(index + 0.5) * 0.72;
+            const maxPackingRadius = Math.max(minRadius, usableRadius - NODE_PACKING_STEP * 0.25);
+            const radialDistance = Math.min(
+                usableRadius,
+                Math.max(baseRadialDistance, Math.min(maxPackingRadius, packedRadialDistance))
+            );
+            const angle = stableAngle(node)
+                + (index * Math.PI * (3 - Math.sqrt(5)))
+                + ((index % Math.max(1, Math.ceil(Math.sqrt(count)))) * 0.035);
 
             return {
                 x: pos.x + Math.cos(angle) * radialDistance,
@@ -707,8 +936,8 @@ window.fetchGraph = fetchGraph;
                     const targetDomain = targetNode?.domainAssignment || "neutral";
                     return sourceDomain !== targetDomain ? 0.012 : 0.045;
                 }))
-                .force("charge", d3.forceManyBody().strength(-220))
-                .force("collision", d3.forceCollide().radius(nodeRadius + MIN_NODE_GAP).iterations(5))
+                .force("charge", d3.forceManyBody().strength(-340))
+                .force("collision", d3.forceCollide().radius(nodeRadius + MIN_NODE_GAP + 4).strength(0.95).iterations(8))
                 .force("cluster", () => {
                     (simulation.nodes() || []).forEach(node => {
                         if (isSessionNode(node)) {
@@ -722,13 +951,14 @@ window.fetchGraph = fetchGraph;
                         const target = domainTargetForNode(node);
                         const dx = target.x - node.x;
                         const dy = target.y - node.y;
-                        const k = 0.07;
+                        const k = 0.045;
                         node.vx += dx * k;
                         node.vy += dy * k;
                     });
                 })
                 .force("boundary", () => {
                     (simulation.nodes() || []).forEach(node => {
+                        if (isBalancedInfluenceNode(node)) return;
                         const domain = node.domainAssignment || assignDomain(node);
                         const pos = domainPos[domain];
                         const radius = domainRadii[domain];
@@ -756,6 +986,7 @@ window.fetchGraph = fetchGraph;
 
             const clampNodeInsideDomain = (node) => {
                 if (!node || isSessionNode(node)) return;
+                if (isBalancedInfluenceNode(node)) return;
 
                 const domain = node.domainAssignment || assignDomain(node);
                 const pos = domainPos[domain];
@@ -778,7 +1009,7 @@ window.fetchGraph = fetchGraph;
             const separateOverlappingNodes = () => {
                 const activeNodes = (simulation.nodes() || [])
                     .filter(node => node && !isSessionNode(node));
-                const minDistance = (nodeRadius * 2) + MIN_NODE_GAP;
+                const minDistance = (nodeRadius * 2) + MIN_NODE_GAP + 6;
 
                 for (let i = 0; i < activeNodes.length; i++) {
                     const a = activeNodes[i];
@@ -805,7 +1036,7 @@ window.fetchGraph = fetchGraph;
                             distance = 1;
                         }
 
-                        const push = (minDistance - distance) * 0.52;
+                        const push = (minDistance - distance) * 0.72;
                         const ux = dx / distance;
                         const uy = dy / distance;
 
@@ -849,21 +1080,21 @@ window.fetchGraph = fetchGraph;
 
                 if (centerDistanceLinkSel) {
                     centerDistanceLinkSel
-                        .attr("x1", d => domainPos[d.domainAssignment || assignDomain(d)]?.x || d.x)
-                        .attr("y1", d => domainPos[d.domainAssignment || assignDomain(d)]?.y || d.y)
-                        .attr("x2", d => d.x)
-                        .attr("y2", d => d.y);
+                        .attr("x1", d => domainPos[d.domain]?.x || d.node.x)
+                        .attr("y1", d => domainPos[d.domain]?.y || d.node.y)
+                        .attr("x2", d => d.node.x)
+                        .attr("y2", d => d.node.y);
                 }
 
                 if (centerDistanceLabelSel) {
                     centerDistanceLabelSel
                         .attr("x", d => {
-                            const pos = domainPos[d.domainAssignment || assignDomain(d)];
-                            return pos ? (pos.x + d.x) / 2 : d.x;
+                            const pos = domainPos[d.domain];
+                            return pos ? (pos.x + d.node.x) / 2 : d.node.x;
                         })
                         .attr("y", d => {
-                            const pos = domainPos[d.domainAssignment || assignDomain(d)];
-                            return pos ? (pos.y + d.y) / 2 : d.y;
+                            const pos = domainPos[d.domain];
+                            return pos ? (pos.y + d.node.y) / 2 : d.node.y;
                         });
                 }
             };
@@ -912,8 +1143,23 @@ window.fetchGraph = fetchGraph;
 
         const reusedCount = nodes.reduce((c, n) => c + (prevPos.has(n.id) ? 1 : 0), 0);
         const reusedRatio = reusedCount / Math.max(1, nodes.length);
-        const isFreshGraph = isNewLayoutContext || prevPos.size === 0 || reusedRatio < 0.25;
-        const isAdditive = !isFreshGraph && nodes.some(n => !prevPos.has(n.id));
+        let isFreshGraph = isNewLayoutContext || prevPos.size === 0 || reusedRatio < 0.25;
+        let isAdditive = !isFreshGraph && nodes.some(n => !prevPos.has(n.id));
+
+        const isAlignedWithDomain = n => {
+            if (!n || isSessionNode(n) || isBalancedInfluenceNode(n)) return true;
+            const domain = n.domainAssignment || assignDomain(n);
+            const pos = domainPos[domain];
+            const radius = domainRadii[domain];
+            if (!pos || !radius || !Number.isFinite(n.x) || !Number.isFinite(n.y)) return false;
+            const dx = n.x - pos.x;
+            const dy = n.y - pos.y;
+            return Math.sqrt(dx * dx + dy * dy) <= radius * 1.18;
+        };
+        if (!isFreshGraph && nodes.some(n => !isAlignedWithDomain(n))) {
+            isFreshGraph = true;
+            isAdditive = false;
+        }
 
         let cx = width / 2;
         let cy = height / 2;
@@ -927,8 +1173,6 @@ window.fetchGraph = fetchGraph;
         if (isFreshGraph) {
             // Nhiá»u node má»›i (vd: upload Excel / Ä‘á»•i session) -> seed vá»‹ trĂ­ theo spiral Ä‘á»ƒ khĂ´ng chĂ´ng lĂªn nhau
             const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-            const domainOffsets = { safe: 0, suspicious: 0, fraud: 0 };
-
             nodes.forEach((n) => {
                 n.fx = undefined;
                 n.fy = undefined;
@@ -940,9 +1184,9 @@ window.fetchGraph = fetchGraph;
                     n.vy = 0;
                     return;
                 }
-                const index = domainOffsets[domain]++;
+                const index = Number.isFinite(n._domainVisualIndex) ? n._domainVisualIndex : 0;
                 const target = domainTargetForNode(n, index);
-                const jitter = Math.min(28, 8 + Math.sqrt(index) * 1.8);
+                const jitter = Math.min(18, 5 + Math.sqrt(index) * 1.2);
                 const a = index * goldenAngle;
                 n.x = target.x + jitter * Math.cos(a);
                 n.y = target.y + jitter * Math.sin(a);
@@ -980,6 +1224,7 @@ window.fetchGraph = fetchGraph;
             if (newOnes.length > 1) {
                 const groupedNewNodes = { safe: [], suspicious: [], fraud: [] };
                 newOnes.forEach(n => {
+                    if (isBalancedInfluenceNode(n)) return;
                     const domain = n.domainAssignment || assignDomain(n);
                     if (domain) {
                         groupedNewNodes[domain].push(n);
@@ -989,7 +1234,7 @@ window.fetchGraph = fetchGraph;
                     const list = groupedNewNodes[domain];
                     list.forEach((n, i) => {
                         const target = domainTargetForNode(n, i);
-                        const radius = Math.max(20, Math.min(domainRadii[domain] * 0.12, 58));
+                        const radius = Math.max(26, Math.min(domainRadii[domain] * 0.16, 86));
                         const a = (i / Math.max(1, list.length)) * Math.PI * 2;
                         n.x = target.x + radius * Math.cos(a);
                         n.y = target.y + radius * Math.sin(a);
@@ -1000,16 +1245,28 @@ window.fetchGraph = fetchGraph;
 
         const linkKey = l => `${safeId(l.source)}->${safeId(l.target)}::${l.type || ""}`;
         const visibleNodeMap = new Map((nodes || []).map(n => [n.id, n]));
-        const centerDistanceNodes = nodes.filter(n => !isSessionNode(n) && (n.domainAssignment || assignDomain(n)));
+        const denseGraph = nodes.length > DETAIL_LABEL_NODE_LIMIT || links.length > DETAIL_LABEL_LINK_LIMIT;
+        const centerDistanceNodes = nodes
+            .filter(n => !isSessionNode(n))
+            .flatMap(n => {
+                if (denseGraph && !isOverlapNode(n) && n.id !== selectedNodeId) {
+                    return [];
+                }
+                if (isOverlapNode(n) || isBalancedInfluenceNode(n)) {
+                    return DOMAIN_ORDER.map(domain => ({ id: `${n.id}::${domain}`, node: n, domain }));
+                }
+                const domain = n.domainAssignment || assignDomain(n);
+                return domain ? [{ id: n.id, node: n, domain }] : [];
+            });
 
         if (centerDistanceLinkSel) {
             centerDistanceLinkSel = centerDistanceLinkSel.data(centerDistanceNodes, d => d.id);
             centerDistanceLinkSel.exit().remove();
             const centerDistanceLinkEnter = centerDistanceLinkSel.enter().append("line");
             centerDistanceLinkSel = centerDistanceLinkEnter.merge(centerDistanceLinkSel)
-                .attr("stroke", d => DOMAIN_COLORS[d.domainAssignment || assignDomain(d)] || "#94a3b8")
-                .attr("stroke-width", 1.15)
-                .attr("stroke-opacity", 0.45)
+                .attr("stroke", d => DOMAIN_COLORS[d.domain] || "#94a3b8")
+                .attr("stroke-width", d => denseGraph ? 0.7 : 1.15)
+                .attr("stroke-opacity", d => denseGraph ? (isOverlapNode(d.node) ? 0.28 : 0.10) : (isOverlapNode(d.node) ? 0.68 : 0.45))
                 .attr("stroke-dasharray", "4 4");
         }
 
@@ -1020,15 +1277,19 @@ window.fetchGraph = fetchGraph;
             centerDistanceLabelSel = centerDistanceLabelEnter.merge(centerDistanceLabelSel)
                 .attr("text-anchor", "middle")
                 .attr("dy", "-0.35em")
-                .text(d => distanceLabel(d));
+                .style("display", d => denseGraph && d.node?.id !== selectedNodeId ? "none" : null)
+                .text(d => {
+                    const value = d.node?.domainDistances?.[d.domain];
+                    return value === undefined ? distanceLabel(d.node) : `${d.domain}: d=${formatNumber(value)}`;
+                });
         }
 
         linkSel = linkSel.data(links, linkKey);
         linkSel.exit().remove();
-        const linkEnter = linkSel.enter().append("line")
-            .attr("stroke-width", 2);
+        const linkEnter = linkSel.enter().append("line");
         linkSel = linkEnter.merge(linkSel)
             .attr("stroke", d => ({
+                OVERLAP: "#7c3aed",
                 SENT_FROM_IP: "#c62828",
                 CONTAINS_URL: "#f9a825",
                 HOSTED_ON: "#2e7d32",
@@ -1038,15 +1299,18 @@ window.fetchGraph = fetchGraph;
                 HAS_HASH: "#6a1b9a",
                 RECEIVED: "#546e7a",
                 CONNECTS_TO: "#00838f"
-            }[d.type] || "#aaa"));
+            }[d.type] || "#aaa"))
+            .attr("stroke-width", d => linkStrokeWidth(d))
+            .attr("opacity", d => linkOpacity(d));
 
         linkLabelSel = linkLabelSel.data(links, linkKey);
         linkLabelSel.exit().remove();
         const linkLabelEnter = linkLabelSel.enter().append("text")
             .style("display", "none")
-            .text(d => linkTypeLabel(d.type));
+            .text(d => linkTypeLabel(d.type, d));
         linkLabelSel = linkLabelEnter.merge(linkLabelSel)
-            .text(d => linkTypeLabel(d.type));
+            .style("display", denseGraph && !showLinkLabelsAlways ? "none" : null)
+            .text(d => linkTypeLabel(d.type, d));
 
         linkDistanceLabelSel = linkDistanceLabelSel.data(links, linkKey);
         linkDistanceLabelSel.exit().remove();
@@ -1054,6 +1318,7 @@ window.fetchGraph = fetchGraph;
             .style("display", "none")
             .text(d => nodeDistanceLabel(d, visibleNodeMap));
         linkDistanceLabelSel = linkDistanceLabelEnter.merge(linkDistanceLabelSel)
+            .style("display", denseGraph ? "none" : (showLinkLabelsAlways ? null : "none"))
             .text(d => nodeDistanceLabel(d, visibleNodeMap));
 
         nodeSel = nodeSel.data(nodes, d => d.id);
@@ -1078,6 +1343,16 @@ window.fetchGraph = fetchGraph;
                     let newY = (e.y - t.y) / t.k;
                     
                     // Keep node inside its domain circle when dragging
+                    if (isBalancedInfluenceNode(d)) {
+                        d.x = newX;
+                        d.y = newY;
+                        d.fx = newX;
+                        d.fy = newY;
+                        if (renderGraphPositions) {
+                            renderGraphPositions();
+                        }
+                        return;
+                    }
                     const domain = d.domainAssignment || assignDomain(d);
                     if (!domain) {
                         d.fx = newX;
@@ -1113,18 +1388,10 @@ window.fetchGraph = fetchGraph;
             );
 
         nodeSel = nodeEnter.merge(nodeSel)
-            .attr("fill", d =>
-                isSessionNode(d) ? "#64748b" :
-                d.riskLevel === "high" ? "#c62828" :
-                d.riskLevel === "medium" ? "#f9a825" : "#1e88e5"
-            )
-            .attr("stroke", d =>
-                isSessionNode(d) ? "#334155" :
-                d._isNew ? "#000" :
-                d.source === "WIRESHARK" ? "#00acc1" : "#fff"
-            )
-            .attr("stroke-width", d => isSessionNode(d) ? 2.4 : (d._isNew ? 3 : (d.source === "WIRESHARK" ? 3 : 1.2)))
-            .attr("stroke-dasharray", d => d._isNew ? null : null)
+            .attr("fill", d => nodeFill(d))
+            .attr("stroke", d => nodeStroke(d))
+            .attr("stroke-width", d => nodeStrokeWidth(d))
+            .attr("stroke-dasharray", d => isBalancedInfluenceNode(d) ? "2 2" : (d.membershipStatus === "OUTSIDE" ? "4 3" : null))
             .attr("r", d => {
                 const fresh = d._newAt && (Date.now() - d._newAt) < 6000;
                 return nodeRadius;
@@ -1156,13 +1423,21 @@ window.fetchGraph = fetchGraph;
         simulation.force("link").links(links);
         simulation.alpha(isFreshGraph ? 1.2 : (isAdditive ? 0.9 : 0.5)).stop();
 
-        const staticTicks = isFreshGraph ? 90 : (isAdditive ? 60 : 25);
+        const denseLayout = nodes.length > DENSE_GRAPH_NODE_THRESHOLD || links.length > DENSE_GRAPH_LINK_THRESHOLD;
+        const staticTicks = denseLayout
+            ? (isFreshGraph ? 38 : (isAdditive ? 26 : 12))
+            : (isFreshGraph ? 90 : (isAdditive ? 60 : 25));
         for (let i = 0; i < staticTicks; i++) {
             simulation.tick();
         }
 
         if (renderGraphPositions) {
-            renderGraphPositions();
+            const relaxPasses = denseLayout
+                ? (isFreshGraph ? 7 : (isAdditive ? 5 : 3))
+                : (isFreshGraph ? 18 : (isAdditive ? 12 : 8));
+            for (let i = 0; i < relaxPasses; i++) {
+                renderGraphPositions();
+            }
         }
         nodes.forEach(n => {
             n.vx = 0;
@@ -1211,7 +1486,7 @@ window.fetchGraph = fetchGraph;
 
         // Focus view on newest nodes (if any)
         const newNodes = nodes.filter(n => n._isNew);
-        if (newNodes.length > 0) {
+        if (false && newNodes.length > 0) {
             setTimeout(() => {
                 const t = d3.zoomTransform(svg.node());
                 const nx = newNodes.reduce((s, n) => s + (n.x || 0), 0) / newNodes.length;
@@ -1262,7 +1537,7 @@ window.fetchGraph = fetchGraph;
                 svg.transition().duration(600).call(zoom.transform, transform);
             };
 
-            setTimeout(zoomToFit, 600);
+            zoomFitTimer = setTimeout(zoomToFit, 120);
             didInitialFit = true;
         }
 
@@ -1368,11 +1643,59 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
 
     /* ================= NODE POPUP ================= */
 
-    function buildNodeRelations(node, limit = 12) {
-        const nodeMap = new Map((allNodes || []).map(n => [n.id, n]));
+    function directRelationCount(node) {
+        if (!node?.id) return 0;
         return (allLinks || [])
             .filter(l => safeId(l.source) === node.id || safeId(l.target) === node.id)
-            .slice(0, limit)
+            .length;
+    }
+
+    function adaptiveNearestK(candidateCount, relationCount = 0) {
+        const n = Math.max(0, Number(candidateCount) || 0);
+        if (n === 0) return 0;
+        if (n <= NEAREST_K_MIN) return n;
+
+        const dataScale = Math.sqrt(n);
+        const relationBoost = Math.min(4, Math.sqrt(Math.max(0, relationCount)));
+        return Math.min(
+            n,
+            NEAREST_K_MAX,
+            Math.max(NEAREST_K_MIN, Math.round(dataScale + relationBoost))
+        );
+    }
+
+    function buildNearestFeatureContext(node) {
+        if (!node) {
+            return { candidates: [], candidateCount: 0, relationCount: 0, k: 0, nearest: [] };
+        }
+        const candidates = (allNodes || [])
+            .filter(n => n?.id && n.id !== node.id && !isSessionNode(n))
+            .map(n => ({
+                type: "FEATURE_DISTANCE",
+                direction: "->",
+                nodeId: n.id,
+                otherLabel: `${n.type || "Node"}: ${nodeDisplayValue(n)}`,
+                distanceValue: nodeFeatureDistance(node, n)
+            }))
+            .filter(n => Number.isFinite(n.distanceValue))
+            .sort((a, b) => a.distanceValue - b.distanceValue);
+        const relationCount = directRelationCount(node);
+        const k = adaptiveNearestK(candidates.length, relationCount);
+        const nearest = candidates.slice(0, k).map(n => ({
+                ...n,
+                distance: `d=${n.distanceValue.toFixed(2)}`
+        }));
+        return { candidates, candidateCount: candidates.length, relationCount, k, nearest };
+    }
+
+    function buildNearestFeatureNeighbors(node) {
+        return buildNearestFeatureContext(node).nearest;
+    }
+
+    function buildNodeRelations(node, limit = null) {
+        const nodeMap = new Map((allNodes || []).map(n => [n.id, n]));
+        const relations = (allLinks || [])
+            .filter(l => safeId(l.source) === node.id || safeId(l.target) === node.id)
             .map(l => {
                 const sourceId = safeId(l.source);
                 const targetId = safeId(l.target);
@@ -1389,6 +1712,7 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                     distance: nodeDistanceLabel(l, nodeMap)
                 };
             });
+        return limit == null ? relations : relations.slice(0, limit);
     }
 
     function renderSideNodeDetails(node) {
@@ -1500,36 +1824,25 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             const db = Number(String(b.distance || "").replace("d=", "")) || Number.MAX_VALUE;
             return da - db;
         });
-        const allDistanceNeighbors = (allNodes || [])
-            .filter(n => n?.id && n.id !== node.id && !isSessionNode(n))
-            .map(n => ({
-                type: "FEATURE_DISTANCE",
-                direction: "->",
-                otherLabel: `${n.type || "Node"}: ${nodeDisplayValue(n)}`,
-                distanceValue: nodeFeatureDistance(node, n)
-            }))
-            .filter(n => Number.isFinite(n.distanceValue))
-            .sort((a, b) => a.distanceValue - b.distanceValue)
-            .map(n => ({
-                ...n,
-                distance: `d=${n.distanceValue.toFixed(2)}`
-            }));
-        const candidateCount = allDistanceNeighbors.length;
-        const suggestedK = Math.max(1, Math.round(Math.sqrt(Math.max(1, candidateCount))));
-        const actualK = Math.min(suggestedK, allDistanceNeighbors.length || suggestedK);
-        const nearest = allDistanceNeighbors.length
-            ? allDistanceNeighbors.slice(0, actualK)
+        const nearestContext = buildNearestFeatureContext(node);
+        const candidateCount = nearestContext.candidateCount;
+        const actualK = nearestContext.k;
+        const nearest = nearestContext.nearest.length
+            ? nearestContext.nearest
             : sortedRelations.slice(0, actualK);
         const probabilityRows = DOMAIN_ORDER.map(key => {
             const pct = probs[key] || 0;
             const active = key === domain ? "active" : "";
+            const color = DOMAIN_COLORS[key] || "#2563eb";
             return `
                 <div class="prob-row ${active}">
                     <div class="prob-label">
                         <span class="prob-dot ${key}"></span>
                         <b>${safeTextHtml(DOMAIN_LABELS[key] || key)}</b>
                     </div>
-                    <div class="prob-bar"><span style="width:${Math.max(2, Math.min(100, pct)).toFixed(2)}%"></span></div>
+                    <div class="prob-bar ${key}">
+                        <span style="width:${Math.max(2, Math.min(100, pct)).toFixed(2)}%; background:${color} !important;"></span>
+                    </div>
                     <div class="prob-value">${pct.toFixed(2)}%</div>
                 </div>
             `;
@@ -1570,7 +1883,7 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                 <div class="explain-card">
                     <div class="explain-k">K node gan nhat</div>
                     <div class="explain-v">K = ${actualK}</div>
-                    <div class="explain-meta">N=${candidateCount} node ung vien, chon K xap xi round(sqrt(N)). Tinh distance toi tat ca node, sap xep tang dan, lay ${actualK} node dau tien.</div>
+                    <div class="explain-meta">K thich ung theo N=${candidateCount} node ung vien va ${nearestContext.relationCount} lien ket truc tiep; gioi han ${NEAREST_K_MIN}-${NEAREST_K_MAX}. Highlight node dung theo danh sach K nay.</div>
                 </div>
             </div>
 
@@ -1659,6 +1972,21 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
                 <div class="node-popup-id-section">
                     <div class="node-popup-label">Node ID</div>
                     <code class="node-popup-id-value">${d.id || "—"}</code>
+                </div>
+
+                <div class="node-popup-id-section">
+                    <div class="node-popup-label">Overlap / Domain</div>
+                    <div class="node-popup-value">
+                        Membership: <b>${safeTextHtml(d.membershipStatus || "IN_REGION")}</b><br>
+                        Influence zone: <b>${safeTextHtml(d.influenceZone || "-")}</b> ${d.bridgeNode ? "(bridge)" : ""}<br>
+                        Community: <b>${safeTextHtml(d.communityId || "none")}</b> ${d.domainRole ? `(${safeTextHtml(d.domainRole)})` : ""}<br>
+                        Multi-domain overlap: <b>${d.multiDomainOverlap ? "yes" : "no"}</b><br>
+                        Domain distances: ${safeTextHtml(formatDomainDistances(d.domainDistances))}<br>
+                        Soft membership: ${safeTextHtml(formatDomainDistances(d.softMemberships))}<br>
+                        Domain influence: ${safeTextHtml(formatDomainDistances(d.domainInfluence))}<br>
+                        Feature vector: ${safeTextHtml(formatDomainDistances(d.featureVector))}<br>
+                        Overlap: raw=${formatNumber(d.overlapScore)}, weighted=${formatNumber(d.weightedOverlapScore)}, adjusted=${formatNumber(d.adjustedOverlapScore)}
+                    </div>
                 </div>
 
                 ${d.manualBlocked ? `
@@ -1774,14 +2102,19 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             nodeSel.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
             linkSel.classed("dim", false).classed("pulse", false).classed("rel-highlight", false);
             if (linkLabelSel) linkLabelSel.style("display", showLinkLabelsAlways ? null : "none").classed("dim", false);
-            if (linkDistanceLabelSel) linkDistanceLabelSel.style("display", showLinkLabelsAlways ? null : "none").classed("dim", false);
+            if (linkDistanceLabelSel) linkDistanceLabelSel.style("display", "none").classed("dim", false);
             if (centerDistanceLinkSel) centerDistanceLinkSel.classed("dim", false).classed("pulse", false);
-            if (centerDistanceLabelSel) centerDistanceLabelSel.classed("dim", false);
+            if (centerDistanceLabelSel) centerDistanceLabelSel.style("display", "none").classed("dim", false);
             return;
         }
 
         const connectedKeys = new Set();
         const neighborIds = new Set([nodeId]);
+        const selectedNode = (allNodes || []).find(n => n?.id === nodeId);
+        buildNearestFeatureNeighbors(selectedNode)
+            .forEach(n => {
+                if (n.nodeId) neighborIds.add(n.nodeId);
+            });
 
         const linkKey = l => `${safeId(l.source)}->${safeId(l.target)}::${l.type || ""}`;
         (simulation?.force?.("link")?.links?.() || []).forEach(l => {
@@ -1789,8 +2122,6 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             const t = safeId(l.target);
             if (s === nodeId || t === nodeId) {
                 connectedKeys.add(linkKey(l));
-                if (s) neighborIds.add(s);
-                if (t) neighborIds.add(t);
             }
         });
 
@@ -1824,13 +2155,14 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
 
         if (centerDistanceLinkSel) {
             centerDistanceLinkSel
-                .classed("dim", d => d.id !== nodeId)
-                .classed("pulse", d => d.id === nodeId);
+                .classed("dim", d => d.node?.id !== nodeId)
+                .classed("pulse", d => d.node?.id === nodeId);
         }
 
         if (centerDistanceLabelSel) {
             centerDistanceLabelSel
-                .classed("dim", d => d.id !== nodeId);
+                .classed("dim", d => d.node?.id !== nodeId)
+                .style("display", d => d.node?.id === nodeId ? null : "none");
         }
     }
 
@@ -2164,9 +2496,7 @@ fetchGraph(null, { force: true });
         clearTimeout(timer);
         timer = setTimeout(() => {
             pending = false;
-            const sid = currentSessionId && currentSessionId !== "ALL"
-                ? currentSessionId
-                : null;
+            const sid = currentSessionId && currentSessionId !== "ALL" ? currentSessionId : null;
             fetchGraph(sid, { force: true, skipIfBusy: true, allowAbort: false });
         }, 250);
     };

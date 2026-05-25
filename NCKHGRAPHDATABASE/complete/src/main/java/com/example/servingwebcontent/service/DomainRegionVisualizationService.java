@@ -479,12 +479,6 @@ public class DomainRegionVisualizationService {
             }
         }
 
-        for (NodeVisualization node : outsideNodes) {
-            node.computeKNNNeighbors(
-                    allNodes,
-                    distanceMetric
-            );
-        }
     }
 
     // ============================================================
@@ -493,8 +487,8 @@ public class DomainRegionVisualizationService {
 
     public void computeKNNForAllNodes() {
 
-        List<NodeVisualization> allNodes =
-                getAllNodes();
+        List<NodeVisualization> inRegionNodes =
+                getInRegionNodes();
 
         for (RegionVisualization region : regions) {
 
@@ -502,7 +496,7 @@ public class DomainRegionVisualizationService {
                     : region.getNodes()) {
 
                 node.computeKNNNeighbors(
-                        allNodes,
+                        inRegionNodes,
                         distanceMetric
                 );
 
@@ -512,6 +506,19 @@ public class DomainRegionVisualizationService {
                 );
             }
         }
+    }
+
+    private List<NodeVisualization> getInRegionNodes() {
+
+        List<NodeVisualization> nodes =
+                new ArrayList<>();
+
+        for (RegionVisualization region : regions) {
+
+            nodes.addAll(region.getNodes());
+        }
+
+        return nodes;
     }
 
     // ============================================================

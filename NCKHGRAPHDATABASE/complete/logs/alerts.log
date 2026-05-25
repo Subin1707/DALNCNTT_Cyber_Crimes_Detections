@@ -198,3 +198,4 @@
 [2026-05-14 07:50:26.224] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:212 (Domain) | Value: m.adnxs.com | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-14 07:50:35.205] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:213 (Domain) | Value: pippio.com | Risk: low (Score: 0) | Decision: ALLOW
 [2026-05-14 07:50:37.653] 🔔 ALERT | Node: 4:77a1d2ec-5681-42c3-a4bb-75613ed5faf7:214 (Domain) | Value: trace.popin.cc | Risk: low (Score: 0) | Decision: ALLOW
+[2026-05-24 00:08:41.104] 🔔 ALERT | Node: 4:00bc1cfe-5f1e-4328-85c4-c8e6a4fba55a:447 (IPAddress) | Value: 192.168.1.58 | Risk: low (Score: 24) | Decision: ALLOW

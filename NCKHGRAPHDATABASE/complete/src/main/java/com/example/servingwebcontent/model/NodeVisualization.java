@@ -210,6 +210,7 @@ public class NodeVisualization {
             List<NodeVisualization> candidateNodes,
             DistanceMetric distanceMetric
     ) {
+        this.knnNeighbors.clear();
 
         if (candidateNodes == null ||
                 candidateNodes.isEmpty()) {
@@ -223,13 +224,20 @@ public class NodeVisualization {
         for (NodeVisualization candidate
                 : candidateNodes) {
 
-            if (!candidate.equals(this)) {
+            if (!candidate.equals(this)
+                    && candidate.getRegionType() != null
+                    && !candidate.isOutsideAnyRegion()) {
 
                 double distance =
-                        distanceMetric.calculate(
+                        calculateComparableDistance(
                                 this.featureVector,
-                                candidate.featureVector
+                                candidate.featureVector,
+                                distanceMetric
                         );
+
+                if (Double.isNaN(distance) || Double.isInfinite(distance) || distance == Double.MAX_VALUE) {
+                    continue;
+                }
 
                 distances.add(
                         new NodeDistance(
@@ -246,8 +254,6 @@ public class NodeVisualization {
                 )
         );
 
-        this.knnNeighbors.clear();
-
         int limit =
                 Math.min(k, distances.size());
 
@@ -257,6 +263,27 @@ public class NodeVisualization {
                     distances.get(i).node
             );
         }
+    }
+
+    private double calculateComparableDistance(
+            double[] vector1,
+            double[] vector2,
+            DistanceMetric distanceMetric
+    ) {
+
+        if (vector1 == null || vector2 == null || vector1.length == 0 || vector2.length == 0 || distanceMetric == null) {
+            return Double.MAX_VALUE;
+        }
+
+        if (vector1.length == vector2.length) {
+            return distanceMetric.calculate(vector1, vector2);
+        }
+
+        int comparableLength = Math.min(vector1.length, vector2.length);
+        return distanceMetric.calculate(
+                Arrays.copyOf(vector1, comparableLength),
+                Arrays.copyOf(vector2, comparableLength)
+        );
     }
 
     // =====================================================
@@ -286,13 +313,22 @@ public class NodeVisualization {
         Map<RegionType, Double> percentages =
                 new HashMap<>();
 
+        int validVoters = counts.values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        if (validVoters == 0) {
+            return percentages;
+        }
+
         for (Map.Entry<RegionType, Integer> entry
                 : counts.entrySet()) {
 
             percentages.put(
                     entry.getKey(),
                     entry.getValue() * 100.0
-                            / knnNeighbors.size()
+                            / validVoters
             );
         }
 
@@ -743,6 +779,10 @@ public class NodeVisualization {
     }
 
     public void setK(int k) {
-        this.k = k;
+        this.k = Math.max(1, k);
+    }
+
+    public int getK() {
+        return k;
     }
 }

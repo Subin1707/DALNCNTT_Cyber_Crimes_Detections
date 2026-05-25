@@ -1929,3 +1929,17 @@ Lý do node xuất hiện trong graph:
   * Multi-Region Score: 0
   * Rule-Based Score: 0
   * Hybrid Score: 0 | Threats: Node Domain `trace.popin.cc` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-05-24 00:08:42.669] 🎯 DETECTION | Node: 4:00bc1cfe-5f1e-4328-85c4-c8e6a4fba55a:447 (IPAddress) | Value: 192.168.1.58 | Risk: low | Analysis: Loại node: IPAddress
+Giá trị: 192.168.1.58
+Mô tả: IP address observed in the fraud graph. Classification: internal/private.
+Risk Score: 24/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận IPAddress `192.168.1.58` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp.
+- Các indicator khiến node này được giữ lại để phân tích:
+  * Private IP
+  * Multi-Region Score: 0
+  * Rule-Based Score: 40
+  * Hybrid Score: 24 | Threats: Node IPAddress `192.168.1.58` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []

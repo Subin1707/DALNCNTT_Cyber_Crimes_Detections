@@ -278,6 +278,8 @@ function renderEnhancedNodeInfo(nodeData, decision, chatbot) {
                 <code class="node-popup-id-value">${escapeHtml(nodeData.id || "—")}</code>
             </div>
 
+            ${renderOverlapBlock(nodeData)}
+
             <div class="node-popup-indicators">
                 <div class="node-popup-label">Risk Indicators</div>
                 <div class="node-popup-indicators-list">
@@ -504,6 +506,42 @@ function renderDecisionReasonBlock(decision, sectionRiskClass = "section-neutral
     return renderTextBlock("Quyết định hệ thống", lines.join("\n"), "Decision", sectionRiskClass);
 }
 
+function renderOverlapBlock(nodeData) {
+    const raw = formatOverlapNumber(nodeData?.overlapScore);
+    const weighted = formatOverlapNumber(nodeData?.weightedOverlapScore);
+    const adjusted = formatOverlapNumber(nodeData?.adjustedOverlapScore);
+    return `
+        <div class="node-popup-id-section">
+            <div class="node-popup-label">Overlap / Domain</div>
+            <div class="node-popup-value">
+                Membership: <b>${escapeHtml(nodeData?.membershipStatus || "IN_REGION")}</b><br>
+                Influence zone: <b>${escapeHtml(nodeData?.influenceZone || "-")}</b> ${nodeData?.bridgeNode ? "(bridge)" : ""}<br>
+                Community: <b>${escapeHtml(nodeData?.communityId || "none")}</b> ${nodeData?.domainRole ? `(${escapeHtml(nodeData.domainRole)})` : ""}<br>
+                Multi-domain overlap: <b>${nodeData?.multiDomainOverlap ? "yes" : "no"}</b><br>
+                Domain distances: ${escapeHtml(formatDomainDistances(nodeData?.domainDistances))}<br>
+                Soft membership: ${escapeHtml(formatDomainDistances(nodeData?.softMemberships))}<br>
+                Domain influence: ${escapeHtml(formatDomainDistances(nodeData?.domainInfluence))}<br>
+                Feature vector: ${escapeHtml(formatDomainDistances(nodeData?.featureVector))}<br>
+                Overlap: raw=${raw}, weighted=${weighted}, adjusted=${adjusted}
+            </div>
+        </div>
+    `;
+}
+
+function formatOverlapNumber(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n.toFixed(2) : "0.00";
+}
+
+function formatDomainDistances(distances) {
+    if (!distances || typeof distances !== "object") return "none";
+    const ordered = ["safe", "suspicious", "fraud"].filter(key => distances[key] !== undefined);
+    const keys = ordered.length ? ordered : Object.keys(distances);
+    return keys
+        .map(key => `${key}=${formatOverlapNumber(distances[key])}`)
+        .join(", ") || "none";
+}
+
 function getSectionRiskClass(riskLevel) {
     const normalized = String(riskLevel || "").toLowerCase();
     if (normalized === "high") return "section-high";
@@ -535,8 +573,11 @@ function getGraphRelations(nodeId) {
                 ? `${otherNode.type || "Node"}: ${otherNode.value || otherNode.id || otherId}`
                 : (otherId || "Unknown");
 
+            const overlap = link.type === "OVERLAP" && Number(link.overlapScore)
+                ? ` (${formatOverlapNumber(link.overlapScore)})`
+                : "";
             return {
-                label: `${linkLabel(link.type)} ${direction} ${otherLabel}`
+                label: `${linkLabel(link.type, link)}${overlap} ${direction} ${otherLabel}`
             };
         });
 }

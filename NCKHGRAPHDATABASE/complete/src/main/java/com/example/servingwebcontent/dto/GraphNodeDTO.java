@@ -1,7 +1,9 @@
 package com.example.servingwebcontent.dto;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GraphNodeDTO {
 
@@ -36,6 +38,27 @@ public class GraphNodeDTO {
     private String membershipStatus;
     private String recommendedAction;
     private List<String> graphReasons;
+    private int relationGraphDegree;
+    private int overlapNeighborCount;
+    private double overlapScore;
+    private double weightedOverlapScore;
+    private double adjustedOverlapScore;
+    private String communityId;
+    private String domainCenterId;
+    private String domainRole;
+    private boolean multiDomainOverlap;
+    private Map<String, Double> domainDistances;
+    private Map<String, Double> domainAffinities;
+    private Map<String, Double> softMemberships;
+    private Map<String, Double> domainInfluence;
+    private Map<String, Double> featureVector;
+    private boolean bridgeNode;
+    private boolean outlierNode;
+    private int evidenceFeatureCount;
+    private String influenceZone;
+    private String nodeClassification;
+    private double internalRisk;
+    private double externalRisk;
 
     public GraphNodeDTO() {
         this.status = "valid";
@@ -47,6 +70,13 @@ public class GraphNodeDTO {
         this.membershipStatus = "IN_REGION";
         this.recommendedAction = "monitor";
         this.graphReasons = new ArrayList<>();
+        this.domainDistances = new LinkedHashMap<>();
+        this.domainAffinities = new LinkedHashMap<>();
+        this.softMemberships = new LinkedHashMap<>();
+        this.domainInfluence = new LinkedHashMap<>();
+        this.featureVector = new LinkedHashMap<>();
+        this.influenceZone = "OUTLIER";
+        this.nodeClassification = "OUTSIDE_NODE";
     }
 
     public GraphNodeDTO(String id,
@@ -97,6 +127,13 @@ public class GraphNodeDTO {
         this.membershipStatus = "IN_REGION";
         this.recommendedAction = "monitor";
         this.graphReasons = new ArrayList<>();
+        this.domainDistances = new LinkedHashMap<>();
+        this.domainAffinities = new LinkedHashMap<>();
+        this.softMemberships = new LinkedHashMap<>();
+        this.domainInfluence = new LinkedHashMap<>();
+        this.featureVector = new LinkedHashMap<>();
+        this.influenceZone = "OUTLIER";
+        this.nodeClassification = "OUTSIDE_NODE";
     }
 
     public GraphNodeDTO(String id,
@@ -189,7 +226,7 @@ public class GraphNodeDTO {
                 return "AnalysisSession";
 
             default:
-                return "Email";
+                return s;
         }
     }
 
@@ -407,6 +444,174 @@ public class GraphNodeDTO {
         this.graphReasons = graphReasons != null ? new ArrayList<>(graphReasons) : new ArrayList<>();
     }
 
+    public int getRelationGraphDegree() {
+        return relationGraphDegree;
+    }
+
+    public void setRelationGraphDegree(int relationGraphDegree) {
+        this.relationGraphDegree = Math.max(0, relationGraphDegree);
+    }
+
+    public int getOverlapNeighborCount() {
+        return overlapNeighborCount;
+    }
+
+    public void setOverlapNeighborCount(int overlapNeighborCount) {
+        this.overlapNeighborCount = Math.max(0, overlapNeighborCount);
+    }
+
+    public double getOverlapScore() {
+        return overlapScore;
+    }
+
+    public void setOverlapScore(double overlapScore) {
+        this.overlapScore = overlapScore;
+    }
+
+    public double getWeightedOverlapScore() {
+        return weightedOverlapScore;
+    }
+
+    public void setWeightedOverlapScore(double weightedOverlapScore) {
+        this.weightedOverlapScore = weightedOverlapScore;
+    }
+
+    public double getAdjustedOverlapScore() {
+        return adjustedOverlapScore;
+    }
+
+    public void setAdjustedOverlapScore(double adjustedOverlapScore) {
+        this.adjustedOverlapScore = adjustedOverlapScore;
+    }
+
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = normalize(communityId);
+    }
+
+    public String getDomainCenterId() {
+        return domainCenterId;
+    }
+
+    public void setDomainCenterId(String domainCenterId) {
+        this.domainCenterId = normalize(domainCenterId);
+    }
+
+    public String getDomainRole() {
+        return domainRole;
+    }
+
+    public void setDomainRole(String domainRole) {
+        this.domainRole = normalize(domainRole);
+    }
+
+    public boolean isMultiDomainOverlap() {
+        return multiDomainOverlap;
+    }
+
+    public void setMultiDomainOverlap(boolean multiDomainOverlap) {
+        this.multiDomainOverlap = multiDomainOverlap;
+    }
+
+    public Map<String, Double> getDomainDistances() {
+        return domainDistances;
+    }
+
+    public void setDomainDistances(Map<String, Double> domainDistances) {
+        this.domainDistances = domainDistances != null ? new LinkedHashMap<>(domainDistances) : new LinkedHashMap<>();
+    }
+
+    public Map<String, Double> getDomainAffinities() {
+        return domainAffinities;
+    }
+
+    public void setDomainAffinities(Map<String, Double> domainAffinities) {
+        this.domainAffinities = domainAffinities != null ? new LinkedHashMap<>(domainAffinities) : new LinkedHashMap<>();
+    }
+
+    public Map<String, Double> getSoftMemberships() {
+        return softMemberships;
+    }
+
+    public void setSoftMemberships(Map<String, Double> softMemberships) {
+        this.softMemberships = softMemberships != null ? new LinkedHashMap<>(softMemberships) : new LinkedHashMap<>();
+    }
+
+    public Map<String, Double> getDomainInfluence() {
+        return domainInfluence;
+    }
+
+    public void setDomainInfluence(Map<String, Double> domainInfluence) {
+        this.domainInfluence = domainInfluence != null ? new LinkedHashMap<>(domainInfluence) : new LinkedHashMap<>();
+    }
+
+    public Map<String, Double> getFeatureVector() {
+        return featureVector;
+    }
+
+    public void setFeatureVector(Map<String, Double> featureVector) {
+        this.featureVector = featureVector != null ? new LinkedHashMap<>(featureVector) : new LinkedHashMap<>();
+    }
+
+    public boolean isBridgeNode() {
+        return bridgeNode;
+    }
+
+    public void setBridgeNode(boolean bridgeNode) {
+        this.bridgeNode = bridgeNode;
+    }
+
+    public boolean isOutlierNode() {
+        return outlierNode;
+    }
+
+    public void setOutlierNode(boolean outlierNode) {
+        this.outlierNode = outlierNode;
+    }
+
+    public int getEvidenceFeatureCount() {
+        return evidenceFeatureCount;
+    }
+
+    public void setEvidenceFeatureCount(int evidenceFeatureCount) {
+        this.evidenceFeatureCount = Math.max(0, evidenceFeatureCount);
+    }
+
+    public String getInfluenceZone() {
+        return influenceZone;
+    }
+
+    public void setInfluenceZone(String influenceZone) {
+        this.influenceZone = normalize(influenceZone);
+    }
+
+    public String getNodeClassification() {
+        return nodeClassification;
+    }
+
+    public void setNodeClassification(String nodeClassification) {
+        this.nodeClassification = normalize(nodeClassification);
+    }
+
+    public double getInternalRisk() {
+        return internalRisk;
+    }
+
+    public void setInternalRisk(double internalRisk) {
+        this.internalRisk = internalRisk;
+    }
+
+    public double getExternalRisk() {
+        return externalRisk;
+    }
+
+    public void setExternalRisk(double externalRisk) {
+        this.externalRisk = externalRisk;
+    }
+
     private static String calculateDomainAssignment(String riskLevel) {
         if (riskLevel == null) return "safe";
         String normalized = riskLevel.toLowerCase().trim();
@@ -417,8 +622,4 @@ public class GraphNodeDTO {
         };
     }
 
-    public void setDegree(int degree2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDegree'");
-    }
 }

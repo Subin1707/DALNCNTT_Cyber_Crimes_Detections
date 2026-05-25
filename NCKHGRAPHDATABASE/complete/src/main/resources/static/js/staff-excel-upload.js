@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function reloadGraph() {
         if (typeof window.fetchGraph === "function") {
-            await window.fetchGraph(); // reload full graph
+            await window.fetchGraph();
         }
     }
 
@@ -104,8 +104,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             showMessage(`✅ ${msg}`, "success");
 
-            // reload graph sau khi upload
-            await reloadGraph();
+            // reload đúng session vừa upload để layout miền không bị lẫn với full graph dày
+            const sessionId = data?.sessionId || null;
+            const sessionSelect = document.getElementById("sessionSelect");
+            if (sessionId && sessionSelect) {
+                sessionSelect.value = sessionId;
+            }
+            if (typeof window.fetchGraph === "function") {
+                await window.fetchGraph(sessionId || "");
+            } else {
+                await reloadGraph();
+            }
 
             // highlight nếu backend trả về giá trị nào đó
             // (VD: data.highlightValues = ["a@b.com", "1.2.3.4"])

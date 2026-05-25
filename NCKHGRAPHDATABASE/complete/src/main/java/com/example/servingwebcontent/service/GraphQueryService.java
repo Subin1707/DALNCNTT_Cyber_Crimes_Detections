@@ -14,10 +14,14 @@ public class GraphQueryService {
 
     private final Neo4jClient neo4j;
     private final GraphUpdateBroadcaster graphUpdateBroadcaster;
+    private final MultiEntityGraphAnalysisService multiEntityGraphAnalysisService;
 
-    public GraphQueryService(Neo4jClient neo4j, GraphUpdateBroadcaster graphUpdateBroadcaster) {
+    public GraphQueryService(Neo4jClient neo4j,
+                             GraphUpdateBroadcaster graphUpdateBroadcaster,
+                             MultiEntityGraphAnalysisService multiEntityGraphAnalysisService) {
         this.neo4j = neo4j;
         this.graphUpdateBroadcaster = graphUpdateBroadcaster;
+        this.multiEntityGraphAnalysisService = multiEntityGraphAnalysisService;
     }
 
     /* ===================================================== */
@@ -116,10 +120,7 @@ public class GraphQueryService {
         .fetch().all()
         .forEach(m -> addLink(m, links, linkKeySet));
 
-        return new GraphResponseDTO(
-                new ArrayList<>(nodeMap.values()),
-                links
-        );
+        return enrichedGraph(new ArrayList<>(nodeMap.values()), links);
     }
 
     /* ===================================================== */
@@ -242,7 +243,7 @@ public class GraphQueryService {
         .fetch().all()
         .forEach(m -> addLink(m, links, linkKeySet));
 
-        return new GraphResponseDTO(new ArrayList<>(nodeMap.values()), links);
+        return enrichedGraph(new ArrayList<>(nodeMap.values()), links);
     }
 
     /* ===================================================== */
@@ -350,10 +351,7 @@ public class GraphQueryService {
         .fetch().all()
         .forEach(m -> addLink(m, links, linkKeySet));
 
-        return new GraphResponseDTO(
-                new ArrayList<>(nodeMap.values()),
-                links
-        );
+        return enrichedGraph(new ArrayList<>(nodeMap.values()), links);
     }
 
     /* ===================================================== */
@@ -621,6 +619,13 @@ public class GraphQueryService {
 
         keySet.add(key);
         links.add(new GraphLinkDTO(src, tgt, type));
+    }
+
+    private GraphResponseDTO enrichedGraph(List<GraphNodeDTO> nodes, List<GraphLinkDTO> links) {
+        List<GraphNodeDTO> safeNodes = nodes == null ? new ArrayList<>() : nodes;
+        List<GraphLinkDTO> safeLinks = links == null ? new ArrayList<>() : links;
+        multiEntityGraphAnalysisService.enrich(safeNodes, safeLinks);
+        return new GraphResponseDTO(safeNodes, safeLinks);
     }
 
     private static String safeStr(Object o) {
