@@ -33,7 +33,6 @@
 
         <div class="header-actions">
             <button id="btnTheme" class="btn btn-secondary" type="button" aria-label="Bật tắt giao diện sáng tối">Tối</button>
-            <button id="btnOpenDetails" class="btn btn-small" type="button" aria-label="Mở chi tiết node">Mở chi tiết</button>
             <span class="pill subtle"><span class="dot unknown"></span>Dashboard Admin</span>
             <form th:action="@{/admin/logout}" method="post" class="logout-form">
                 <button type="submit" class="btn">Logout</button>
@@ -56,6 +55,10 @@
             <p class="summary-label">Nhập liệu</p>
             <p class="summary-value">Excel</p>
             <p class="summary-sub">Tải file và đồng bộ dữ liệu nhanh</p>
+            <div class="summary-upload">
+                <input type="file" id="excelFileInput" accept=".xlsx,.xls">
+                <button type="button" id="uploadExcelBtn">Tải lên</button>
+            </div>
         </article>
         <article class="summary-card">
             <p class="summary-label">Trạng thái</p>
@@ -64,61 +67,26 @@
         </article>
     </section>
 
-    <!-- NAV moved to right sidebar for desktop -->
+    <!-- ================= ANALYZE ROW ================= -->
+    <section class="card card--full-width analyze-card">
+        <h3>Phân tích gian lận</h3>
+        <p class="note">
+            <b>Rủi ro Trực tiếp</b> là kết quả đánh giá từ dữ liệu bạn nhập vào tại thời điểm hiện tại.
+        </p>
 
-    <!-- ================= CREATE STAFF ================= -->
-    <section class="card">
-        <h2>Tạo tài khoản Staff</h2>
-
-        <form th:action="@{/admin/create-staff}" method="post" class="form-inline">
-            <input type="email" name="email" placeholder="Staff Email" required autocomplete="off">
-            <input type="password" name="password" placeholder="Staff Password" required autocomplete="off">
-            <button type="submit">Tạo Staff</button>
+        <form class="form-inline analyze-form" onsubmit="return false;">
+            <input type="email" id="analyzeEmail" placeholder="Email…" autocomplete="off">
+            <input type="text" id="analyzeIP" placeholder="IP…" autocomplete="off">
+            <input type="text" id="analyzeURL" placeholder="URL…" autocomplete="off">
+            <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
+            <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
+            <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
+            <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
+            <button type="button" id="analyzeBtn">Phân tích</button>
         </form>
 
-        <p class="message" th:if="${session.message != null}" th:text="${session.message}"></p>
+        <div id="analyzeResult" class="analyze-result"></div>
     </section>
-
-    <!-- ================= ANALYZE + EXCEL ROW ================= -->
-    <div class="card-row">
-        <!-- ANALYZE -->
-        <div class="card-row-item">
-            <h3>Phân tích gian lận</h3>
-
-            <p class="note">
-                <b>Rủi ro Trực tiếp</b> là kết quả đánh giá từ dữ liệu bạn nhập vào tại thời điểm hiện tại.
-            </p>
-
-            <form class="form-inline" onsubmit="return false;">
-                <input type="email" id="analyzeEmail" placeholder="Email…" autocomplete="off">
-                <input type="text" id="analyzeIP" placeholder="IP…" autocomplete="off">
-                <input type="text" id="analyzeURL" placeholder="URL…" autocomplete="off">
-                <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
-                <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
-                <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
-                <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
-                <button type="button" id="analyzeBtn">Phân tích</button>
-            </form>
-
-            <div id="analyzeResult" class="analyze-result"></div>
-        </div>
-
-        <!-- EXCEL -->
-        <div class="card-row-item">
-            <h3>Nhập file Excel</h3>
-
-            <p class="note">
-                File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
-            </p>
-
-            <div class="form-inline">
-                <input type="file" id="excelFileInput" accept=".xlsx,.xls">
-                <button type="button" id="uploadExcelBtn">Tải lên</button>
-            </div>
-
-            <div id="excelResult" class="analyze-result"></div>
-        </div>
-    </div>
 
     <!-- ================= GRAPH & DETAILS ROW ================= -->
     <section class="card">

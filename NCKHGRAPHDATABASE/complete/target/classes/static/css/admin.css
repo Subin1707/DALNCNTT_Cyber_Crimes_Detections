@@ -6,6 +6,192 @@
 
 @import 'common.css';
 
+/* =========================================================
+   Admin dashboard compact layout overrides
+   ========================================================= */
+
+.page-index .header h1 {
+    font-size: 24px !important;
+}
+
+.page-index .header p {
+    font-size: 12px !important;
+    margin-top: 3px !important;
+}
+
+.page-index .summary-grid {
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.page-index .summary-card {
+    min-height: 86px !important;
+    padding: 10px 12px !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
+}
+
+.page-index .summary-label {
+    font-size: 9px !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1.15 !important;
+}
+
+.page-index .summary-value {
+    font-size: 16px !important;
+    margin-top: 0 !important;
+    line-height: 1.15 !important;
+}
+
+.page-index .summary-sub {
+    font-size: 10px !important;
+    margin-top: 0 !important;
+    line-height: 1.2 !important;
+}
+
+.page-index .summary-upload {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin-top: 4px;
+    align-items: center;
+}
+
+.page-index .summary-upload input[type="file"],
+.page-index .summary-upload button {
+    width: auto;
+    min-height: 28px !important;
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+    border-radius: 9px !important;
+}
+
+.page-index .summary-upload input[type="file"] {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.page-index .summary-upload button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.page-index .card {
+    padding: 12px !important;
+    margin-bottom: 10px !important;
+    border-radius: 14px !important;
+}
+
+.page-index .card h2 {
+    font-size: 15px !important;
+    margin-bottom: 8px !important;
+}
+
+.page-index .card h3 {
+    font-size: 13px !important;
+    margin-bottom: 8px !important;
+}
+
+.page-index .note {
+    font-size: 10px !important;
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+    padding: 7px 9px !important;
+}
+
+.page-index .analyze-card {
+    width: 100%;
+}
+
+.page-index .analyze-form {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+}
+
+.page-index .analyze-form input,
+.page-index .analyze-form button {
+    min-width: 0;
+    min-height: 28px !important;
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+    border-radius: 10px !important;
+}
+
+.page-index .analyze-form button {
+    grid-column: span 1;
+}
+
+.page-index #analyzeResult,
+.page-index #excelResult,
+.page-index #uploadResult,
+.page-index .analyze-result {
+    margin-top: 6px !important;
+    padding: 9px 10px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+    min-height: 18px;
+}
+
+.page-index .graph-controls {
+    margin: 6px 0 8px !important;
+    gap: 6px !important;
+}
+
+.page-index .graph-controls select,
+.page-index .graph-controls button {
+    min-height: 30px !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+    border-radius: 10px !important;
+}
+
+.page-index .graph-row {
+    gap: 12px !important;
+}
+
+.page-index .graph-column svg,
+.page-index #graphSVG {
+    min-height: 500px !important;
+}
+
+.page-index .domain-legend {
+    margin-top: 12px !important;
+    padding: 10px !important;
+}
+
+.page-index .legend-section {
+    padding: 8px !important;
+    font-size: 12px !important;
+}
+
+.page-index .table-wrapper {
+    border-radius: 16px !important;
+}
+
+.page-index thead th,
+.page-index tbody td {
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+}
+
+.page-index .sidebar-left {
+    padding: 14px !important;
+    border-radius: 20px !important;
+}
+
+.page-index .nav-buttons {
+    gap: 8px !important;
+    margin-top: 10px !important;
+}
+
+.page-index .nav-buttons button {
+    min-height: 36px !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+}
+
 /* --- Align admin theme with global dashboard variables and neutralize strong blue accents --- */
 :root{
     --primary: var(--headingText);

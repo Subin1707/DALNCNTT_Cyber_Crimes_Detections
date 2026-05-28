@@ -32,7 +32,6 @@
 
         <div class="header-actions">
             <button id="btnTheme" class="btn btn-secondary" type="button" aria-label="Bật tắt giao diện sáng tối">Tối</button>
-            <button id="btnOpenDetails" class="btn btn-small" type="button" aria-label="Mở chi tiết node">Mở chi tiết</button>
             <span class="pill subtle"><span class="dot unknown"></span>Dashboard Customer</span>
             <a th:href="@{/customer/logout}" class="btn">Logout</a>
         </div>
@@ -42,66 +41,56 @@
         <article class="summary-card">
             <p class="summary-label">Trang</p>
             <p class="summary-value">Customer</p>
-            <p class="summary-sub">Phân tích và xem kết quả trực quan</p>
+            <p class="summary-sub">Quản lý dữ liệu, phân tích và người dùng</p>
         </article>
         <article class="summary-card">
-            <p class="summary-label">Dữ liệu</p>
-            <p class="summary-value">Email / IP / URL</p>
-            <p class="summary-sub">Nhập nhanh và kiểm tra rủi ro</p>
+            <p class="summary-label">Chức năng</p>
+            <p class="summary-value">5 mục</p>
+            <p class="summary-sub">Email, IP, URL, tài khoản, giới thiệu</p>
         </article>
         <article class="summary-card">
-            <p class="summary-label">Biểu đồ</p>
-            <p class="summary-value">Graph</p>
-            <p class="summary-sub">Mối liên kết giữa các thực thể</p>
+            <p class="summary-label">Nhập liệu</p>
+            <p class="summary-value">Excel</p>
+            <p class="summary-sub">Tải file và đồng bộ dữ liệu nhanh</p>
+            <div class="summary-upload">
+                <input type="file" id="excelFile" accept=".xlsx,.xls">
+                <button type="button" id="uploadExcelBtn">Tải lên</button>
+            </div>
         </article>
         <article class="summary-card">
             <p class="summary-label">Trạng thái</p>
             <p class="summary-value">Sẵn sàng</p>
-            <p class="summary-sub">Giao diện đồng bộ với mẫu index</p>
+            <p class="summary-sub">Bố cục mới theo mẫu index</p>
         </article>
     </section>
 
     <!-- NAV moved to right sidebar for desktop -->
 
-    <!-- ================= ANALYZE + EXCEL ROW ================= -->
-    <div class="card-row">
-        <!-- FRAUD ANALYSIS -->
-        <div class="card-row-item">
-            <h3>Phân tích gian lận</h3>
+    <!-- ================= ANALYZE ROW ================= -->
+    <section class="card card--full-width analyze-card">
+        <h3>Phân tích gian lận</h3>
 
-            <form class="form-inline" onsubmit="return false;">
-                <input type="email" id="analyzeEmail" placeholder="Email" autocomplete="off">
-                <input type="text" id="analyzeIP" placeholder="IP" autocomplete="off">
-                <input type="text" id="analyzeURL" placeholder="URL" autocomplete="off">
-                <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
-                <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
-                <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
-                <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
-                <button type="button" id="analyzeBtn">Phân tích</button>
-            </form>
+        <p class="note">
+            <b>Rủi ro Trực tiếp</b> là kết quả đánh giá từ dữ liệu bạn nhập vào tại thời điểm hiện tại.
+        </p>
 
-            <div id="analyzeResult" class="analyze-result"></div>
-        </div>
-        <!-- EXCEL UPLOAD -->
-        <div class="card-row-item">
-            <h3>Nhập file Excel</h3>
+        <form class="form-inline analyze-form" onsubmit="return false;">
+            <input type="email" id="analyzeEmail" placeholder="Email" autocomplete="off">
+            <input type="text" id="analyzeIP" placeholder="IP" autocomplete="off">
+            <input type="text" id="analyzeURL" placeholder="URL" autocomplete="off">
+            <input type="text" id="analyzeDomain" placeholder="Domain" autocomplete="off">
+            <input type="text" id="analyzeFileNode" placeholder="File name" autocomplete="off">
+            <input type="text" id="analyzeFileHash" placeholder="File hash" autocomplete="off">
+            <input type="text" id="analyzeVictimAccount" placeholder="Victim account" autocomplete="off">
+            <button type="button" id="analyzeBtn">Phân tích</button>
+        </form>
 
-            <p class="note">
-                File (.xlsx / .xls) gồm các cột: <b>Email</b>, <b>IP</b>, <b>URL</b>
-            </p>
-
-            <div class="form-inline">
-                <input type="file" id="excelFile" accept=".xlsx,.xls">
-                <button type="button" id="uploadExcelBtn">Tải lên</button>
-            </div>
-
-            <div id="uploadResult" class="analyze-result"></div>
-        </div>
-    </div>
+        <div id="analyzeResult" class="analyze-result"></div>
+    </section>
 
     <!-- GRAPH & DETAILS -->
     <section class="card">
-        <h2>Đồ thị liên kết gian lận & Chi tiết Node</h2>
+        <h2>Đồ thị gian lận & Chi tiết Node</h2>
 
         <div class="graph-controls">
             <label for="sessionSelect"><b>Phiên:</b></label>
@@ -112,34 +101,46 @@
             <button type="button" id="reloadGraphBtn">Tải lại</button>
         </div>
 
-        <!-- LEGEND -->
-        <div class="graph-legend" style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px; font-size:13px; align-items:center;">
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:16px;border-radius:50%;background:#1c8ef9;"></div>
-                <span>SUBMITTED_FOR_ANALYSIS</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:16px;border-radius:50%;background:#ffdd57;"></div>
-                <span>CONTAINS_URL</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:16px;border-radius:50%;background:#d62728;"></div>
-                <span>SENT_FROM_IP / High Risk</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:16px;border-radius:50%;background:#2ca02c;"></div>
-                <span>HOSTED_ON</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:4px;">
-                <div style="width:16px;height:16px;border-radius:50%;background:#8e44ad;"></div>
-                <span>CONNECTED_TO</span>
-            </div>
-        </div>
-
         <div class="graph-row">
             <!-- Graph on left -->
             <div class="graph-column">
                 <svg id="graphSVG" width="1000" height="600"></svg>
+
+                <div class="domain-legend">
+                    <div class="legend-section safe">
+                        <div class="legend-color"></div>
+                        <div>
+                            <strong>MIỀN AN TOÀN</strong>
+                            <small>IP ổn định • Thiết bị tin cậy • Không VPN/TOR • Không blacklist • Hành vi bình thường</small>
+                        </div>
+                    </div>
+                    <div class="legend-section suspicious">
+                        <div class="legend-color"></div>
+                        <div>
+                            <strong>MIỀN NGHI NGỜ</strong>
+                            <small>Đa IP • VPN/Proxy • Request cao • Bất thường nhẹ • Chưa xác nhận gian lận</small>
+                        </div>
+                    </div>
+                    <div class="legend-section fraud">
+                        <div class="legend-color"></div>
+                        <div>
+                            <strong>MIỀN GIAN LẬN</strong>
+                            <small>Blacklist True • TOR • Malware • Spam cao • Hành vi nguy hiểm cao</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="graphExplanationPanel" class="graph-explanation-panel" aria-live="polite">
+                    <div class="explain-head">
+                        <div>
+                            <div class="explain-title">Giải thích khoảng cách & xác suất miền</div>
+                            <div class="explain-sub">Chọn một node trên đồ thị để xem vì sao node thuộc miền hiện tại.</div>
+                        </div>
+                    </div>
+                    <div id="graphExplanationBody" class="explain-body">
+                        <div class="explain-empty">Chưa chọn node.</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Node details on right -->
@@ -181,8 +182,34 @@
         </div>
     </section>
 
-    <!-- NODE TABLE -->
     <section class="card">
+        <h2>Kết quả phân tích theo Phiên</h2>
+
+        <p class="note">
+            ⚠ <b>Mức rủi ro (Mạng)</b> được tính dựa trên phân tích toàn bộ đồ thị.
+            <br>
+            <b>Điểm rủi ro (Tổng hợp)</b> là điểm cuối cùng sau khi hệ thống xử lý dữ liệu và lan truyền rủi ro.
+        </p>
+
+        <div class="table-wrapper">
+            <table id="finalTable">
+                <thead>
+                <tr>
+                    <th>Phiên</th>
+                    <th>Email</th>
+                    <th>IP</th>
+                    <th>URL</th>
+                    <th>Mức rủi ro (Mạng)</th>
+                    <th>Điểm rủi ro (Tổng hợp)</th>
+                    <th>Kết luận (Graph)</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card node-table-hidden" aria-hidden="true">
         <h2>Bảng thông tin Node</h2>
 
         <div class="table-search">
@@ -229,6 +256,8 @@
 <script th:src="@{/js/customer-analyze.js}"></script>
 <script th:src="@{/js/customer-excel-upload.js}"></script>
 <script th:src="@{/js/customer-enhanced-analysis.js}"></script>
+
+<script th:src="@{/js/sidebar-toggle.js}"></script>
 
 <!-- nếu bạn có 3 file này thì bật lên luôn -->
 <script th:src="@{/js/customer-email-analyze.js}"></script>

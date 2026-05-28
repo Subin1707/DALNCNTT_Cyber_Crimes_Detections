@@ -2,10 +2,8 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quản lý Tài khoản</title>
-
-</head>
-
     <link rel="stylesheet" th:href="@{/css/admin.css}">
     <link rel="stylesheet" th:href="@{/styles.css}">
     <script th:src="@{/theme.js}"></script>
@@ -34,6 +32,22 @@
     </header>
 
     <!-- Nav moved to left sidebar for dashboard-style layout -->
+
+    <section class="card">
+        <h2>Tạo tài khoản Staff</h2>
+
+        <p class="note">
+            Form này được chuyển từ trang dashboard để tập trung toàn bộ thao tác quản lý người dùng ở một chỗ.
+        </p>
+
+        <form th:action="@{/admin/create-staff}" method="post" class="form-inline">
+            <input type="email" name="email" placeholder="Staff Email" required autocomplete="off">
+            <input type="password" name="password" placeholder="Staff Password" required autocomplete="off">
+            <button type="submit">Tạo Staff</button>
+        </form>
+
+        <p class="message" th:if="${session.message != null}" th:text="${session.message}"></p>
+    </section>
 
     <!-- USER LIST -->
     <section class="card">
