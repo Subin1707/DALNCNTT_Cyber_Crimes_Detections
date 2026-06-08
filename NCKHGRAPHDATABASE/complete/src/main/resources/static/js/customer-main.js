@@ -14,6 +14,63 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.fetchGraph(sessionId);
             }
         };
+        evt.addEventListener('graph-update', async function (event) {
+            if (typeof window.fetchGraph !== 'function') return;
+            let payload = {};
+            try {
+                payload = event?.data ? JSON.parse(event.data) : {};
+            } catch (e) {
+                payload = {};
+            }
+
+            const sessionSelect = document.getElementById('sessionSelect');
+            const eventSessionId = payload.sessionId ? String(payload.sessionId) : '';
+            let sessionId = sessionSelect ? sessionSelect.value : '';
+
+            if (sessionSelect && eventSessionId) {
+                let opt = Array.from(sessionSelect.options).find(o => o.value === eventSessionId);
+                if (!opt) {
+                    let allowedSession = null;
+                    try {
+                        const res = await fetch('/customer/sessions');
+                        if (res.ok) {
+                            const sessions = await res.json();
+                            allowedSession = (Array.isArray(sessions) ? sessions : [])
+                                .find(s => String(s.sessionId || s.id || s.value || '') === eventSessionId);
+                        }
+                    } catch (e) {
+                        allowedSession = null;
+                    }
+
+                    if (!allowedSession) {
+                        window.fetchGraph(sessionId);
+                        return;
+                    }
+
+                    opt = document.createElement('option');
+                    opt.value = eventSessionId;
+                    opt.textContent = [
+                        eventSessionId,
+                        allowedSession.fileName || 'NETWORK_CAPTURE',
+                        allowedSession.createdAt || allowedSession.time || allowedSession.created || ''
+                    ].filter(Boolean).join(' | ');
+                    sessionSelect.insertBefore(opt, sessionSelect.options[1] || null);
+                }
+                sessionSelect.value = eventSessionId;
+                sessionId = eventSessionId;
+
+                const labelEl = document.getElementById('selectedSessionLabel');
+                if (labelEl) labelEl.textContent = opt.textContent;
+            }
+
+            window.fetchGraph(sessionId);
+        });
+        evt.addEventListener('update', function () {
+            if (typeof window.fetchGraph === 'function') {
+                const sessionSelect = document.getElementById('sessionSelect');
+                window.fetchGraph(sessionSelect ? sessionSelect.value : '');
+            }
+        });
         evt.onerror = function (e) {
             console.warn('SSE connection error:', e);
         };
@@ -305,9 +362,13 @@ function showNodeInfo(d) {
     addLine("Verdict", d.verdict);
 
     const btn = document.createElement("button");
+    btn.id = "closeNodeInfo";
+    btn.className = "node-popup-btn-close";
+    btn.type = "button";
     btn.textContent = "Đóng";
     btn.onclick = () => {
         box.style.display = "none";
+        box.innerHTML = "";
         selectedNodeId = null;
     };
 
@@ -1087,5 +1148,11 @@ const zoom = d3.zoom()
     /* ================= INIT ================= */
     // initial load: fetch graph (customer-session.js will handle session dropdown / reload)
     fetchGraph();
+
+    setInterval(() => {
+        if (document.visibilityState !== "visible") return;
+        const sessionSelect = document.getElementById("sessionSelect");
+        fetchGraph(sessionSelect ? sessionSelect.value : "");
+    }, 5000);
 
 });

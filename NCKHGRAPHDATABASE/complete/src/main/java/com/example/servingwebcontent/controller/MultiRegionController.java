@@ -289,12 +289,8 @@ public class MultiRegionController {
             probabilities.put("FRAUD", String.format("%.1f%%", result.getRegionProbability(RegionType.FRAUD) * 100));
             response.put("probabilities", probabilities);
 
-            // Region distances
-            Map<String, String> distances = new LinkedHashMap<>();
-            distances.put("SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)));
-            distances.put("SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)));
-            distances.put("FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD)));
-            response.put("distances", distances);
+            response.put("distances", formatDistanceMap(result));
+            response.put("distance_summary", formatDistanceSummary(result));
 
             // Details
             response.put("details", result.getDetails());
@@ -456,11 +452,8 @@ public class MultiRegionController {
         response.put("node", formatNode(node));
         response.put("primaryRegion", result.getPrimaryRegion());
         response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
-        response.put("distances", Map.of(
-            "SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)),
-            "SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)),
-            "FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD))
-        ));
+        response.put("distances", formatDistanceMap(result));
+        response.put("distance_summary", formatDistanceSummary(result));
         response.put("probabilities", Map.of(
             "SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100),
             "SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100),
@@ -489,11 +482,8 @@ public class MultiRegionController {
         response.put("node", formatNode(node));
         response.put("primaryRegion", result.getPrimaryRegion());
         response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
-        response.put("distances", Map.of(
-            "SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)),
-            "SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)),
-            "FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD))
-        ));
+        response.put("distances", formatDistanceMap(result));
+        response.put("distance_summary", formatDistanceSummary(result));
         response.put("probabilities", Map.of(
             "SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100),
             "SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100),
@@ -522,11 +512,8 @@ public class MultiRegionController {
         response.put("node", formatNode(node));
         response.put("primaryRegion", result.getPrimaryRegion());
         response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
-        response.put("distances", Map.of(
-            "SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)),
-            "SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)),
-            "FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD))
-        ));
+        response.put("distances", formatDistanceMap(result));
+        response.put("distance_summary", formatDistanceSummary(result));
         response.put("probabilities", Map.of(
             "SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100),
             "SUSPICIOUS", String.format("%.2f%%", result.getRegionProbability(RegionType.SUSPICIOUS) * 100),
@@ -547,11 +534,8 @@ public class MultiRegionController {
         response.put("primaryRegion", result.getPrimaryRegion());
         response.put("anomalyScore", String.format("%.2f", result.getAnomalyScore()));
         
-        Map<String, String> distances = new LinkedHashMap<>();
-        distances.put("SAFE", String.format("%.2f", result.getRegionDistance(RegionType.SAFE)));
-        distances.put("SUSPICIOUS", String.format("%.2f", result.getRegionDistance(RegionType.SUSPICIOUS)));
-        distances.put("FRAUD", String.format("%.2f", result.getRegionDistance(RegionType.FRAUD)));
-        response.put("distances", distances);
+        response.put("distances", formatDistanceMap(result));
+        response.put("distance_summary", formatDistanceSummary(result));
         
         Map<String, String> probabilities = new LinkedHashMap<>();
         probabilities.put("SAFE", String.format("%.2f%%", result.getRegionProbability(RegionType.SAFE) * 100));
@@ -580,6 +564,20 @@ public class MultiRegionController {
         formatted.put("spamPattern", node.isSpamPattern());
         formatted.put("abnormalAccessTime", node.isAbnormalAccessTime());
         return formatted;
+    }
+
+    private Map<String, String> formatDistanceMap(MultiRegionAnalysisService.RegionAnalysisResult result) {
+        Map<String, String> distances = new LinkedHashMap<>();
+        result.getNamedRegionDistances()
+                .forEach((name, distance) -> distances.put(name, String.format("%.2f", distance)));
+        return distances;
+    }
+
+    private Map<String, String> formatDistanceSummary(MultiRegionAnalysisService.RegionAnalysisResult result) {
+        Map<String, String> summary = new LinkedHashMap<>();
+        result.getDistanceSummary()
+                .forEach((name, distance) -> summary.put(name, String.format("%.2f", distance)));
+        return summary;
     }
 
     private Map<String, String> formatProbabilityMap(Map<RegionType, Double> probabilities) {

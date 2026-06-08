@@ -1943,3 +1943,12 @@ Lý do node xuất hiện trong graph:
   * Multi-Region Score: 0
   * Rule-Based Score: 40
   * Hybrid Score: 24 | Threats: Node IPAddress `192.168.1.58` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []
+[2026-06-01 17:02:49.254] 🎯 DETECTION | Node: 4:00bc1cfe-5f1e-4328-85c4-c8e6a4fba55a:165 (Email) | Value: bulk.safe.9@example.com | Risk: low | Analysis: Loại node: Email
+Giá trị: bulk.safe.9@example.com
+Mô tả: Email address observed in the fraud graph and linked to communications.
+Risk Score: 5/100
+Pattern phát hiện: Clean
+Ý nghĩa pattern: No suspicious patterns detected
+
+Lý do node xuất hiện trong graph:
+- Hệ thống đã ghi nhận Email `bulk.safe.9@example.com` trong dữ liệu phân tích, nhưng hiện chưa truy ra nhiều liên kết trực tiếp. | Threats: Node Email `bulk.safe.9@example.com` hiện có mức rủi ro thấp. Tuy nhiên vẫn nên theo dõi các liên kết trong graph vì thay đổi ở node liên quan có thể làm ngữ cảnh rủi ro thay đổi. | Related: []

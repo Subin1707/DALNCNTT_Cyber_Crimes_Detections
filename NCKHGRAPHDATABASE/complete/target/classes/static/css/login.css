@@ -397,6 +397,26 @@ button:hover, .btn:hover {
     transform: translateY(0);
 }
 
+.comparison-action {
+    min-height: 48px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #d9e7ff;
+    text-decoration: none;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.comparison-action:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.12);
+}
+
 .error-msg,
 .success-msg {
     margin: 0;

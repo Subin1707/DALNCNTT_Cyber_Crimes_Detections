@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>So sánh thuật toán</title>
+
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/algorithm-comparison.css}">
+    <script th:src="@{/theme.js}"></script>
+</head>
+<body class="page-comparison page-index">
+
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/algorithm-comparison'">So sánh thuật toán</button>
+
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-email'">Quản lý Email</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-ip'">Quản lý IP</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-url'">Quản lý URL</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-domain'">Quản lý Domain</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-file'">Quản lý File name</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-filehash'">Quản lý File hash</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/admin-victim'">Quản lý Victim account</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/user-management'">Quản lý Tài khoản</button>
+        <button th:if="${role == 'ADMIN'}" onclick="location.href='/admin/about'">Giới thiệu</button>
+
+        <button th:if="${role == 'STAFF'}" onclick="location.href='/staff/staff-email'">Quản lý Email</button>
+        <button th:if="${role == 'STAFF'}" onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
+        <button th:if="${role == 'STAFF'}" onclick="location.href='/staff/staff-url'">Quản lý URL</button>
+        <button th:if="${role == 'STAFF'}" onclick="location.href='/staff/about'">Giới thiệu</button>
+
+        <button th:if="${role == 'CUSTOMER'}" onclick="location.href='/customer/customer-email'">Quản lý Email</button>
+        <button th:if="${role == 'CUSTOMER'}" onclick="location.href='/customer/customer-ip'">Quản lý IP</button>
+        <button th:if="${role == 'CUSTOMER'}" onclick="location.href='/customer/customer-url'">Quản lý URL</button>
+        <button th:if="${role == 'CUSTOMER'}" onclick="location.href='/customer/about'">Giới thiệu</button>
+
+        <button th:if="${role == 'GUEST'}" onclick="location.href='/login'">Đăng nhập</button>
+    </div>
+</aside>
+
+<main class="comparison-shell">
+    <header class="comparison-header">
+        <div>
+            <p class="eyebrow">Evaluation Dashboard</p>
+            <h1>So sánh thuật toán phát hiện gian lận</h1>
+            <p class="header-copy">
+                Đối chiếu độ chính xác, Precision, Recall, F1-score và thời gian xử lý trên tập mẫu đã gán nhãn.
+            </p>
+        </div>
+        <div class="header-actions">
+            <button id="btnTheme" class="btn btn-secondary" type="button" aria-label="Bật tắt giao diện sáng tối">Tối</button>
+            <a th:href="@{/dashboard}" class="btn">Dashboard</a>
+        </div>
+    </header>
+
+    <section class="control-band" aria-label="Bộ lọc đánh giá">
+        <label>
+            K của KNN
+            <input id="kInput" type="number" min="1" max="15" value="5">
+        </label>
+        <label>
+            Số lần test
+            <input id="repeatInput" type="number" min="30" max="200" value="30">
+        </label>
+        <button id="reloadComparisonBtn" type="button">Cập nhật bảng</button>
+    </section>
+
+    <section class="best-band" aria-live="polite">
+        <div>
+            <p class="eyebrow">Tối ưu tổng hợp</p>
+            <h2 id="bestName">Đang tính...</h2>
+            <p id="bestReason">Đang tải dữ liệu đánh giá.</p>
+        </div>
+        <div class="best-score">
+            <span id="bestScore">--</span>
+            <small>Optimization score</small>
+        </div>
+    </section>
+
+    <section class="metric-grid" aria-label="Tổng quan kết quả">
+        <article>
+            <span id="trainCount">--</span>
+            <p>Số mẫu train</p>
+        </article>
+        <article>
+            <span id="testCount">--</span>
+            <p>Tổng mẫu test CSV</p>
+        </article>
+        <article>
+            <span id="datasetSource">--</span>
+            <p>Nguồn dataset</p>
+        </article>
+        <article>
+            <span id="rankingFormula">--</span>
+            <p>Công thức xếp hạng</p>
+        </article>
+    </section>
+
+    <section class="dataset-band">
+        <div>
+            <p class="eyebrow">Dataset Evaluation</p>
+            <h2 id="datasetPath">--</h2>
+            <p id="labelDistribution">--</p>
+        </div>
+        <div>
+            <strong id="bestAccuracy">--</strong>
+            <span>Accuracy tốt nhất</span>
+        </div>
+        <div>
+            <strong id="bestTime">--</strong>
+            <span>Thời gian tốt nhất</span>
+        </div>
+        <div>
+            <strong id="testRunInfo">--</strong>
+            <span>Số mẫu mỗi lần test</span>
+        </div>
+    </section>
+
+    <section class="protocol-band" aria-label="Quy trình đánh giá">
+        <div>
+            <p class="eyebrow">Evaluation Protocol</p>
+            <h2>Luồng đối chiếu dữ liệu</h2>
+            <p id="evaluationProtocol">--</p>
+        </div>
+        <div>
+            <strong id="groundTruthField">--</strong>
+            <span>Nhãn thật chỉ dùng sau khi dự đoán</span>
+        </div>
+        <div>
+            <strong id="classifierInputFields">--</strong>
+            <span>Các cột đầu vào thuật toán được phép sử dụng</span>
+        </div>
+    </section>
+
+    <section class="table-band">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow">Bảng đối chiếu</p>
+                <h2>Kết quả các phương pháp</h2>
+            </div>
+            <span id="tableStatus" class="status-pill">Đang tải</span>
+        </div>
+
+        <div class="table-scroll">
+            <table class="comparison-table">
+                <thead>
+                <tr>
+                    <th>Thuật toán</th>
+                    <th>Nhóm</th>
+                    <th>Đúng/Tổng</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-score</th>
+                    <th>Accuracy min-max</th>
+                    <th>Độ lệch chuẩn</th>
+                    <th>Thời gian / mẫu</th>
+                    <th>Điểm tối ưu</th>
+                    <th>Nhận xét</th>
+                </tr>
+                </thead>
+                <tbody id="comparisonBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="matrix-band">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow">Confusion Matrix</p>
+                <h2>Ma trận nhầm lẫn theo thuật toán</h2>
+                <p class="matrix-note">Mỗi lần test có một cụm so sánh riêng giữa các thuật toán; nhập 30 lần sẽ hiển thị 30 lần so sánh.</p>
+            </div>
+        </div>
+        <div id="matrixGrid" class="matrix-grid"></div>
+    </section>
+</main>
+
+<script th:src="@{/js/algorithm-comparison.js}"></script>
+<script th:src="@{/js/sidebar-toggle.js}"></script>
+</body>
+</html>

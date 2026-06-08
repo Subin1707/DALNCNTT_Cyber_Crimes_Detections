@@ -2,30 +2,149 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>About | Giới thiệu nhóm phát triển</title>
+    <title>Giới thiệu | Cyber Crime Graph Detection</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="/css/about.css">
     <link rel="stylesheet" th:href="@{/styles.css}">
     <script th:src="@{/theme.js}"></script>
 </head>
-<body class="page-index">
+<body class="page-index about-page">
 
-<header>
-    <h1>Giới thiệu nhóm phát triển</h1>
-    <p>Hệ thống phân tích và phát hiện hành vi lừa đảo dựa trên Graph Database</p>
-</header>
+<main class="about-shell">
+    <section class="about-hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Cyber Crime Graph Detection</p>
+            <h1>Hệ thống phân tích gian lận dựa trên Graph Database</h1>
+            <p class="hero-sub">
+                Mô hình hóa Email, IP, URL, Domain, File, Hash và tài khoản nạn nhân thành đồ thị để phát hiện
+                quan hệ bất thường, lan truyền rủi ro và hỗ trợ ra quyết định điều tra.
+            </p>
+            <div class="hero-actions">
+                <button type="button" onclick="location.href='/dashboard'">Mở Dashboard</button>
+                <button type="button" class="secondary" onclick="location.href='/admin/admin-email'">Phân tích dữ liệu</button>
+            </div>
+        </div>
+        <div class="hero-panel" aria-label="Tóm tắt năng lực hệ thống">
+            <div class="signal-card high">
+                <span>Graph Risk</span>
+                <strong>Quan hệ đa thực thể</strong>
+            </div>
+            <div class="signal-card medium">
+                <span>KNN + Region</span>
+                <strong>So khớp hành vi</strong>
+            </div>
+            <div class="signal-card safe">
+                <span>Rule Base</span>
+                <strong>Giải thích quyết định</strong>
+            </div>
+        </div>
+    </section>
 
-<main>
-    <!-- Nav moved to left sidebar for dashboard-style layout -->
+    <section class="metric-grid" aria-label="Các điểm nổi bật">
+        <article>
+            <span class="metric">7</span>
+            <strong>Loại thực thể</strong>
+            <p>Email, IP, URL, Domain, File, FileHash và VictimAccount.</p>
+        </article>
+        <article>
+            <span class="metric">5</span>
+            <strong>Lớp phân tích</strong>
+            <p>Rule-based, graph risk, KNN, multi-region và xác suất.</p>
+        </article>
+        <article>
+            <span class="metric">Realtime</span>
+            <strong>Network capture</strong>
+            <p>Ghi nhận DNS, TLS SNI, HTTP và liên kết vào phiên làm việc.</p>
+        </article>
+        <article>
+            <span class="metric">Neo4j</span>
+            <strong>Graph database</strong>
+            <p>Truy vết quan hệ và mở rộng điều tra theo cụm rủi ro.</p>
+        </article>
+    </section>
 
-    <section style="max-width:1000px;margin:20px auto;padding:0 16px;">
-        <h2>Thông tin</h2>
-        <p>Trang này hiển thị thông tin nhóm phát triển. Bạn có thể bổ sung nội dung theo nhu cầu.</p>
+    <section class="content-grid">
+        <article class="card intro-card">
+            <div class="section-title">Mục tiêu hệ thống</div>
+            <p>
+                Dự án hỗ trợ phát hiện dấu hiệu lừa đảo và tội phạm mạng bằng cách chuyển dữ liệu rời rạc
+                thành đồ thị quan hệ. Admin có thể quan sát cụm nghi ngờ, kiểm tra node liên quan và xem
+                lý do hệ thống đánh giá một thực thể là an toàn, nghi ngờ hoặc gian lận.
+            </p>
+            <ul class="check-list">
+                <li>Phân tích dữ liệu nhập tay, Excel và network capture.</li>
+                <li>Hiển thị quan hệ giữa Email, IP, URL, Domain, File và tài khoản.</li>
+                <li>Cung cấp điểm rủi ro, verdict, indicators và diễn giải theo node.</li>
+                <li>Hỗ trợ quản trị dữ liệu, tài khoản và phiên phân tích.</li>
+            </ul>
+        </article>
+
+        <article class="card">
+            <div class="section-title">Quy trình phân tích</div>
+            <div class="timeline">
+                <div>
+                    <span>01</span>
+                    <strong>Thu thập dữ liệu</strong>
+                    <p>Nhận input từ form, Excel hoặc packet capture.</p>
+                </div>
+                <div>
+                    <span>02</span>
+                    <strong>Chuẩn hóa thực thể</strong>
+                    <p>Merge node trùng, tạo quan hệ và gắn session.</p>
+                </div>
+                <div>
+                    <span>03</span>
+                    <strong>Chấm điểm rủi ro</strong>
+                    <p>Kết hợp rule, graph, KNN, region và xác suất.</p>
+                </div>
+                <div>
+                    <span>04</span>
+                    <strong>Trực quan hóa</strong>
+                    <p>Hiển thị đồ thị, cụm miền và chi tiết node.</p>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="content-grid">
+        <article class="card">
+            <div class="section-title">Công nghệ sử dụng</div>
+            <div class="tech-list">
+                <span>Spring Boot</span>
+                <span>Neo4j</span>
+                <span>Thymeleaf</span>
+                <span>D3.js</span>
+                <span>Wireshark / tshark</span>
+                <span>KNN</span>
+                <span>Multi-Region</span>
+                <span>Rule Engine</span>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="section-title">Nhóm phát triển</div>
+            <div class="team compact">
+                <div class="member main-member">
+                    <div class="avatar">NQ</div>
+                    <h3>Nguyễn Mạnh Quyền</h3>
+                    <div class="role">Backend, graph model, phân tích rủi ro</div>
+                </div>
+                <div class="member main-member">
+                    <div class="avatar">PH</div>
+                    <h3>Phạm Văn Hoàng</h3>
+                    <div class="role">Neo4j, API, xử lý nghiệp vụ</div>
+                </div>
+                <div class="member">
+                    <div class="avatar">NT</div>
+                    <h3>Nguyễn Văn Thành</h3>
+                    <div class="role">Giao diện, kiểm thử, hoàn thiện trải nghiệm</div>
+                </div>
+            </div>
+        </article>
     </section>
 </main>
 
-<!-- Sidebar toggle script -->
 <script th:src="@{/js/sidebar-toggle.js}"></script>
 
 <aside class="sidebar-left" aria-label="Thanh điều hướng">
@@ -46,4 +165,3 @@
 
 </body>
 </html>
-

@@ -2,69 +2,52 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>URL Management</title>
+    <title>Customer - Quản lý URL</title>
 
     <link rel="stylesheet" th:href="@{/css/customer.css}">
     <link rel="stylesheet" th:href="@{/styles.css}">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script th:src="@{/theme.js}"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 <body class="page-index">
-
 <main class="container">
 
-    <!-- HEADER -->
     <header class="dashboard-header">
         <div>
             <h1>URL Management</h1>
-
             <p th:if="${user != null}">
-                Ch�o <strong th:text="${user.email}"></strong>
+                Chào <strong th:text="${user.email}"></strong>
                 (Role: <span th:text="${user.role}"></span>)
             </p>
-
-            <p th:if="${user == null}" class="warning">
-                ? Ch�a ��ng nh?p
-            </p>
+            <p th:if="${user == null}" class="warning">Chưa đăng nhập</p>
         </div>
 
         <a th:href="@{/customer/logout}" class="logout-btn">Logout</a>
     </header>
 
-    <!-- Nav moved to left sidebar for dashboard-style layout -->
-
-    <!-- ANALYZE -->
     <section class="card">
-        <h2>Ph�n t�ch URL</h2>
+        <h2>Phân tích URL</h2>
 
         <form class="form-inline" onsubmit="return false;" autocomplete="off">
-            <input
-                type="text"
-                id="analyzeURL"
-                placeholder="Nh?p URL, v� d?: https://example.com"
-                required
-                autocomplete="off"
-                spellcheck="false"
-            >
-            <button type="button" id="analyzeBtn">Ph�n t�ch</button>
+            <input type="text" id="analyzeURL" placeholder="Nhập URL, ví dụ: https://example.com" required autocomplete="off" spellcheck="false">
+            <button type="button" id="analyzeBtn">Phân tích</button>
         </form>
 
         <div id="analyzeResult"></div>
     </section>
 
-    <!-- GRAPH -->
     <section class="card">
-        <h2>�? th? URL</h2>
+        <h2>Đồ thị URL</h2>
         <div class="graph-controls">
             <select id="sessionSelect"></select>
-            <button id="reloadGraphBtn">T?i l?i</button>
+            <button id="reloadGraphBtn">Tải lại</button>
             <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
         </div>
 
         <div id="selectedSessionArea" style="margin-top:8px;">
-            <b>Phi�n:</b>
-            <span id="selectedSessionLabel">T?t c? d? li?u (ALL)</span>
+            <b>Phiên:</b>
+            <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
         </div>
 
         <div class="graph-wrapper">
@@ -72,19 +55,12 @@
         </div>
     </section>
 
-    <!-- TABLE -->
     <section class="card">
-        <h2>B?ng URL Node</h2>
+        <h2>Bảng URL Node</h2>
 
         <div class="table-search">
-            <input
-                type="text"
-                id="searchNode"
-                placeholder="T?m URL..."
-                autocomplete="off"
-                spellcheck="false"
-            >
-            <button type="button" id="searchNodeBtn">T?m</button>
+            <input type="text" id="searchNode" placeholder="Tìm URL..." autocomplete="off" spellcheck="false">
+            <button type="button" id="searchNodeBtn">Tìm</button>
             <button type="button" id="resetNodeBtn">Reset</button>
         </div>
 
@@ -110,15 +86,12 @@
 </main>
 
 <script>
-    // customer-main.js s? �?c bi?n n�y �? filter ��ng lo?i node
     window.CUSTOMER_VIEW_TYPE = "URL";
 </script>
 
 <script th:src="@{/js/customer-main.js}"></script>
 <script th:src="@{/js/customer-session.js}"></script>
 <script th:src="@{/js/customer-url-analyze.js}"></script>
-
-<!-- Sidebar toggle script -->
 <script th:src="@{/js/sidebar-toggle.js}"></script>
 
 <aside class="sidebar-left" aria-label="Thanh điều hướng">
@@ -131,8 +104,6 @@
         <button onclick="location.href='/customer/about'">Giới thiệu</button>
     </div>
 </aside>
-
-<!-- sessions table removed for customer view -->
 
 </body>
 </html>

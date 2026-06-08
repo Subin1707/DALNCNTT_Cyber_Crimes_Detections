@@ -244,8 +244,16 @@ Phù hợp khi hướng của vector quan trọng hơn độ lớn tuyệt đố
 
 ```text
 d_safe       = distance(node_vector, SAFE_CENTER)
-d_suspicious = distance(node_vector, SUSPICIOUS_CENTER)
-d_fraud      = distance(node_vector, FRAUD_CENTER)
+d_nghingo    = distance(node_vector, SUSPICIOUS_CENTER)
+d_gianlan    = distance(node_vector, FRAUD_CENTER)
+```
+
+Sau khi có 3 khoảng cách tới 3 miền, hệ thống xét thêm khoảng cách nhỏ nhất, lớn nhất và khoảng cách trung bình:
+
+```text
+d_min = min(d_safe, d_nghingo, d_gianlan)
+d_max = max(d_safe, d_nghingo, d_gianlan)
+d_avg = (d_safe + d_nghingo + d_gianlan) / 3
 ```
 
 ### 7.7 Chuyển khoảng cách thành xác suất
@@ -14946,8 +14954,11 @@ Node mới được vector hóa rồi tính khoảng cách tới từng center:
 
 ```text
 d_safe        = distance(node, SAFE_CENTER)
-d_suspicious  = distance(node, SUSPICIOUS_CENTER)
-d_fraud       = distance(node, FRAUD_CENTER)
+d_nghingo     = distance(node, SUSPICIOUS_CENTER)
+d_gianlan     = distance(node, FRAUD_CENTER)
+d_min         = min(d_safe, d_nghingo, d_gianlan)
+d_max         = max(d_safe, d_nghingo, d_gianlan)
+d_avg         = (d_safe + d_nghingo + d_gianlan) / 3
 ```
 
 Node thuộc miền có khoảng cách nhỏ nhất hoặc xác suất lớn nhất sau khi chuyển distance thành probability.

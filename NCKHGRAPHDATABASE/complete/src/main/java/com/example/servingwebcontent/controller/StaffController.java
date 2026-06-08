@@ -6,7 +6,9 @@ import com.example.servingwebcontent.service.AlertLoggingService;
 import com.example.servingwebcontent.service.DecisionService;
 import com.example.servingwebcontent.service.EnhancedChatbotService;
 import com.example.servingwebcontent.service.ExcelImportService;
+import com.example.servingwebcontent.service.GraphUpdateBroadcaster;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,7 @@ public class StaffController {
     private final DecisionService decisionService;
     private final EnhancedChatbotService chatbotService;
     private final AlertLoggingService alertLoggingService;
+    private final GraphUpdateBroadcaster graphUpdateBroadcaster;
 
         public StaffController(FraudAnalysisService fraudAnalysisService,
                    GraphQueryService graphService,
@@ -47,7 +51,8 @@ public class StaffController {
                    ExcelImportService excelImportService,
                    DecisionService decisionService,
                    EnhancedChatbotService chatbotService,
-                   AlertLoggingService alertLoggingService) {
+                   AlertLoggingService alertLoggingService,
+                   GraphUpdateBroadcaster graphUpdateBroadcaster) {
 
         this.fraudAnalysisService = fraudAnalysisService;
         this.graphService = graphService;
@@ -57,6 +62,7 @@ public class StaffController {
         this.decisionService = decisionService;
         this.chatbotService = chatbotService;
         this.alertLoggingService = alertLoggingService;
+        this.graphUpdateBroadcaster = graphUpdateBroadcaster;
         }
 
         /* ================= BULK EXCEL UPLOAD (STAFF) ================= */
@@ -308,6 +314,13 @@ public class StaffController {
     public List<Map<String, Object>> getSessions(HttpSession session) {
         getStaff(session);
         return graphService.getAllSessions();
+    }
+
+    @GetMapping(value = "/stream/graph", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ResponseBody
+    public SseEmitter streamGraphUpdates(HttpSession session) {
+        getStaff(session);
+        return graphUpdateBroadcaster.subscribe();
     }
 
     @RequestMapping(value = "/node-decision", method = {RequestMethod.GET, RequestMethod.POST})

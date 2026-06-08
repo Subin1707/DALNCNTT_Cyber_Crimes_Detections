@@ -16,6 +16,42 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.fetchGraph(sessionId);
             }
         };
+        evt.addEventListener('graph-update', function (event) {
+            if (typeof window.fetchGraph !== 'function') return;
+            let payload = {};
+            try {
+                payload = event?.data ? JSON.parse(event.data) : {};
+            } catch (e) {
+                payload = {};
+            }
+
+            const sessionSelect = document.getElementById('sessionSelect');
+            const eventSessionId = payload.sessionId ? String(payload.sessionId) : '';
+            let sessionId = sessionSelect ? sessionSelect.value : '';
+
+            if (sessionSelect && eventSessionId) {
+                let opt = Array.from(sessionSelect.options).find(o => o.value === eventSessionId);
+                if (!opt) {
+                    opt = document.createElement('option');
+                    opt.value = eventSessionId;
+                    opt.textContent = eventSessionId + ' | NETWORK_CAPTURE';
+                    sessionSelect.insertBefore(opt, sessionSelect.options[1] || null);
+                }
+                sessionSelect.value = eventSessionId;
+                sessionId = eventSessionId;
+
+                const labelEl = document.getElementById('selectedSessionLabel');
+                if (labelEl) labelEl.textContent = opt.textContent;
+            }
+
+            window.fetchGraph(sessionId);
+        });
+        evt.addEventListener('update', function () {
+            if (typeof window.fetchGraph === 'function') {
+                const sessionSelect = document.getElementById('sessionSelect');
+                window.fetchGraph(sessionSelect ? sessionSelect.value : '');
+            }
+        });
         evt.onerror = function (e) {
             console.warn('SSE connection error:', e);
         };
@@ -1235,5 +1271,11 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ================= INIT ================= */
     fetchGraph();
     window.render = render;
+
+    setInterval(() => {
+        if (document.visibilityState !== "visible") return;
+        const sessionSelect = document.getElementById("sessionSelect");
+        fetchGraph(sessionSelect ? sessionSelect.value : "");
+    }, 5000);
 
 });

@@ -1,4 +1,4 @@
-// customer-session.js – single, robust session loader + reload for customer dashboard
+// customer-session.js - Load customer sessions and reload graph by selected session.
 document.addEventListener("DOMContentLoaded", () => {
     const sessionSelect = document.getElementById("sessionSelect");
     const reloadBtn = document.getElementById("reloadGraphBtn");
@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const raw = s.createdAt || s.time || s.created || "";
         let createdAt = "";
         if (raw !== null && raw !== undefined && raw !== "") {
-            if (typeof raw === 'number') createdAt = String(raw);
+            if (typeof raw === "number") createdAt = String(raw);
             else {
                 const t = Date.parse(String(raw));
-                createdAt = isNaN(t) ? String(raw) : String(t);
+                createdAt = Number.isNaN(t) ? String(raw) : String(t);
             }
         }
         const keyword = s.keyword || s.query || s.input || s.fileName || "";
@@ -43,21 +43,27 @@ document.addEventListener("DOMContentLoaded", () => {
             for (const url of endpoints) {
                 try {
                     const res = await fetch(url);
-                    if (res.ok) { data = await res.json(); break; }
-                } catch (e) { /* ignore */ }
+                    if (res.ok) {
+                        data = await res.json();
+                        break;
+                    }
+                } catch (e) {}
             }
 
-            // keep ALL option even if no endpoint
             sessionSelect.innerHTML = "";
             addOption("", "Tất cả dữ liệu (ALL)");
 
             if (!data) {
                 console.warn("Không tìm thấy API sessions (customer-session.js). Dropdown chỉ có ALL.");
+                updateSelectedLabel();
                 return;
             }
 
             const sessions = Array.isArray(data) ? data : (data.sessions || []);
-            if (!Array.isArray(sessions) || sessions.length === 0) return;
+            if (!Array.isArray(sessions) || sessions.length === 0) {
+                updateSelectedLabel();
+                return;
+            }
 
             const sorted = [...sessions].sort((a, b) => {
                 const ta = (a && (a.createdAt || a.time || a.created)) ? new Date(a.createdAt || a.time || a.created).getTime() : 0;
@@ -66,24 +72,31 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             sorted.forEach(s => {
-                if (typeof s === "string") { addOption(s, s); return; }
+                if (typeof s === "string") {
+                    addOption(s, s);
+                    return;
+                }
                 const id = s.sessionId || s.id || s.value;
                 if (!id) return;
                 addOption(id, formatSessionLabel(s));
             });
 
-            // default to latest session
             let defaultId = "";
             for (const s of sorted) {
                 const id = typeof s === "string" ? s : (s.sessionId || s.id || s.value);
-                if (id) { defaultId = id; break; }
+                if (id) {
+                    defaultId = id;
+                    break;
+                }
             }
+
             if (defaultId) {
                 sessionSelect.value = defaultId;
                 updateSelectedLabel();
                 setTimeout(() => reloadGraphBySession(), 60);
+            } else {
+                updateSelectedLabel();
             }
-
         } catch (e) {
             console.error("Load sessions failed:", e);
         }
@@ -107,15 +120,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const labelEl = document.getElementById("selectedSessionLabel");
         if (!labelEl) return;
         const idx = sessionSelect.selectedIndex;
-        if (idx < 0) { labelEl.textContent = "Tất cả dữ liệu (ALL)"; return; }
+        if (idx < 0) {
+            labelEl.textContent = "Tất cả dữ liệu (ALL)";
+            return;
+        }
         const opt = sessionSelect.options[idx];
         labelEl.textContent = opt ? opt.textContent : "Tất cả dữ liệu (ALL)";
     }
 
     reloadBtn?.addEventListener("click", reloadGraphBySession);
-    sessionSelect.addEventListener("change", () => { updateSelectedLabel(); reloadGraphBySession(); });
+    sessionSelect.addEventListener("change", () => {
+        updateSelectedLabel();
+        reloadGraphBySession();
+    });
 
-    // wait for customer-main.js to expose fetchGraph
     const wait = setInterval(() => {
         if (typeof window.fetchGraph === "function") {
             clearInterval(wait);

@@ -1,11 +1,10 @@
-// staff-session.js – FIX FULL – Load session list + select session + reload graph
+// staff-session.js - Load session list, select a session, and reload graph.
 document.addEventListener("DOMContentLoaded", () => {
     const sessionSelect = document.getElementById("sessionSelect");
     const reloadBtn = document.getElementById("reloadGraphBtn");
 
     if (!sessionSelect) return;
 
-    /* ================= UTIL ================= */
     function addOption(value, label) {
         const opt = document.createElement("option");
         opt.value = value;
@@ -14,12 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function formatSessionLabel(s) {
-        // hỗ trợ nhiều kiểu backend trả về
         const id = s.sessionId || s.id || s.value || "";
         const createdAt = s.createdAt || s.time || s.created || "";
         const keyword = s.keyword || s.query || s.input || "";
 
-        // nếu backend trả về string đơn giản
         if (typeof s === "string") return s;
 
         if (keyword && createdAt) return `${id} | ${keyword} | ${createdAt}`;
@@ -28,10 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${id}`;
     }
 
-    /* ================= LOAD SESSIONS ================= */
     async function loadSessions() {
         try {
-            // thử nhiều endpoint staff sessions phổ biến
             const endpoints = [
                 "/staff/sessions",
                 "/staff/session-list",
@@ -51,31 +46,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 } catch (e) {}
             }
 
-            // nếu backend chưa có API sessions => không crash
-            if (!data) {
-                console.warn("Không tìm thấy API sessions (staff-session.js). Dropdown chỉ có ALL.");
-                return;
-            }
-
-            // reset dropdown (giữ ALL)
             sessionSelect.innerHTML = "";
             addOption("", "Tất cả dữ liệu (ALL)");
+
+            if (!data) {
+                console.warn("Không tìm thấy API sessions (staff-session.js). Dropdown chỉ có ALL.");
+                updateSelectedLabel();
+                return;
+            }
 
             const sessions = Array.isArray(data) ? data : (data.sessions || []);
 
             if (!Array.isArray(sessions) || sessions.length === 0) {
                 console.warn("Danh sách session rỗng");
+                updateSelectedLabel();
                 return;
             }
 
-            // sort sessions by createdAt desc when present so default is latest
-            const sorted = Array.isArray(sessions)
-                ? [...sessions].sort((a, b) => {
-                    const ta = (a && (a.createdAt || a.time || a.created)) ? new Date(a.createdAt || a.time || a.created).getTime() : 0;
-                    const tb = (b && (b.createdAt || b.time || b.created)) ? new Date(b.createdAt || b.time || b.created).getTime() : 0;
-                    return tb - ta;
-                })
-                : [];
+            const sorted = [...sessions].sort((a, b) => {
+                const ta = (a && (a.createdAt || a.time || a.created)) ? new Date(a.createdAt || a.time || a.created).getTime() : 0;
+                const tb = (b && (b.createdAt || b.time || b.created)) ? new Date(b.createdAt || b.time || b.created).getTime() : 0;
+                return tb - ta;
+            });
 
             sorted.forEach((s) => {
                 if (typeof s === "string") {
@@ -89,25 +81,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 addOption(id, formatSessionLabel(s));
             });
 
-            // default to latest session if possible
             let defaultId = "";
             for (const s of sorted) {
                 const id = typeof s === "string" ? s : (s.sessionId || s.id || s.value);
-                if (id) { defaultId = id; break; }
-            }
-            if (defaultId) {
-                sessionSelect.value = defaultId;
-                // update label and trigger initial load
-                updateSelectedLabel();
-                setTimeout(() => reloadGraphBySession(), 50);
+                if (id) {
+                    defaultId = id;
+                    break;
+                }
             }
 
+            if (defaultId) {
+                sessionSelect.value = defaultId;
+                updateSelectedLabel();
+                setTimeout(() => reloadGraphBySession(), 50);
+            } else {
+                updateSelectedLabel();
+            }
         } catch (e) {
             console.error("Load sessions failed:", e);
         }
     }
 
-    /* ================= RELOAD GRAPH BY SESSION ================= */
     async function reloadGraphBySession() {
         const sessionId = sessionSelect.value || "";
 
@@ -124,7 +118,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    /* ================= EVENTS ================= */
+    function updateSelectedLabel() {
+        const labelEl = document.getElementById("selectedSessionLabel");
+        if (!labelEl) return;
+
+        const idx = sessionSelect.selectedIndex;
+        if (idx < 0) {
+            labelEl.textContent = "Tất cả dữ liệu (ALL)";
+            return;
+        }
+
+        const opt = sessionSelect.options[idx];
+        labelEl.textContent = opt ? opt.textContent : "Tất cả dữ liệu (ALL)";
+    }
+
     reloadBtn?.addEventListener("click", reloadGraphBySession);
 
     sessionSelect.addEventListener("change", () => {
@@ -132,20 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         reloadGraphBySession();
     });
 
-    function updateSelectedLabel() {
-        const labelEl = document.getElementById("selectedSessionLabel");
-        if (!labelEl) return;
-        const idx = sessionSelect.selectedIndex;
-        if (idx < 0) {
-            labelEl.textContent = "Tất cả dữ liệu (ALL)";
-            return;
-        }
-        const opt = sessionSelect.options[idx];
-        labelEl.textContent = opt ? opt.textContent : "Tất cả dữ liệu (ALL)";
-    }
-
-    /* ================= INIT ================= */
-    // đợi staff-main.js expose fetchGraph
     const wait = setInterval(async () => {
         if (typeof window.fetchGraph === "function") {
             clearInterval(wait);

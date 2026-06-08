@@ -6,9 +6,12 @@ import com.example.servingwebcontent.dto.OutputDTO;
 import com.example.servingwebcontent.dto.*;
 import com.example.servingwebcontent.service.AnalysisSessionService;
 import com.example.servingwebcontent.service.ExcelImportService;
+import com.example.servingwebcontent.service.GraphUpdateBroadcaster;
+import com.example.servingwebcontent.service.PacketCaptureService;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.util.*;
 import com.example.servingwebcontent.model.User;
@@ -16,11 +19,11 @@ import com.example.servingwebcontent.service.FraudAnalysisService;
 import com.example.servingwebcontent.service.GraphQueryService;
 import com.example.servingwebcontent.repository.AnalysisSessionRepository;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Controller
 @RequestMapping("/customer")
@@ -35,6 +38,8 @@ public class CustomerController {
     private final com.example.servingwebcontent.service.DecisionService decisionService;
     private final com.example.servingwebcontent.service.EnhancedChatbotService chatbotService;
     private final com.example.servingwebcontent.service.AlertLoggingService alertLoggingService;
+    private final GraphUpdateBroadcaster graphUpdateBroadcaster;
+    private final PacketCaptureService packetCaptureService;
 
         public CustomerController(FraudAnalysisService analysisService,
                   GraphQueryService graphService,
@@ -43,7 +48,9 @@ public class CustomerController {
                   AnalysisSessionRepository sessionRepository,
                   com.example.servingwebcontent.service.DecisionService decisionService,
                   com.example.servingwebcontent.service.EnhancedChatbotService chatbotService,
-                  com.example.servingwebcontent.service.AlertLoggingService alertLoggingService) {
+                  com.example.servingwebcontent.service.AlertLoggingService alertLoggingService,
+                  GraphUpdateBroadcaster graphUpdateBroadcaster,
+                  PacketCaptureService packetCaptureService) {
         this.analysisService = analysisService;
         this.graphService = graphService;
         this.analysisSessionService = analysisSessionService;
@@ -52,6 +59,8 @@ public class CustomerController {
         this.decisionService = decisionService;
         this.chatbotService = chatbotService;
         this.alertLoggingService = alertLoggingService;
+        this.graphUpdateBroadcaster = graphUpdateBroadcaster;
+        this.packetCaptureService = packetCaptureService;
         }
 
         /* ================= BULK EXCEL UPLOAD (CUSTOMER) ================= */
@@ -273,12 +282,7 @@ public class CustomerController {
                     sessionRepository.findAllByCreatedByOrderByCreatedAtDesc(user.getEmail());
 
             for (var s : list) {
-                Map<String, Object> m = new HashMap<>();
-                m.put("id", s.getId());
-                m.put("createdAt", s.getCreatedAt());
-                m.put("fileName", s.getFileName());
-                m.put("status", s.getStatus());
-                out.add(m);
+                out.add(sessionToMap(s));
             }
         } catch (Exception e) {
             // return empty list on error
@@ -484,11 +488,21 @@ public class CustomerController {
         }
     }
 
+    /* ================= REALTIME GRAPH UPDATES ================= */
+
+    @GetMapping(value = "/stream/graph", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ResponseBody
+    public SseEmitter streamGraphUpdates(HttpSession session) {
+        getCustomer(session);
+        return graphUpdateBroadcaster.subscribe();
+    }
+
     /* ================= LOGOUT ================= */
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         if (session != null) {
+            packetCaptureService.deactivateCustomerCapture(session.getId());
             session.invalidate();
         }
         return "redirect:/login";
@@ -518,5 +532,14 @@ public class CustomerController {
         }
 
         return user;
+    }
+
+    private Map<String, Object> sessionToMap(com.example.servingwebcontent.model.AnalysisSession s) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("id", s.getId());
+        m.put("createdAt", s.getCreatedAt());
+        m.put("fileName", s.getFileName());
+        m.put("status", s.getStatus());
+        return m;
     }
 }

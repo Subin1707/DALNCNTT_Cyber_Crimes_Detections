@@ -20,7 +20,6 @@ public class FraudAnalysisService {
     private final Neo4jClient neo4j;
     private final GraphUpdateBroadcaster graphUpdateBroadcaster;
     private final MultiRegionAnalysisService multiRegionService;
-    private static final String NETWORK_SESSION_ID = "NETWORK_CAPTURE";
 
     private static final Pattern EMAIL_REGEX =
             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
@@ -233,19 +232,12 @@ public class FraudAnalysisService {
      * Trích xuất BehaviorFeatureVector từ input
      * Chuyển đổi rule-based data thành behavioral vector (12 chiều)
      */
-    private BehaviorFeatureVector extractBehaviorFeatures(FraudInputDTO input) {
+    public BehaviorFeatureVector extractBehaviorFeatures(FraudInputDTO input) {
         if (input == null) {
             return new BehaviorFeatureVector(0, 0, 0, 0, 0, 0.0, false, false, false, false, false, false);
         }
 
         // Tính toán numeric features từ input
-        int ipCount = input.getIp() != null ? 1 : 0;
-        int urlCount = input.getUrl() != null ? 1 : 0;
-        int emailCount = input.getEmail() != null ? 1 : 0;
-        int domainCount = input.getDomain() != null ? 1 : 0;
-        int failedLoginCount = notBlank(input.getEmail()) ? 0 : 1;
-        double requestFrequency = (urlCount + emailCount + ipCount) * 0.5;
-
         // Boolean features dựa trên blacklist checks
         boolean vpn = false;
         boolean blacklist = false;
@@ -262,6 +254,16 @@ public class FraudAnalysisService {
             blacklist = true;
         }
         if (input.getUrl() != null && PHISHING_URL_BLACKLIST.contains(input.getUrl())) {
+            blacklist = true;
+        }
+        if (input.getDomain() != null && (
+                PHISHING_BLACKLIST.contains(input.getDomain()) ||
+                PORN_BLACKLIST.contains(input.getDomain()) ||
+                GAMBLING_BLACKLIST.contains(input.getDomain()) ||
+                PIRACY_BLACKLIST.contains(input.getDomain()))) {
+            blacklist = true;
+        }
+        if (input.getFileHash() != null && MALWARE_HASH_BLACKLIST.contains(input.getFileHash())) {
             blacklist = true;
         }
 
@@ -282,14 +284,101 @@ public class FraudAnalysisService {
         if (input.getUrl() != null && (
                 input.getUrl().contains("verify") ||
                 input.getUrl().contains("confirm") ||
-                input.getUrl().contains("security"))) {
+                input.getUrl().contains("security") ||
+                input.getUrl().contains("login") ||
+                input.getUrl().contains("update") ||
+                input.getUrl().contains("account"))) {
             suspiciousUrl = true;
         }
+
+        int emailSignals = countKeywordHits(input.getEmail(), SUSPICIOUS_WORDS)
+                + countKeywordHits(input.getEmail(), HACKING_KEYWORDS);
+        if (input.getEmail() != null && EMAIL_BLACKLIST.contains(input.getEmail())) emailSignals += 8;
+        if (input.getEmail() != null && DISPOSABLE_DOMAINS.stream().anyMatch(input.getEmail()::endsWith)) emailSignals += 3;
+
+        int ipSignals = 0;
+        if (input.getIp() != null && IP_BLACKLIST.contains(input.getIp())) ipSignals += 10;
+        if (torNetwork) ipSignals += 6;
+
+        int urlSignals = countKeywordHits(input.getUrl(), SUSPICIOUS_WORDS)
+                + countKeywordHits(input.getUrl(), HACKING_KEYWORDS)
+                + countKeywordHits(input.getUrl(), MALWARE_KEYWORDS);
+        if (input.getUrl() != null && PHISHING_URL_BLACKLIST.contains(input.getUrl())) urlSignals += 10;
+        if (input.getUrl() != null && input.getUrl().startsWith("http://")) urlSignals += 2;
+
+        int domainSignals = countKeywordHits(input.getDomain(), SUSPICIOUS_WORDS)
+                + countKeywordHits(input.getDomain(), HACKING_KEYWORDS)
+                + countKeywordHits(input.getDomain(), MALWARE_KEYWORDS);
+        if (input.getDomain() != null && PHISHING_BLACKLIST.contains(input.getDomain())) domainSignals += 10;
+        if (input.getDomain() != null && (PORN_BLACKLIST.contains(input.getDomain())
+                || GAMBLING_BLACKLIST.contains(input.getDomain())
+                || PIRACY_BLACKLIST.contains(input.getDomain()))) domainSignals += 8;
+        if (hasSuspiciousTld(input.getDomain())) domainSignals += 3;
+
+        int fileSignals = countKeywordHits(input.getFileNode(), SUSPICIOUS_FILE_KEYWORDS);
+        if (hasDangerousFileExtension(input.getFileNode())) fileSignals += 6;
+        if (hasArchiveFileExtension(input.getFileNode())) fileSignals += 2;
+        if (input.getFileHash() != null && MALWARE_HASH_BLACKLIST.contains(input.getFileHash())) fileSignals += 10;
+
+        int entityCount = 0;
+        if (notBlank(input.getIp())) entityCount++;
+        if (notBlank(input.getUrl())) entityCount++;
+        if (notBlank(input.getEmail())) entityCount++;
+        if (notBlank(input.getDomain())) entityCount++;
+        if (notBlank(input.getFileNode())) entityCount++;
+        if (notBlank(input.getFileHash())) entityCount++;
+        if (notBlank(input.getVictimAccount())) entityCount++;
+
+        int totalSignals = emailSignals + ipSignals + urlSignals + domainSignals + fileSignals;
+        int ipCount = (input.getIp() != null ? 1 : 0) + ipSignals;
+        int urlCount = (input.getUrl() != null ? 1 : 0) + urlSignals;
+        int emailCount = (input.getEmail() != null ? 1 : 0) + emailSignals;
+        int domainCount = (input.getDomain() != null ? 1 : 0) + domainSignals;
+        int failedLoginCount = Math.min(20, Math.max(0, emailSignals + urlSignals / 2 + fileSignals / 2));
+        double requestFrequency = Math.max(0.5, entityCount * 0.35 + totalSignals * 0.45);
 
         return new BehaviorFeatureVector(
                 ipCount, urlCount, emailCount, domainCount, failedLoginCount, requestFrequency,
                 vpn, blacklist, suspiciousUrl, torNetwork, spamPattern, abnormalAccessTime
         );
+    }
+
+    private int countKeywordHits(String value, Collection<String> keywords) {
+        if (value == null || keywords == null || keywords.isEmpty()) {
+            return 0;
+        }
+        String normalized = value.toLowerCase(Locale.ROOT);
+        int hits = 0;
+        for (String keyword : keywords) {
+            if (keyword != null && !keyword.isBlank() && normalized.contains(keyword.toLowerCase(Locale.ROOT))) {
+                hits++;
+            }
+        }
+        return hits;
+    }
+
+    private boolean hasSuspiciousTld(String domain) {
+        if (domain == null || !domain.contains(".")) {
+            return false;
+        }
+        String tld = domain.substring(domain.lastIndexOf('.') + 1).toLowerCase(Locale.ROOT);
+        return SUSPICIOUS_TLDS.contains(tld);
+    }
+
+    private boolean hasDangerousFileExtension(String fileName) {
+        if (fileName == null) {
+            return false;
+        }
+        String normalized = fileName.toLowerCase(Locale.ROOT);
+        return DANGEROUS_FILE_EXTENSIONS.stream().anyMatch(normalized::endsWith);
+    }
+
+    private boolean hasArchiveFileExtension(String fileName) {
+        if (fileName == null) {
+            return false;
+        }
+        String normalized = fileName.toLowerCase(Locale.ROOT);
+        return ARCHIVE_FILE_EXTENSIONS.stream().anyMatch(normalized::endsWith);
     }
 
     /**
@@ -548,9 +637,9 @@ public class FraudAnalysisService {
        NETWORK CONNECTION (IP -> DOMAIN)
        ========================================================= */
 
-    public void addNetworkConnection(String ip, String domain) {
+    public void addNetworkConnection(String ip, String domain, String sessionId, String createdBy) {
 
-        if (!notBlank(ip) || !notBlank(domain)) return;
+        if (!notBlank(ip) || !notBlank(domain) || !notBlank(sessionId) || !notBlank(createdBy)) return;
 
         OutputDTO ipOut = analyzeSingle("ip", ip);
         OutputDTO domainOut = analyzeSingle("domain", domain);
@@ -558,17 +647,15 @@ public class FraudAnalysisService {
         String ipNodeId = mergeNode("IPAddress", "ip", ip, ipOut, "WIRESHARK");
         String domainNodeId = mergeNode("Domain", "domain", domain, domainOut, "WIRESHARK");
 
-        // Wireshark/tshark capture is continuous and not tied to a user-upload session.
-        // Create a dedicated session so the UI (session graphs) can still show these connections.
-        ensureNetworkSession();
-        linkSessionToNode(NETWORK_SESSION_ID, ipNodeId, "HAS_IP");
-        linkSessionToNode(NETWORK_SESSION_ID, domainNodeId, "HAS_DOMAIN");
-        link(ipNodeId, domainNodeId, "CONNECTS_TO", NETWORK_SESSION_ID);
+        ensureNetworkSession(sessionId, createdBy);
+        linkSessionToNode(sessionId, ipNodeId, "HAS_IP");
+        linkSessionToNode(sessionId, domainNodeId, "HAS_DOMAIN");
+        link(ipNodeId, domainNodeId, "CONNECTS_TO", sessionId);
 
         if (graphUpdateBroadcaster != null) {
             graphUpdateBroadcaster.publish("graph-update", Map.of(
                     "ts", java.time.Instant.now().toString(),
-                    "sessionId", NETWORK_SESSION_ID,
+                    "sessionId", sessionId,
                     "ip", ip,
                     "domain", domain
             ));
@@ -579,8 +666,8 @@ public class FraudAnalysisService {
      * Best-effort: record an HTTP URL visit (usually only visible for port 80).
      * For HTTPS, you typically only get the domain (SNI) via {@link #addNetworkConnection}.
      */
-    public void addNetworkUrlVisit(String ip, String url) {
-        if (!notBlank(ip) || !notBlank(url)) return;
+    public void addNetworkUrlVisit(String ip, String url, String sessionId, String createdBy) {
+        if (!notBlank(ip) || !notBlank(url) || !notBlank(sessionId) || !notBlank(createdBy)) return;
 
         OutputDTO ipOut = analyzeSingle("ip", ip);
         OutputDTO urlOut = analyzeSingle("url", url);
@@ -588,12 +675,12 @@ public class FraudAnalysisService {
         String ipNodeId = mergeNode("IPAddress", "ip", ip, ipOut, "WIRESHARK");
         String urlNodeId = mergeNode("URL", "url", url, urlOut, "WIRESHARK");
 
-        ensureNetworkSession();
-        linkSessionToNode(NETWORK_SESSION_ID, ipNodeId, "HAS_IP");
-        linkSessionToNode(NETWORK_SESSION_ID, urlNodeId, "HAS_URL");
+        ensureNetworkSession(sessionId, createdBy);
+        linkSessionToNode(sessionId, ipNodeId, "HAS_IP");
+        linkSessionToNode(sessionId, urlNodeId, "HAS_URL");
 
         // Reuse existing relationship type that is already included in graph queries.
-        link(ipNodeId, urlNodeId, "CONNECTS_TO", NETWORK_SESSION_ID);
+        link(ipNodeId, urlNodeId, "CONNECTS_TO", sessionId);
 
         // Also try to link URL -> Domain when possible
         String host = null;
@@ -607,21 +694,21 @@ public class FraudAnalysisService {
         if (notBlank(host)) {
             OutputDTO domainOut = analyzeSingle("domain", host);
             String domainNodeId = mergeNode("Domain", "domain", host, domainOut, "WIRESHARK");
-            linkSessionToNode(NETWORK_SESSION_ID, domainNodeId, "HAS_DOMAIN");
-            link(urlNodeId, domainNodeId, "HOSTED_ON_DOMAIN", NETWORK_SESSION_ID);
+            linkSessionToNode(sessionId, domainNodeId, "HAS_DOMAIN");
+            link(urlNodeId, domainNodeId, "HOSTED_ON_DOMAIN", sessionId);
         }
 
         if (graphUpdateBroadcaster != null) {
             graphUpdateBroadcaster.publish("graph-update", java.util.Map.of(
                     "ts", java.time.Instant.now().toString(),
-                    "sessionId", NETWORK_SESSION_ID,
+                    "sessionId", sessionId,
                     "ip", ip,
                     "url", url
             ));
         }
     }
 
-    private void ensureNetworkSession() {
+    private void ensureNetworkSession(String sessionId, String createdBy) {
         neo4j.query("""
             MERGE (s:AnalysisSession {id: $sid})
             ON CREATE SET
@@ -636,10 +723,10 @@ public class FraudAnalysisService {
                 s.indicators = []
             SET s.lastSeen = datetime()
         """)
-                .bind(NETWORK_SESSION_ID).to("sid")
+                .bind(sessionId).to("sid")
                 .bind("NETWORK_CAPTURE").to("fileName")
                 .bind(System.currentTimeMillis()).to("createdAt")
-                .bind("SYSTEM").to("createdBy")
+                .bind(createdBy).to("createdBy")
                 .run();
     }
 

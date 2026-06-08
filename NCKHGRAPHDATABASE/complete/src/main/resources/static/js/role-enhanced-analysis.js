@@ -9,6 +9,36 @@ function canManualBlock() {
     return detectRoleBasePath() === "/admin";
 }
 
+function closeAnyNodePopup() {
+    const nodeInfo = document.getElementById("nodeInfo");
+    if (nodeInfo) {
+        nodeInfo.style.display = "none";
+        nodeInfo.innerHTML = "";
+    }
+
+    const detailsPanel = document.getElementById("nodeDetailsPanel");
+    if (detailsPanel) {
+        detailsPanel.classList.remove("open");
+        detailsPanel.setAttribute("aria-hidden", "true");
+    }
+
+    window.selectedNodeId = null;
+    if (window.__graphContext) {
+        window.__graphContext.selectedNodeId = null;
+    }
+}
+
+document.addEventListener("click", (event) => {
+    const closeButton = event.target.closest(
+        "#closeNodeInfo, .node-popup-btn-close, #closeNodePanel, .close-panel"
+    );
+    if (!closeButton) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    closeAnyNodePopup();
+}, true);
+
 function ensureEnhancedPopupStyles() {
     if (document.getElementById("enhanced-popup-styles")) return;
 

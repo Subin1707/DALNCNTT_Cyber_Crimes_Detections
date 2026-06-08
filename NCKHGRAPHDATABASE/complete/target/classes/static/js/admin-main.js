@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const graphCache = new Map();
     const graphSignatureCache = new Map();
     // SSE will trigger instant updates; keep polling only as a fallback.
-    const AUTO_REFRESH_MS = 10000;
+    const AUTO_REFRESH_MS = 5000;
     let autoRefreshTimer = null;
     let graphInitialized = false;
     let container = null;
@@ -629,7 +629,7 @@ window.fetchGraph = fetchGraph;
             fetchGraph(sid, { force: true, skipIfBusy: true, allowAbort: false });
 
             // refresh session dropdown periodically (e.g. NETWORK_CAPTURE appears after tshark starts)
-            if (autoRefreshTick % 10 === 0) fetchSessions();
+            fetchSessions();
         }, AUTO_REFRESH_MS);
     }
 
@@ -1898,6 +1898,7 @@ if (riskRank(normalizedRisk) > riskRank(s.maxRisk))
             </div>
         `;
         panel.classList.add("open");
+        panel.setAttribute("aria-hidden", "false");
     }
 
     function showNodeInfo(d) {
@@ -2489,14 +2490,37 @@ fetchGraph(null, { force: true });
     let pending = false;
     let timer = null;
 
-    const scheduleRefresh = () => {
+    const scheduleRefresh = (event) => {
         if (pending) return;
         pending = true;
 
         clearTimeout(timer);
         timer = setTimeout(() => {
             pending = false;
-            const sid = currentSessionId && currentSessionId !== "ALL" ? currentSessionId : null;
+            let eventSessionId = "";
+            try {
+                const payload = event?.data ? JSON.parse(event.data) : {};
+                eventSessionId = payload.sessionId ? String(payload.sessionId) : "";
+            } catch (e) {
+                eventSessionId = "";
+            }
+
+            const sessionSelect = document.getElementById("sessionSelect");
+            if (sessionSelect && eventSessionId) {
+                let opt = Array.from(sessionSelect.options).find(o => o.value === eventSessionId);
+                if (!opt) {
+                    opt = document.createElement("option");
+                    opt.value = eventSessionId;
+                    opt.textContent = eventSessionId + " | NETWORK_CAPTURE";
+                    sessionSelect.insertBefore(opt, sessionSelect.options[1] || null);
+                }
+                sessionSelect.value = eventSessionId;
+
+                const labelEl = document.getElementById("selectedSessionLabel");
+                if (labelEl) labelEl.textContent = opt.textContent;
+            }
+
+            const sid = eventSessionId || (currentSessionId && currentSessionId !== "ALL" ? currentSessionId : null);
             fetchGraph(sid, { force: true, skipIfBusy: true, allowAbort: false });
         }, 250);
     };

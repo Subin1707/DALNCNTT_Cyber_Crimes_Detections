@@ -1,5 +1,6 @@
 package com.example.servingwebcontent.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,24 +16,55 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class PacketCaptureService {
 
+    private static final String SYSTEM_CAPTURE_SESSION_ID = "NETWORK_CAPTURE_SYSTEM";
+    private static final String SYSTEM_CAPTURE_OWNER = "system@network-capture.local";
+
     private final FraudAnalysisService fraudAnalysisService;
+    private final String tsharkPath;
+    private final String captureInterface;
     private final AtomicLong totalLines = new AtomicLong(0);
     private final AtomicLong totalRecords = new AtomicLong(0);
     private final AtomicLong totalSaved = new AtomicLong(0);
     private volatile Instant lastSavedAt = null;
+    private volatile String activeSessionId = null;
+    private volatile String activeCreatedBy = null;
     private final Deque<Map<String, Object>> recentEvents = new ConcurrentLinkedDeque<>();
 
-    public PacketCaptureService(FraudAnalysisService fraudAnalysisService) {
+    public PacketCaptureService(FraudAnalysisService fraudAnalysisService,
+                                @Value("${packet.capture.tshark-path:E:\\Program Files (x86)\\tshark.exe}") String tsharkPath,
+                                @Value("${packet.capture.interface:5}") String captureInterface) {
         this.fraudAnalysisService = fraudAnalysisService;
+        this.tsharkPath = tsharkPath;
+        this.captureInterface = captureInterface;
+    }
+
+    public void activateCustomerCapture(String customerEmail, String httpSessionId) {
+        if (customerEmail == null || customerEmail.isBlank()
+                || httpSessionId == null || httpSessionId.isBlank()) {
+            return;
+        }
+        this.activeCreatedBy = customerEmail.trim().toLowerCase();
+        this.activeSessionId = "NETWORK_CAPTURE_" + httpSessionId.trim();
+    }
+
+    public void deactivateCustomerCapture(String httpSessionId) {
+        if (httpSessionId == null || httpSessionId.isBlank()) {
+            return;
+        }
+        String expectedSessionId = "NETWORK_CAPTURE_" + httpSessionId.trim();
+        if (expectedSessionId.equals(activeSessionId)) {
+            this.activeSessionId = null;
+            this.activeCreatedBy = null;
+        }
     }
 
     public void startCapture() {
         try {
 
             ProcessBuilder pb = new ProcessBuilder(
-                    "E:\\Program Files (x86)\\tshark.exe",
+                    tsharkPath,
                     "-l",
-                    "-i", "4",
+                    "-i", captureInterface,
                     "-n",
                     "-Y", "dns.qry.name || tls.handshake.extensions_server_name || http.request",
                     "-T", "fields",
@@ -53,7 +85,8 @@ public class PacketCaptureService {
 
             String line;
 
-            System.out.println("[PacketCapture] tshark started, waiting for DNS / TLS SNI / HTTP requests...");
+            System.out.println("[PacketCapture] tshark started on interface " + captureInterface
+                    + ", waiting for DNS / TLS SNI / HTTP requests...");
 
             while ((line = reader.readLine()) != null) {
                 totalLines.incrementAndGet();
@@ -80,10 +113,7 @@ public class PacketCaptureService {
 
                         totalRecords.incrementAndGet();
                         try {
-                            fraudAnalysisService.addNetworkConnection(ip, d);
-                            totalSaved.incrementAndGet();
-                            lastSavedAt = Instant.now();
-                            addRecentEvent("DNS", ip, d);
+                            saveNetworkConnection("DNS", ip, d);
                         } catch (Exception ex) {
                             System.err.println("[PacketCapture] save DNS failed: " + ex.getMessage());
                         }
@@ -98,10 +128,7 @@ public class PacketCaptureService {
 
                         totalRecords.incrementAndGet();
                         try {
-                            fraudAnalysisService.addNetworkConnection(ip, d);
-                            totalSaved.incrementAndGet();
-                            lastSavedAt = Instant.now();
-                            addRecentEvent("SNI", ip, d);
+                            saveNetworkConnection("SNI", ip, d);
                         } catch (Exception ex) {
                             System.err.println("[PacketCapture] save SNI failed: " + ex.getMessage());
                         }
@@ -121,10 +148,7 @@ public class PacketCaptureService {
                 if (bestUrl != null && !bestUrl.isBlank()) {
                     totalRecords.incrementAndGet();
                     try {
-                        fraudAnalysisService.addNetworkUrlVisit(ip, bestUrl);
-                        totalSaved.incrementAndGet();
-                        lastSavedAt = Instant.now();
-                        addRecentEvent("HTTP", ip, bestUrl);
+                        saveNetworkUrlVisit(ip, bestUrl);
                     } catch (Exception ex) {
                         System.err.println("[PacketCapture] save HTTP failed: " + ex.getMessage());
                     }
@@ -156,15 +180,56 @@ public class PacketCaptureService {
         return new ArrayList<>(recentEvents);
     }
 
-    private void addRecentEvent(String kind, String ip, String value) {
+    private void saveNetworkConnection(String kind, String ip, String domain) {
+        int savedTargets = 0;
+        for (CaptureTarget target : captureTargets()) {
+            fraudAnalysisService.addNetworkConnection(ip, domain, target.sessionId(), target.createdBy());
+            savedTargets++;
+        }
+        totalSaved.addAndGet(savedTargets);
+        lastSavedAt = Instant.now();
+        addRecentEvent(kind, ip, domain, savedTargets);
+    }
+
+    private void saveNetworkUrlVisit(String ip, String url) {
+        int savedTargets = 0;
+        for (CaptureTarget target : captureTargets()) {
+            fraudAnalysisService.addNetworkUrlVisit(ip, url, target.sessionId(), target.createdBy());
+            savedTargets++;
+        }
+        totalSaved.addAndGet(savedTargets);
+        lastSavedAt = Instant.now();
+        addRecentEvent("HTTP", ip, url, savedTargets);
+    }
+
+    private List<CaptureTarget> captureTargets() {
+        List<CaptureTarget> targets = new ArrayList<>();
+        targets.add(new CaptureTarget(SYSTEM_CAPTURE_SESSION_ID, SYSTEM_CAPTURE_OWNER));
+
+        String sessionId = activeSessionId;
+        String createdBy = activeCreatedBy;
+        if (sessionId != null && !sessionId.isBlank()
+                && createdBy != null && !createdBy.isBlank()
+                && !SYSTEM_CAPTURE_SESSION_ID.equals(sessionId)) {
+            targets.add(new CaptureTarget(sessionId, createdBy));
+        }
+
+        return targets;
+    }
+
+    private void addRecentEvent(String kind, String ip, String value, int savedTargets) {
         recentEvents.addLast(Map.of(
                 "ts", Instant.now().toString(),
                 "kind", kind,
                 "ip", ip,
-                "value", value
+                "value", value,
+                "savedTargets", savedTargets
         ));
         while (recentEvents.size() > 50) {
             recentEvents.pollFirst();
         }
+    }
+
+    private record CaptureTarget(String sessionId, String createdBy) {
     }
 }

@@ -1,6 +1,36 @@
 // Enhanced Node Analysis - Integrates Decision, Chatbot, and Logging
 // This file handles the new UI features for displaying decisions, detailed chatbot analysis, and logs
 
+function closeCustomerNodePopup() {
+    const nodeInfo = document.getElementById("nodeInfo");
+    if (nodeInfo) {
+        nodeInfo.style.display = "none";
+        nodeInfo.innerHTML = "";
+    }
+
+    const detailsPanel = document.getElementById("nodeDetailsPanel");
+    if (detailsPanel) {
+        detailsPanel.classList.remove("open");
+        detailsPanel.setAttribute("aria-hidden", "true");
+    }
+
+    window.selectedNodeId = null;
+    if (window.__graphContext) {
+        window.__graphContext.selectedNodeId = null;
+    }
+}
+
+document.addEventListener("click", (event) => {
+    const closeButton = event.target.closest(
+        "#closeNodeInfo, .node-popup-btn-close, #closeNodePanel, .close-panel"
+    );
+    if (!closeButton) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    closeCustomerNodePopup();
+}, true);
+
 /**
  * Enhanced showNodeInfo function - replaces the simple version
  * Displays: Decision + Chatbot Analysis + Recommendations
@@ -117,11 +147,12 @@ function renderEnhancedNodeInfo(nodeData, decision, chatbot) {
 
     // ========== CLOSE BUTTON ==========
     const btn = document.createElement("button");
+    btn.id = "closeNodeInfo";
+    btn.className = "node-popup-btn-close";
+    btn.type = "button";
     btn.textContent = "Close";
     btn.style.cssText = "width: 100%; padding: 8px; margin-top: 15px; background: #64748b; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;";
-    btn.onclick = () => {
-        box.style.display = "none";
-    };
+    btn.onclick = closeCustomerNodePopup;
     card.appendChild(btn);
 
     box.appendChild(card);

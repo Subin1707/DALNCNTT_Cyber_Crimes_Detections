@@ -392,7 +392,14 @@ public class MultiRegionAnalysisService {
             return KNNClassificationResult.empty();
         }
 
-        return classifyWithKnn(node, labeledSamples, k, normalizeMetric(metricName));
+        return classifyWithKnnInternal(node, labeledSamples, k, normalizeMetric(metricName));
+    }
+
+    public KNNClassificationResult classifyWithKnn(BehaviorFeatureVector node,
+                                                   List<LabeledBehaviorSample> trainingSet,
+                                                   int k,
+                                                   String metricName) {
+        return classifyWithKnnInternal(node, trainingSet, k, normalizeMetric(metricName));
     }
 
     public EvaluationResult evaluateManualSamples(int k, String metricName) {
@@ -405,7 +412,7 @@ public class MultiRegionAnalysisService {
             List<LabeledBehaviorSample> trainingSet = labeledSamples.stream()
                     .filter(candidate -> !candidate.nodeId().equals(sample.nodeId()))
                     .toList();
-            KNNClassificationResult prediction = classifyWithKnn(sample.vector(), trainingSet, k, metric);
+            KNNClassificationResult prediction = classifyWithKnnInternal(sample.vector(), trainingSet, k, metric);
             boolean isCorrect = sample.label() == prediction.getPredictedRegion();
             if (isCorrect) {
                 correct++;
@@ -433,10 +440,10 @@ public class MultiRegionAnalysisService {
         return labeledSamples;
     }
 
-    private KNNClassificationResult classifyWithKnn(BehaviorFeatureVector node,
-                                                   List<LabeledBehaviorSample> trainingSet,
-                                                   int k,
-                                                   String metric) {
+    private KNNClassificationResult classifyWithKnnInternal(BehaviorFeatureVector node,
+                                                            List<LabeledBehaviorSample> trainingSet,
+                                                            int k,
+                                                            String metric) {
         if (node == null || trainingSet == null || trainingSet.isEmpty()) {
             return KNNClassificationResult.empty();
         }
@@ -947,6 +954,52 @@ public class MultiRegionAnalysisService {
 
         public double getRegionDistance(RegionType type) {
             return regionDistances.getOrDefault(type, Double.MAX_VALUE);
+        }
+
+        public double getDSafe() {
+            return getRegionDistance(RegionType.SAFE);
+        }
+
+        public double getDNghiNgo() {
+            return getRegionDistance(RegionType.SUSPICIOUS);
+        }
+
+        public double getDGianLan() {
+            return getRegionDistance(RegionType.FRAUD);
+        }
+
+        public double getMinRegionDistance() {
+            return finiteRegionDistances().min().orElse(0.0);
+        }
+
+        public double getMaxRegionDistance() {
+            return finiteRegionDistances().max().orElse(0.0);
+        }
+
+        public double getAverageRegionDistance() {
+            return finiteRegionDistances().average().orElse(0.0);
+        }
+
+        public Map<String, Double> getNamedRegionDistances() {
+            Map<String, Double> distances = new LinkedHashMap<>();
+            distances.put("d_safe", getDSafe());
+            distances.put("d_nghingo", getDNghiNgo());
+            distances.put("d_gianlan", getDGianLan());
+            return distances;
+        }
+
+        public Map<String, Double> getDistanceSummary() {
+            Map<String, Double> summary = new LinkedHashMap<>();
+            summary.put("min", getMinRegionDistance());
+            summary.put("max", getMaxRegionDistance());
+            summary.put("average", getAverageRegionDistance());
+            return summary;
+        }
+
+        private java.util.stream.DoubleStream finiteRegionDistances() {
+            return regionDistances.values().stream()
+                    .mapToDouble(Double::doubleValue)
+                    .filter(Double::isFinite);
         }
 
         public double getRegionProbability(RegionType type) {

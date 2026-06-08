@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -118,6 +120,44 @@ public class MultiRegionAnalysisUnitTest {
 
         assertTrue(suspiciousDistance <= safeDistance || suspiciousDistance <= fraudDistance,
                    "Primary region should have smallest or equal distance");
+    }
+
+    @Test
+    @DisplayName("Should expose named region distances and min max average")
+    public void testNamedDistanceSummary() {
+        BehaviorFeatureVector node = new BehaviorFeatureVector(
+                5, 8, 10, 6, 3, 3.5,
+                true, false, true, false, true, true
+        );
+
+        MultiRegionAnalysisService.RegionAnalysisResult result =
+            multiRegionService.analyzeAgainstRegions(node);
+
+        double dSafe = result.getRegionDistance(RegionType.SAFE);
+        double dNghiNgo = result.getRegionDistance(RegionType.SUSPICIOUS);
+        double dGianLan = result.getRegionDistance(RegionType.FRAUD);
+
+        assertEquals(dSafe, result.getDSafe(), 0.001);
+        assertEquals(dNghiNgo, result.getDNghiNgo(), 0.001);
+        assertEquals(dGianLan, result.getDGianLan(), 0.001);
+
+        Map<String, Double> namedDistances = result.getNamedRegionDistances();
+        assertEquals(dSafe, namedDistances.get("d_safe"), 0.001);
+        assertEquals(dNghiNgo, namedDistances.get("d_nghingo"), 0.001);
+        assertEquals(dGianLan, namedDistances.get("d_gianlan"), 0.001);
+
+        double expectedMin = Math.min(dSafe, Math.min(dNghiNgo, dGianLan));
+        double expectedMax = Math.max(dSafe, Math.max(dNghiNgo, dGianLan));
+        double expectedAverage = (dSafe + dNghiNgo + dGianLan) / 3.0;
+
+        assertEquals(expectedMin, result.getMinRegionDistance(), 0.001);
+        assertEquals(expectedMax, result.getMaxRegionDistance(), 0.001);
+        assertEquals(expectedAverage, result.getAverageRegionDistance(), 0.001);
+
+        Map<String, Double> summary = result.getDistanceSummary();
+        assertEquals(expectedMin, summary.get("min"), 0.001);
+        assertEquals(expectedMax, summary.get("max"), 0.001);
+        assertEquals(expectedAverage, summary.get("average"), 0.001);
     }
 
     @Test

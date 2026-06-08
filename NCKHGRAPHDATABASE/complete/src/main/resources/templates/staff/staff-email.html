@@ -2,7 +2,7 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Staff - Qu?n l? Email</title>
+    <title>Staff - Quản lý Email</title>
 
     <link rel="stylesheet" th:href="@{/css/staff.css}">
     <link rel="stylesheet" th:href="@{/styles.css}">
@@ -13,40 +13,35 @@
 <body class="page-index">
 <main class="container">
 
-    <!-- HEADER -->
     <header class="dashboard-header">
-        <h1>Staff - Qu?n l? Email</h1>
-        <a th:href="@{/staff/logout}" class="logout-btn" title="��ng xu?t">Logout</a>
+        <h1>Staff - Quản lý Email</h1>
+        <a th:href="@{/staff/logout}" class="logout-btn" title="Đăng xuất">Logout</a>
     </header>
 
-    <!-- Nav moved to left sidebar for dashboard-style layout -->
-
-    <!-- ANALYZE EMAIL -->
     <section class="card">
-        <h2>Ph�n t�ch Email</h2>
+        <h2>Phân tích Email</h2>
 
         <form class="form-inline" onsubmit="return false;">
             <input type="email" id="analyzeEmail"
-                   placeholder="Nh?p Email c?n ph�n t�ch"
+                   placeholder="Nhập Email cần phân tích"
                    autocomplete="off">
-            <button type="button" id="analyzeBtn">Ph�n t�ch</button>
+            <button type="button" id="analyzeBtn">Phân tích</button>
         </form>
 
         <div id="analyzeResult" class="analyze-result"></div>
     </section>
 
-    <!-- GRAPH -->
     <section class="card">
-        <h2>�? th? Email</h2>
+        <h2>Đồ thị Email</h2>
         <div class="graph-controls">
             <select id="sessionSelect"></select>
-            <button id="reloadGraphBtn">T?i l?i</button>
+            <button id="reloadGraphBtn">Tải lại</button>
             <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
         </div>
 
         <div id="selectedSessionArea" style="margin-top:8px;">
-            <b>Phi�n:</b>
-            <span id="selectedSessionLabel">T?t c? d? li?u (ALL)</span>
+            <b>Phiên:</b>
+            <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
         </div>
 
         <div class="graph-wrapper">
@@ -54,18 +49,16 @@
         </div>
     </section>
 
-    <!-- NODE INFO -->
     <div id="nodeInfo"></div>
 
-    <!-- TABLE -->
     <section class="card">
-        <h2>B?ng Email</h2>
+        <h2>Bảng Email</h2>
 
         <div class="table-search">
             <input type="text" id="searchNode"
-                   placeholder="T?m theo ID ho?c Value..."
+                   placeholder="Tìm theo ID hoặc Value..."
                    autocomplete="off">
-            <button type="button" id="searchNodeBtn">T?m ki?m</button>
+            <button type="button" id="searchNodeBtn">Tìm kiếm</button>
             <button type="button" id="resetNodeBtn">Reset</button>
         </div>
 
@@ -88,9 +81,7 @@
             </table>
         </div>
     </section>
-    </section>
 
-    <!-- Sessions table (move inside main for layout consistency) -->
     <section class="card">
         <h2>Bảng Sessions</h2>
         <div class="table-wrapper">
@@ -111,42 +102,35 @@
         </div>
     </section>
 
-    </main>
+</main>
 
-    <script>
-        // staff-main.js will use this to tune behavior
-        window.STAFF_VIEW_TYPE = "Email";
-    </script>
+<script>
+    window.STAFF_VIEW_TYPE = "Email";
+</script>
 
-    <!-- JS load order -->
-    <script th:src="@{/js/staff-main.js}"></script>
-    <script th:src="@{/js/role-enhanced-analysis.js}"></script>
-    <script th:src="@{/js/staff-session.js}"></script>
-    <script th:src="@{/js/staff-email-analyze.js}"></script>
+<script th:src="@{/js/staff-main.js}"></script>
+<script th:src="@{/js/role-enhanced-analysis.js}"></script>
+<script th:src="@{/js/staff-session.js}"></script>
+<script th:src="@{/js/staff-email-analyze.js}"></script>
+<script th:src="@{/js/sidebar-toggle.js}"></script>
 
-    <!-- Sidebar toggle script -->
-    <script th:src="@{/js/sidebar-toggle.js}"></script>
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/staff/staff-email'">Quản lý Email</button>
+        <button onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
+        <button onclick="location.href='/staff/staff-url'">Quản lý URL</button>
+        <button onclick="location.href='/staff/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/staff/about'">Giới thiệu</button>
+    </div>
+</aside>
 
-    <aside class="sidebar-left" aria-label="Thanh điều hướng">
-        <div class="sidebar-title">Điều hướng</div>
-        <div class="nav-buttons">
-            <button onclick="location.href='/dashboard'">Dashboard</button>
-            <button onclick="location.href='/staff/staff-email'">Quản lý Email</button>
-            <button onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
-            <button onclick="location.href='/staff/staff-url'">Quản lý URL</button>
-            <button onclick="location.href='/staff/user-management'">Quản lý Tài khoản</button>
-            <button onclick="location.href='/staff/about'">Giới thiệu</button>
-        </div>
-    </aside>
+<script>
+    document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") document.getElementById("searchNodeBtn")?.click();
+    });
+</script>
 
-    <script>
-        // Enter to search
-        document.getElementById("searchNode")?.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") document.getElementById("searchNodeBtn")?.click();
-        });
-
-        // Initial graph load is handled by staff-session.js
-    </script>
-
-    </body>
-    </html>
+</body>
+</html>

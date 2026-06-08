@@ -2,65 +2,55 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>URL Management</title>
+    <title>Staff - Quản lý URL</title>
 
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/staff.css}">
     <link rel="stylesheet" th:href="@{/styles.css}">
     <script th:src="@{/theme.js}"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
 <body class="page-index">
-
 <main class="container">
 
     <header class="dashboard-header">
         <div>
-            <h1>URL Management</h1>
+            <h1>Staff - Quản lý URL</h1>
             <p th:if="${user != null}">
-                Ch�o <strong th:text="${user.email}"></strong>
+                Chào <strong th:text="${user.email}"></strong>
                 (Role: <span th:text="${user.role}"></span>)
             </p>
             <p th:if="${user == null}" class="warning">
-                ? Ch�a ��ng nh?p
+                Chưa đăng nhập
             </p>
         </div>
 
         <a th:href="@{/staff/logout}" class="logout-btn">Logout</a>
     </header>
 
-    <!-- Nav moved to left sidebar for dashboard-style layout -->
-
     <section class="card">
-        <h2>Ph�n t�ch URL</h2>
+        <h2>Phân tích URL</h2>
 
         <form class="form-inline" onsubmit="return false;" autocomplete="off">
-            <input
-                type="text"
-                id="analyzeURL"
-                placeholder="Nh?p URL, v� d?: https://example.com"
-                required
-                autocomplete="off"
-                spellcheck="false"
-            >
-            <button type="button" id="analyzeBtn">Ph�n t�ch</button>
+            <input type="text" id="analyzeURL" placeholder="Nhập URL, ví dụ: https://example.com" required autocomplete="off" spellcheck="false">
+            <button type="button" id="analyzeBtn">Phân tích</button>
         </form>
 
         <div id="analyzeResult"></div>
     </section>
 
     <section class="card">
-        <h2>�? th? URL</h2>
+        <h2>Đồ thị URL</h2>
 
         <div class="graph-controls">
             <select id="sessionSelect"></select>
-            <button id="reloadGraphBtn">T?i l?i</button>
+            <button id="reloadGraphBtn">Tải lại</button>
             <span id="graphLoading" style="display:none;margin-left:8px">Loading...</span>
         </div>
 
         <div id="selectedSessionArea" style="margin-top:8px;">
-            <b>Phi�n:</b>
-            <span id="selectedSessionLabel">T?t c? d? li?u (ALL)</span>
+            <b>Phiên:</b>
+            <span id="selectedSessionLabel">Tất cả dữ liệu (ALL)</span>
         </div>
 
         <div class="graph-wrapper">
@@ -69,17 +59,11 @@
     </section>
 
     <section class="card">
-        <h2>B?ng URL Node</h2>
+        <h2>Bảng URL Node</h2>
 
         <div class="table-search">
-            <input
-                type="text"
-                id="searchNode"
-                placeholder="T?m URL..."
-                autocomplete="off"
-                spellcheck="false"
-            >
-            <button type="button" id="searchNodeBtn">T?m</button>
+            <input type="text" id="searchNode" placeholder="Tìm URL..." autocomplete="off" spellcheck="false">
+            <button type="button" id="searchNodeBtn">Tìm</button>
             <button type="button" id="resetNodeBtn">Reset</button>
         </div>
 
@@ -102,7 +86,6 @@
         </div>
     </section>
 
-    <!-- Sessions table -->
     <section class="card">
         <h2>Bảng Sessions</h2>
         <div class="table-wrapper">
@@ -123,31 +106,29 @@
         </div>
     </section>
 
-    </main>
+</main>
 
-    <script>
-        window.STAFF_VIEW_TYPE = "URL";
-    </script>
+<script>
+    window.STAFF_VIEW_TYPE = "URL";
+</script>
 
-    <script th:src="@{/js/staff-main.js}"></script>
-    <script th:src="@{/js/role-enhanced-analysis.js}"></script>
-    <script th:src="@{/js/staff-session.js}"></script>
-    <script th:src="@{/js/staff-url-analyze.js}"></script>
+<script th:src="@{/js/staff-main.js}"></script>
+<script th:src="@{/js/role-enhanced-analysis.js}"></script>
+<script th:src="@{/js/staff-session.js}"></script>
+<script th:src="@{/js/staff-url-analyze.js}"></script>
+<script th:src="@{/js/sidebar-toggle.js}"></script>
 
-    <!-- Sidebar toggle script -->
-    <script th:src="@{/js/sidebar-toggle.js}"></script>
+<aside class="sidebar-left" aria-label="Thanh điều hướng">
+    <div class="sidebar-title">Điều hướng</div>
+    <div class="nav-buttons">
+        <button onclick="location.href='/dashboard'">Dashboard</button>
+        <button onclick="location.href='/staff/staff-email'">Quản lý Email</button>
+        <button onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
+        <button onclick="location.href='/staff/staff-url'">Quản lý URL</button>
+        <button onclick="location.href='/staff/user-management'">Quản lý Tài khoản</button>
+        <button onclick="location.href='/staff/about'">Giới thiệu</button>
+    </div>
+</aside>
 
-    <aside class="sidebar-left" aria-label="Thanh điều hướng">
-        <div class="sidebar-title">Điều hướng</div>
-        <div class="nav-buttons">
-            <button onclick="location.href='/dashboard'">Dashboard</button>
-            <button onclick="location.href='/staff/staff-email'">Quản lý Email</button>
-            <button onclick="location.href='/staff/staff-ip'">Quản lý IP</button>
-            <button onclick="location.href='/staff/staff-url'">Quản lý URL</button>
-            <button onclick="location.href='/staff/user-management'">Quản lý Tài khoản</button>
-            <button onclick="location.href='/staff/about'">Giới thiệu</button>
-        </div>
-    </aside>
-
-    </body>
-    </html>
+</body>
+</html>

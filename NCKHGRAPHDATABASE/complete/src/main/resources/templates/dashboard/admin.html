@@ -33,6 +33,7 @@
 
         <div class="header-actions">
             <button id="btnTheme" class="btn btn-secondary" type="button" aria-label="Bật tắt giao diện sáng tối">Tối</button>
+            <a th:href="@{/algorithm-comparison}" class="btn btn-secondary">So sánh thuật toán</a>
             <span class="pill subtle"><span class="dot unknown"></span>Dashboard Admin</span>
             <form th:action="@{/admin/logout}" method="post" class="logout-form">
                 <button type="submit" class="btn">Logout</button>
@@ -323,13 +324,16 @@ window.addEventListener('nodeSelected', (e) => {
         if (panel) {
             console.log('✅ Panel found, adding open class');
             panel.classList.add('open');
+            panel.setAttribute('aria-hidden', 'false');
         } else {
             console.error('❌ Panel #nodeDetailsPanel not found!');
         }
     } catch (err) { console.error('nodeSelected handler error:', err); }
 });
 
-document.getElementById('closeNodePanel')?.addEventListener('click', () => {
+document.getElementById('closeNodePanel')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     const panel = document.getElementById('nodeDetailsPanel');
     if (panel) {
         panel.classList.remove('open');

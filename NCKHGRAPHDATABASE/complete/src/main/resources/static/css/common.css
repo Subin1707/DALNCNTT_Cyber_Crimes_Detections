@@ -332,6 +332,14 @@ tbody tr:hover, table tbody tr:hover {
     overflow:hidden;
 }
 
+#nodeDetailsPanel[aria-hidden="true"]{
+    display:none;
+}
+
+#nodeDetailsPanel.open{
+    display:block;
+}
+
 .panel-head,
 .explain-head{
     display:flex;
